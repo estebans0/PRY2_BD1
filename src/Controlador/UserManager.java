@@ -13,7 +13,6 @@ import Modelo.User;
 import Modelo.genre;
 import com.sun.jdi.connect.spi.Connection;
 import java.sql.SQLException;
-import oracle.jdbc.OracleTypes;
 import java.sql.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;

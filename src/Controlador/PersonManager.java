@@ -13,7 +13,6 @@ import Modelo.User;
 import com.sun.jdi.connect.spi.Connection;
 import java.awt.image.BufferedImage;
 import java.sql.SQLException;
-import oracle.jdbc.OracleTypes;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -38,10 +37,8 @@ public class PersonManager {
     public void updatePeople(java.sql.Connection conn) throws SQLException {
         //java.sql.Connection conn = sysConexion.obtConexion();
         people.clear();
-        CallableStatement sql = conn.prepareCall("{call getPeopleData(?)}");
-        sql.registerOutParameter(1, Types.REF_CURSOR);
-        sql.execute();
-        ResultSet rs = (ResultSet) sql.getObject(1);
+        CallableStatement sql = conn.prepareCall("{call getPeopleData()}");
+        ResultSet rs = sql.executeQuery();
         while (rs.next()) {
             Person person = new Person();
             person.setId(rs.getInt("id"));

@@ -671,7 +671,7 @@ public class Interface extends javax.swing.JFrame {
         registerEmail_txt.setFont(new java.awt.Font("Cascadia Code", 0, 16)); // NOI18N
         registerEmail_txt.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         registerEmail_txt.setText("Email *");
-        register.add(registerEmail_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 270, 50, 30));
+        register.add(registerEmail_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 270, 100, 30));
 
         registerEmail_txtField.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         registerEmail_txtField.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -701,7 +701,7 @@ public class Interface extends javax.swing.JFrame {
         registerIdType_txt.setFont(new java.awt.Font("Cascadia Code", 0, 16)); // NOI18N
         registerIdType_txt.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         registerIdType_txt.setText("ID type *");
-        register.add(registerIdType_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, 70, 30));
+        register.add(registerIdType_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 330, 120, 30));
 
         registerIdType_cBox.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         registerIdType_cBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select an ID type", "Government ID", "Driver's licence", "Passport" }));
@@ -811,7 +811,7 @@ public class Interface extends javax.swing.JFrame {
         registerGender_txt.setFont(new java.awt.Font("Cascadia Code", 0, 16)); // NOI18N
         registerGender_txt.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         registerGender_txt.setText("Gender *");
-        register.add(registerGender_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 270, 70, 30));
+        register.add(registerGender_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 270, 110, 30));
 
         registerGender_cBox.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         registerGender_cBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select gender", "Male", "Female", "Other (not specified)" }));
@@ -821,7 +821,7 @@ public class Interface extends javax.swing.JFrame {
         registerDob_txt.setFont(new java.awt.Font("Cascadia Code", 0, 16)); // NOI18N
         registerDob_txt.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         registerDob_txt.setText("Date of birth *");
-        register.add(registerDob_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 340, 110, 30));
+        register.add(registerDob_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 340, 150, 30));
 
         registerDob_chooser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
         register.add(registerDob_chooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 340, 190, 40));

@@ -16,9 +16,10 @@ public class pruebas {
     public static void main(String[] args) {
         try {
             Controlador control = new Controlador();
-            //control.registerUser("adm0", "0", "adm@gmail.com", 1, "0", "adm", "0", null, null, 1, "01-05-2024");
-            control.updatePlatforms();
-            control.insertPlatform("Netflix", null);
+//            control.registerPerson("adm", "0", "", "", 1, "2024-05-14");
+            control.updatePeople();
+            control.printPeople();
+//            control.insertPlatform("Netflix", null);
         } catch (SQLException ex) {
             System.out.println(ex);
         }

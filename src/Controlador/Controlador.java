@@ -9,7 +9,6 @@ import Modelo.User;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import oracle.jdbc.OracleTypes;
 import java.sql.*;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
@@ -24,7 +23,7 @@ public class Controlador {
     private final PersonManager personMng = new PersonManager();
     private final UserManager userMng = new UserManager();
     private final productionManager prodMng = new productionManager();
-    private final java.sql.Connection conn = sysConexion.obtConexion();
+    private final Connection conn = sysConexion.obtConexion();
     
     // Métodos de usuario -----------------------------------------------------------------------------------------------------
     public int verifyUserLogin(String username, String password) throws SQLException {

@@ -14,16 +14,17 @@ import java.sql.SQLException;
  */
 public class sysConexion {
     public static Connection obtConexion() {
-        try{
-            // Esto se tiene que cambiar de acuerdo a la info de la BD de cada quien
-            String myDB = "jdbc:oracle:thin:@//localhost:1521/DB1";
-            String user = "PRY";
-            String password = "pry";
-            DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-            java.sql.Connection connection = DriverManager.getConnection(myDB, user, password);
+        String myDB = "jdbc:mysql://127.0.0.1:3306/bd1";
+        String user = "root";
+        String password = "bd1pass";
+
+        try {
+            // Establish connection
+            Connection connection = DriverManager.getConnection(myDB, user, password);
             return connection;
-        } catch(SQLException e){
-            System.out.println("El error es: " + e);
+        } catch (SQLException e) {
+            // Handle exceptions
+            System.err.println("Error connecting to the database: " + e.getMessage());
             return null;
         }
     }
