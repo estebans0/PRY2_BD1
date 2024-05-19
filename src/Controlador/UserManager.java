@@ -173,10 +173,8 @@ public class UserManager {
     public void updateCountries(java.sql.Connection conn) throws SQLException {
         //java.sql.Connection conn = sysConexion.obtConexion();
         countries.clear();
-        CallableStatement sql = conn.prepareCall("{call getCountriesData(?)}");
-        sql.registerOutParameter(1, Types.REF_CURSOR);
-        sql.execute();
-        ResultSet rs = (ResultSet) sql.getObject(1);
+        CallableStatement sql = conn.prepareCall("{call getCountriesData()}");
+        ResultSet rs = sql.executeQuery();
         while (rs.next()) {
             Country country = new Country();
             country.setId(rs.getInt("id"));

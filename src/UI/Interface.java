@@ -45,14 +45,14 @@ public class Interface extends javax.swing.JFrame {
     /**
      * Creates new form Interface
      */
-    public Interface() {
+    public Interface() throws SQLException {
         initComponents();
         
         // Cargar datos de BD
 //        try {
-//            control.updateUsers();
-//            control.updatePeople();
-//            control.updateCountries();
+            control.updateUsers();
+            control.updatePeople();
+            control.updateCountries();
 //            control.updateGenders();
 //            control.updateGenres();
 //            control.updateProdCompany();
@@ -2352,7 +2352,7 @@ public class Interface extends javax.swing.JFrame {
         });
         admMenu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        titulo_txt_adm.setFont(new java.awt.Font("Cascadia Code", 1, 48)); // NOI18N
+        titulo_txt_adm.setFont(new java.awt.Font("Cascadia Code", 1, 45)); // NOI18N
         titulo_txt_adm.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         titulo_txt_adm.setText("Welcome Administrator");
         admMenu.add(titulo_txt_adm, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, 620, 60));
@@ -3698,7 +3698,7 @@ public class Interface extends javax.swing.JFrame {
         tituloTxt_admOther.setFont(new java.awt.Font("Cascadia Code", 1, 48)); // NOI18N
         tituloTxt_admOther.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         tituloTxt_admOther.setText("Other Data");
-        createOtherData.add(tituloTxt_admOther, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 10, 270, 60));
+        createOtherData.add(tituloTxt_admOther, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 320, 60));
 
         bar1_admOther.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         bar1_admOther.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -5537,6 +5537,8 @@ public class Interface extends javax.swing.JFrame {
     private void login_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_login_btnMouseClicked
         try {
             int loginType = control.verifyUserLogin(enterUser_txtField.getText(), enterPass_txtField.getText());
+            control.printUsers();
+            System.out.println("type: " + loginType);
             if (loginType == 0) { // regular user
                 paneles.setSelectedIndex(2);
             } else if (loginType == 1) { // admin
@@ -5750,7 +5752,11 @@ public class Interface extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Interface().setVisible(true);
+                try {
+                    new Interface().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

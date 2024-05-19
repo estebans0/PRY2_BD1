@@ -4489,7 +4489,7 @@
             <Component class="javax.swing.JLabel" name="titulo_txt_adm">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Cascadia Code" size="48" style="1"/>
+                  <Font name="Cascadia Code" size="45" style="1"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Welcome Administrator"/>
@@ -7749,7 +7749,7 @@
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                          <AbsoluteConstraints x="400" y="10" width="270" height="60"/>
+                          <AbsoluteConstraints x="370" y="10" width="320" height="60"/>
                         </Constraint>
                       </Constraints>
                     </Component>
