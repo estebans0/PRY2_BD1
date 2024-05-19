@@ -1,52 +1,52 @@
 -- INSERT
-CREATE OR REPLACE PROCEDURE insertProdCompany (pName IN VARCHAR2)
-AS
+DELIMITER //
+CREATE PROCEDURE insertProdCompany (IN pName VARCHAR(230))
 BEGIN
-    INSERT INTO prod_company (id, name, id_country)
-    VALUES (s_prod_company.nextval, pName, NULL);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to add a new prod company' AS message;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLSTATE '23000'
+    BEGIN
+        ROLLBACK;
+        SELECT 'ProdCompany already exists' AS message;
+    END;
+
+    START TRANSACTION;
+
+    INSERT INTO prod_company (name)
+    VALUES (pName);
+
     COMMIT;
-    
-EXCEPTION
-    WHEN DUP_VAL_ON_INDEX THEN
-        dbms_output.put_line('ProdCompany already exists');
-        ROLLBACK;
-        RAISE;
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to add a new ProdCompany');
-        ROLLBACK;
-        RAISE;
-END insertProdCompany;
-/
+END //
+DELIMITER ;
 
 -- EDIT
-CREATE OR REPLACE PROCEDURE editProdCompany (pId IN NUMBER, pName IN VARCHAR2)
-AS
+DELIMITER //
+CREATE PROCEDURE editProdCompany (IN pId INT, IN pName VARCHAR(230))
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to edit the prod company' AS message;
+    END;
+
+    START TRANSACTION;
+
     UPDATE prod_company
     SET name = pName
     WHERE id = pId;
+
     COMMIT;
-    
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('User with the specified ID not found');
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to make a new admin');
-        ROLLBACK;
-        RAISE;
-END editProdCompany;
-/
+END //
+DELIMITER ;
 
 -- GET ALL DATA
-CREATE OR REPLACE PROCEDURE getProdCompanyData (pCursor OUT SYS_REFCURSOR)
-AS
+DELIMITER //
+CREATE PROCEDURE getProdCompanyData()
 BEGIN
-    OPEN pCursor FOR
-        SELECT id, name
-        FROM prod_company;
-END getProdCompanyData;
-/
-
-
-
-
+    SELECT id, name FROM prod_company;
+END //
+DELIMITER ;

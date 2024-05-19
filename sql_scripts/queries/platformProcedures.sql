@@ -1,54 +1,52 @@
 -- INSERT
-CREATE OR REPLACE PROCEDURE insertPlatform (pName IN VARCHAR2, pUrl IN VARCHAR2)
-AS
+DELIMITER //
+CREATE PROCEDURE insertPlatform (IN pName VARCHAR(230), IN pUrl VARCHAR(260))
 BEGIN
-    INSERT INTO platform (id, url, name)
-    VALUES (s_platform.nextval, pUrl, pName);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to add a new platform' AS message;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLSTATE '23000'
+    BEGIN
+        ROLLBACK;
+        SELECT 'Platform already exists' AS message;
+    END;
+
+    START TRANSACTION;
+
+    INSERT INTO platform (url, name)
+    VALUES (pUrl, pName);
+
     COMMIT;
-    
-EXCEPTION
-    WHEN DUP_VAL_ON_INDEX THEN
-        dbms_output.put_line('Platform already exists');
-        ROLLBACK;
-        RAISE;
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to add a new platform');
-        ROLLBACK;
-        RAISE;
-END insertPlatform;
-/
+END //
+DELIMITER ;
 
 -- EDIT
-CREATE OR REPLACE PROCEDURE editPlatform (pId IN NUMBER, pName IN VARCHAR2, pUrl IN VARCHAR2)
-AS
+DELIMITER //
+CREATE PROCEDURE editPlatform (IN pId INT, IN pName VARCHAR(230), IN pUrl VARCHAR(260))
 BEGIN
-    UPDATE platform
-    SET name = pName
-    WHERE id = pId;
-    UPDATE platform
-    SET url = pUrl
-    WHERE id = pId;
-    COMMIT;
-    
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('Platform with the specified ID not found');
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error');
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
         ROLLBACK;
-        RAISE;
-END editPlatform;
-/
+        SELECT 'Unexpected error when trying to edit the platform' AS message;
+    END;
+
+    START TRANSACTION;
+
+    UPDATE platform
+    SET name = pName, url = pUrl
+    WHERE id = pId;
+
+    COMMIT;
+END //
+DELIMITER ;
 
 -- GET ALL DATA
-CREATE OR REPLACE PROCEDURE getPlatformsData (pCursor OUT SYS_REFCURSOR)
-AS
+DELIMITER //
+CREATE PROCEDURE getPlatformsData()
 BEGIN
-    OPEN pCursor FOR
-        SELECT id, url, name
-        FROM platform;
-END getPlatformsData;
-/
-
-
-
+    SELECT id, url, name FROM platform;
+END //
+DELIMITER ;

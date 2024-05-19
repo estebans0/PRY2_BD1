@@ -1,69 +1,73 @@
---- *********************************************** PERSON PROCEDURES ***********************************************
--- GET CURRENT PERSON ID
-CREATE OR REPLACE PROCEDURE currPersonId (pCursor OUT SYS_REFCURSOR)
-AS
-BEGIN
-    OPEN pCursor FOR
-        SELECT s_person.currval FROM dual;
-END currPersonId;
-/
-
+-- *********************************************** PERSON PROCEDURES ***********************************************
 -- INSERT
-CREATE OR REPLACE PROCEDURE insertPerson (
-    pFirstName IN VARCHAR2,
-    pLastName IN VARCHAR2,
-    pMiddleName IN VARCHAR2,
-    pNickName IN VARCHAR2,
-    pGender IN VARCHAR2,
-    pDob IN VARCHAR2
+DELIMITER //
+CREATE PROCEDURE insertPerson (
+    IN pFirstName VARCHAR(220),
+    IN pLastName VARCHAR(220),
+    IN pMiddleName VARCHAR(220),
+    IN pNickName VARCHAR(220),
+    IN pGender INT,
+    IN pDob DATE
 )
-AS
 BEGIN
-    INSERT INTO person (id, birthdate, first_name, middle_name, last_name, nickname, image, gender)
-    VALUES (s_person.nextval, TO_DATE(pDob, 'DD-MM-YYYY'), pFirstName, NULL, pLastName, NULL, NULL, pGender);
-    COMMIT;
-    
-EXCEPTION
-    WHEN DUP_VAL_ON_INDEX THEN
-        dbms_output.put_line('Person already exists');
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to add a new person');
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
         ROLLBACK;
-        RAISE;
-END insertPerson;
-/
+        SELECT 'Unexpected error when trying to add a new person' AS message;
+    END;
+
+    START TRANSACTION;
+    
+    INSERT INTO person (first_name, last_name, middle_name, nickname, gender, birthdate)
+    VALUES (pFirstName, pLastName, pMiddleName, pNickName, pGender, pDob);
+    
+    COMMIT;
+END //
+DELIMITER ;
 
 -- GET ALL PEOPLE DATA
-CREATE OR REPLACE PROCEDURE getPeopleData (pCursor OUT SYS_REFCURSOR)
-AS
+DELIMITER //
+CREATE PROCEDURE getPeopleData ()
 BEGIN
-    OPEN pCursor FOR
-        SELECT id, birthdate, first_name, last_name, middle_name, nickname, image, gender
-        FROM person;
-END getPeopleData;
-/
-
---- *********************************************** FILM PERSON PROCEDURES ***********************************************
+    SELECT id, birthdate, first_name, last_name, middle_name, nickname, image, gender
+    FROM person;
+END //
+DELIMITER ;
+-- *********************************************** FILM PERSON PROCEDURES ***********************************************
 -- INSERT
-CREATE OR REPLACE PROCEDURE insertFilmPerson (
-    pHeight IN NUMBER,
-    pTrivia IN VARCHAR2,
-    pBiography IN VARCHAR2,
-    pNationality IN VARCHAR2
+DELIMITER //
+CREATE PROCEDURE insertFilmPerson (
+    IN pHeight INT,
+    IN pTrivia VARCHAR(1200),
+    IN pBiography VARCHAR(1200),
+    IN pNationality INT,
+    IN pRole INT
 )
-AS
 BEGIN
-    INSERT INTO film_person(id, heigth_cm, trivia, biography, nacionality, id_city, rol)
-    VALUES (s_person.currval, pHeight, pTrivia, pBiography, pNationality, NULL, NULL); -- city null porque no se usa
-    COMMIT;
-    
-EXCEPTION
-    WHEN DUP_VAL_ON_INDEX THEN
-        dbms_output.put_line('Person already exists');
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to add a new person');
-        ROLLBACK;
-        RAISE;
-END insertFilmPerson;
-/
+	DECLARE pLastPersonId INT;
 
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to add a new film person' AS message;
+    END;
+
+    START TRANSACTION;
+    -- Obtener el ID de la última persona insertada
+    SELECT LAST_INSERT_ID() INTO pLastPersonId;
+    
+    INSERT INTO film_person (id, height_cm, trivia, biography, nacionality, id_city, rol)
+    VALUES (pLastPersonId, pHeight, pTrivia, pBiography, pNationality, NULL, pRole);
+    
+    COMMIT;
+END //
+DELIMITER ;
+
+-- GET ALL FILM PEOPLE DATA
+DELIMITER //
+CREATE PROCEDURE getFilmPeopleData ()
+BEGIN
+    SELECT id, height_cm, trivia, biography, nacionality, rol
+    FROM film_person;
+END //
+DELIMITER ;

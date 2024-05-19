@@ -1,49 +1,46 @@
 -- INSERT
-CREATE OR REPLACE PROCEDURE insertCountry (pName IN VARCHAR2)
-AS
+DELIMITER //
+CREATE PROCEDURE insertCountry (IN pName VARCHAR(230))
 BEGIN
-    INSERT INTO country (id, name)
-    VALUES (s_country.nextval, pName);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to add a new country' AS message;
+    END;
+
+    START TRANSACTION;
+
+    INSERT INTO country (name)
+    VALUES (pName);
+
     COMMIT;
-    
-EXCEPTION
-    WHEN DUP_VAL_ON_INDEX THEN
-        dbms_output.put_line('User already exists');
-        ROLLBACK;
-        RAISE;
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to add a new user');
-        ROLLBACK;
-        RAISE;
-END insertCountry;
-/
+END //
+DELIMITER ;
 
 -- EDIT
-CREATE OR REPLACE PROCEDURE editCountryName (pId IN NUMBER, pName IN VARCHAR2)
-AS
+DELIMITER //
+CREATE PROCEDURE editCountryName (IN pId INT, IN pName VARCHAR(230))
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to edit the country name' AS message;
+    END;
+
+    START TRANSACTION;
+
     UPDATE country
     SET name = pName
     WHERE id = pId;
+
     COMMIT;
-    
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('User with the specified ID not found');
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to make a new admin');
-        ROLLBACK;
-        RAISE;
-END editCountryName;
-/
+END //
+DELIMITER ;
 
 -- GET ALL DATA
-CREATE OR REPLACE PROCEDURE getCountriesData (pCursor OUT SYS_REFCURSOR)
-AS
+DELIMITER //
+CREATE PROCEDURE getCountriesData()
 BEGIN
-    OPEN pCursor FOR
-        SELECT id, name
-        FROM country;
-END getCountriesData;
-/
-
+    SELECT id, name FROM country;
+END //
+DELIMITER ;

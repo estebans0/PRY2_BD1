@@ -53,10 +53,8 @@ public class UserManager {
     public void updateUsers(java.sql.Connection conn) throws SQLException {
         //java.sql.Connection conn = sysConexion.obtConexion();
         users.clear();
-        CallableStatement sql = conn.prepareCall("{call getUsersData(?)}");
-        sql.registerOutParameter(1, Types.REF_CURSOR);
-        sql.execute();
-        ResultSet rs = (ResultSet) sql.getObject(1);
+        CallableStatement sql = conn.prepareCall("{call getUsersData()}");
+        ResultSet rs = sql.executeQuery();
         while (rs.next()) {
             User user = new User();
             user.setId(rs.getInt("id"));
@@ -71,7 +69,6 @@ public class UserManager {
     }
     
     public void registerUser(java.sql.Connection conn, String user, String pass, String email, int idType, String legalId) throws SQLException {
-        //java.sql.Connection conn = sysConexion.obtConexion();
         PreparedStatement sql = conn.prepareStatement("{call insertUser(?,?,?,?,?)}");
         sql.setString(1, user);
         sql.setString(2, pass);

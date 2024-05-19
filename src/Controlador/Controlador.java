@@ -6,6 +6,7 @@ package Controlador;
 
 import Modelo.Person;
 import Modelo.User;
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class Controlador {
     
     public void registerUser(String user, String pass, String email, int idType, 
             String legalId, String fName, String lName, String mName, String nName, 
-            int gender, String dob) throws SQLException {
+            int gender, String dob) throws SQLException, IOException {
         registerPerson(fName, lName, mName, nName, gender, dob);
         userMng.registerUser(conn, user, pass, email, idType, legalId);
         updateUsers();
@@ -188,7 +189,7 @@ public class Controlador {
     }
     
     public void registerFilmPerson(String fName, String lName, String mName, String nName, 
-            int gender, String dob, String country, String trivia, String biography, int height) throws SQLException {
+            int gender, String dob, String country, String trivia, String biography, int height) throws SQLException, IOException {
         registerPerson(fName, lName, mName, nName, gender, dob);
         personMng.registerFilmPerson(conn, height, trivia, biography, userMng.getCountryId(country));
         updateUsers();

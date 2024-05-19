@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.border.Border;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -4840,6 +4841,8 @@ public class Interface extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 System.out.println(ex);
                 infoMsg_admPerson.setText("Database error: " + ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_saveBtn_admPersonMouseClicked
@@ -5707,6 +5710,8 @@ public class Interface extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 System.out.println(ex);
                 registerInfo_txt.setText("Database error: ex");
+            } catch (IOException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_register_btnMouseClicked

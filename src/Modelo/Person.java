@@ -15,7 +15,7 @@ import java.sql.*;
 public class Person {
     // Atributos
     protected int id;
-    protected Date dob;
+    protected java.sql.Date dob;
     protected String firstName;
     protected String lastName;
     protected String middleName;

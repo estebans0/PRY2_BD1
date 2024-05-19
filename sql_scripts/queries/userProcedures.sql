@@ -1,53 +1,69 @@
 -- INSERT USER
-CREATE OR REPLACE PROCEDURE insertUser (
-    pUsername IN VARCHAR2,
-    pPassword IN VARCHAR2,
-    pEmail IN VARCHAR2,
-    pIdType IN NUMBER,
-    pLegalId IN VARCHAR2
+DELIMITER //
+CREATE PROCEDURE insertUser (
+    IN pUsername VARCHAR(230),
+    IN pPassword VARCHAR(220),
+    IN pEmail VARCHAR(220),
+    IN pIdType INT,
+    IN pLegalId VARCHAR(208)
 )
-AS
 BEGIN
-    INSERT INTO userr (id, username, password, email, legal_id, id_type, user_type)
-    VALUES (s_person.currval, pUsername, pPassword, pEmail, pLegalId, pIdType, 0);
-    COMMIT;
+    DECLARE pLastPersonId INT;
     
-EXCEPTION
-    WHEN DUP_VAL_ON_INDEX THEN
-        dbms_output.put_line('User already exists');
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to add a new user');
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
         ROLLBACK;
-        RAISE;
-END insertUser;
-/
+        SELECT 'Unexpected error when trying to add a new user' AS message;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLSTATE '23000'
+    BEGIN
+        ROLLBACK;
+        SELECT 'User already exists' AS message;
+    END;
+	
+    START TRANSACTION;
+    -- Obtener el ID de la última persona insertada
+    SELECT LAST_INSERT_ID() INTO pLastPersonId;
+
+    -- Insertar un nuevo usuario con el ID de la última persona insertada
+    INSERT INTO userr (id, username, password, email, legal_id, id_type, user_type)
+    VALUES (pLastPersonId, pUsername, pPassword, pEmail, pLegalId, pIdType, 0);
+    COMMIT;
+END //
+DELIMITER ;
 
 -- GET ALL USERS DATA
-CREATE OR REPLACE PROCEDURE getUsersData (pCursor OUT SYS_REFCURSOR)
-AS
+DELIMITER //
+CREATE PROCEDURE getUsersData ()
 BEGIN
-    OPEN pCursor FOR
-        SELECT id, username, password, email, legal_id, id_type, user_type
-        FROM userr;
-END getUsersData;
-/
+    SELECT id, username, password, email, legal_id, id_type, user_type FROM userr;
+END //
+DELIMITER ;
 
 -- MAKE OR REMOVE ADMIN
-CREATE OR REPLACE PROCEDURE makeOrRemoveAdmin (pId IN NUMBER, pType IN NUMBER)
-AS
+DELIMITER //
+CREATE PROCEDURE makeOrRemoveAdmin (
+    IN pId INT,
+    IN pType INT
+)
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to make or remove an admin' AS message;
+    END;
+
+    START TRANSACTION;
+    
     UPDATE userr
     SET user_type = pType
     WHERE id = pId;
-    COMMIT;
     
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('User with the specified ID not found');
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to make a new admin');
-        ROLLBACK;
-        RAISE;
-END makeOrRemoveAdmin;
-/
-
+    IF ROW_COUNT() = 0 THEN
+        SELECT 'User with the specified ID not found' AS message;
+    ELSE
+        COMMIT;
+    END IF;
+END //
+DELIMITER ;

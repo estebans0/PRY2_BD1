@@ -145,7 +145,7 @@ CREATE TABLE IF NOT EXISTS rol (
 );
 
 CREATE TABLE IF NOT EXISTS film_person (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL,
     heigth_cm INT NOT NULL,
     trivia VARCHAR(1200),
     biography VARCHAR(1200),
@@ -164,7 +164,7 @@ CREATE TABLE IF NOT EXISTS production_crew (
 );
 
 CREATE TABLE IF NOT EXISTS userr (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL,
     username VARCHAR(230) NOT NULL,
     password VARCHAR(220) NOT NULL,
     email VARCHAR(220) NOT NULL,

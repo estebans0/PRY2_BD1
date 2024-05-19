@@ -1,53 +1,52 @@
 -- INSERT
-CREATE OR REPLACE PROCEDURE insertGender (pName IN VARCHAR2)
-AS
+DELIMITER //
+CREATE PROCEDURE insertGender (IN pName VARCHAR(220))
 BEGIN
-    INSERT INTO gender (id, name)
-    VALUES (s_gender.nextval, pName);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to add a new gender' AS message;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLSTATE '23000'
+    BEGIN
+        ROLLBACK;
+        SELECT 'Gender already exists' AS message;
+    END;
+
+    START TRANSACTION;
+
+    INSERT INTO gender (name)
+    VALUES (pName);
+
     COMMIT;
-    
-EXCEPTION
-    WHEN DUP_VAL_ON_INDEX THEN
-        dbms_output.put_line('Gender already exists');
-        ROLLBACK;
-        RAISE;
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to add a new user');
-        ROLLBACK;
-        RAISE;
-END insertGender;
-/
+END //
+DELIMITER ;
 
 -- EDIT
-CREATE OR REPLACE PROCEDURE editGenderName (pId IN NUMBER, pName IN VARCHAR2)
-AS
+DELIMITER //
+CREATE PROCEDURE editGender (IN pId INT, IN pName VARCHAR(220))
 BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to edit the gender name' AS message;
+    END;
+
+    START TRANSACTION;
+
     UPDATE gender
     SET name = pName
     WHERE id = pId;
+
     COMMIT;
-    
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('User with the specified ID not found');
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to make a new admin');
-        ROLLBACK;
-        RAISE;
-END editGenderName;
-/
+END //
+DELIMITER ;
 
 -- GET ALL DATA
-CREATE OR REPLACE PROCEDURE getGendersData (pCursor OUT SYS_REFCURSOR)
-AS
+DELIMITER //
+CREATE PROCEDURE getGendersData()
 BEGIN
-    OPEN pCursor FOR
-        SELECT id, name
-        FROM gender;
-END getGendersData;
-/
-
-
-
-
-
+    SELECT id, name FROM gender;
+END //
+DELIMITER ;

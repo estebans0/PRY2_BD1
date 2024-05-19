@@ -15,6 +15,9 @@ import java.awt.image.BufferedImage;
 import java.sql.SQLException;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 /**
  *
  * @author Esteban
@@ -35,28 +38,35 @@ public class PersonManager {
 
     // Obtener a todas las personas en la BD
     public void updatePeople(java.sql.Connection conn) throws SQLException {
-        //java.sql.Connection conn = sysConexion.obtConexion();
         people.clear();
-        CallableStatement sql = conn.prepareCall("{call getPeopleData()}");
-        ResultSet rs = sql.executeQuery();
-        while (rs.next()) {
-            Person person = new Person();
-            person.setId(rs.getInt("id"));
-            person.setDob(rs.getDate("birthdate"));
-            person.setFirstName(rs.getString("first_name"));
-            person.setMiddleName(rs.getString("middle_name"));
-            person.setLastName(rs.getString("last_name"));
-            person.setNickname(rs.getString("nickname"));
-            // La imagen puede estar mal por el cast a buffer image (VERIFICAR)
-            person.setImage((BufferedImage) rs.getBlob("image"));
-            person.setGender(rs.getInt("gender"));
-            people.add(person);
+        try (CallableStatement stmt = conn.prepareCall("{call getPeopleData()}")) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Person person = new Person();
+                    person.setId(rs.getInt("id"));
+                    person.setDob(rs.getDate("birthdate"));
+                    person.setFirstName(rs.getString("first_name"));
+                    person.setMiddleName(rs.getString("middle_name"));
+                    person.setLastName(rs.getString("last_name"));
+                    person.setNickname(rs.getString("nickname"));
+//                    // Retrieve the image as Blob
+//                    Blob blob = rs.getBlob("image");
+//                    if (blob != null) {
+//                        // Convert Blob to BufferedImage
+//                        byte[] imageBytes = blob.getBytes(1, (int) blob.length());
+//                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageBytes));
+//                        person.setImage(image);
+//                    }
+                    person.setImage(null);
+                    person.setGender(rs.getInt("gender"));
+                    people.add(person);
+                }
+            }
         }
     }
     
     public void registerPerson(java.sql.Connection conn, String fName, String lName, String mName, String nName, 
             int gender, String dob) throws SQLException {
-        //java.sql.Connection conn = sysConexion.obtConexion();
         PreparedStatement sql = conn.prepareStatement("{call insertPerson(?,?,?,?,?,?)}");
         sql.setString(1, fName);
         sql.setString(2, lName);

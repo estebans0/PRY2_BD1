@@ -1,56 +1,52 @@
 -- INSERT
-CREATE OR REPLACE PROCEDURE insertGenre (pName IN VARCHAR2, pDescription IN VARCHAR2)
-AS
+DELIMITER //
+CREATE PROCEDURE insertGenre (IN pName VARCHAR(230), IN pDescription VARCHAR(290))
 BEGIN
-    INSERT INTO genre (id, name, characteristics)
-    VALUES (s_genre.nextval, pName, pDescription);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to add a new genre' AS message;
+    END;
+
+    DECLARE EXIT HANDLER FOR SQLSTATE '23000'
+    BEGIN
+        ROLLBACK;
+        SELECT 'Genre already exists' AS message;
+    END;
+
+    START TRANSACTION;
+
+    INSERT INTO genre (name, characteristics)
+    VALUES (pName, pDescription);
+
     COMMIT;
-    
-EXCEPTION
-    WHEN DUP_VAL_ON_INDEX THEN
-        dbms_output.put_line('Genre already exists');
-        ROLLBACK;
-        RAISE;
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error when trying to add a new genre');
-        ROLLBACK;
-        RAISE;
-END insertGenre;
-/
+END //
+DELIMITER ;
 
 -- EDIT
-CREATE OR REPLACE PROCEDURE editGenre (pId IN NUMBER, pName IN VARCHAR2, pDescription IN VARCHAR2)
-AS
+DELIMITER //
+CREATE PROCEDURE editGenre (IN pId INT, IN pName VARCHAR(230), IN pDescription VARCHAR(290))
 BEGIN
-    UPDATE genre
-    SET name = pName
-    WHERE id = pId;
-    UPDATE genre
-    SET characteristics = pDescription
-    WHERE id = pId;
-    COMMIT;
-    
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        dbms_output.put_line('User with the specified ID not found');
-    WHEN OTHERS THEN
-        dbms_output.put_line('Unexpected error');
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
         ROLLBACK;
-        RAISE;
-END editGenre;
-/
+        SELECT 'Unexpected error when trying to edit the genre' AS message;
+    END;
+
+    START TRANSACTION;
+
+    UPDATE genre
+    SET name = pName, characteristics = pDescription
+    WHERE id = pId;
+
+    COMMIT;
+END //
+DELIMITER ;
 
 -- GET ALL DATA
-CREATE OR REPLACE PROCEDURE getGenresData (pCursor OUT SYS_REFCURSOR)
-AS
+DELIMITER //
+CREATE PROCEDURE getGenresData()
 BEGIN
-    OPEN pCursor FOR
-        SELECT id, name, characteristics
-        FROM genre;
-END getGenresData;
-/
-
-
-
-
-
+    SELECT id, name, characteristics FROM genre;
+END //
+DELIMITER ;
