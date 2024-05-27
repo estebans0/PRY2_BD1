@@ -12,8 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -75,7 +74,7 @@ public class Controlador {
         userMng.updateCountries(conn);
     }
     
-    public DefaultComboBoxModel makeCountriesList() {
+    public ComboBoxModel<String> makeCountriesList() {
         return userMng.makeCountriesList();
     }
     
@@ -98,7 +97,7 @@ public class Controlador {
         userMng.updateGenders(conn);
     }
     
-    public DefaultComboBoxModel makeGendersList() {
+    public ComboBoxModel<String> makeGendersList() {
         return userMng.makeGendersList();
     }
     
@@ -121,7 +120,7 @@ public class Controlador {
         userMng.updateGenres(conn);
     }
     
-    public DefaultComboBoxModel makeGenresList() {
+    public ComboBoxModel<String> makeGenresList() {
         return userMng.makeGenresList();
     }
     
@@ -144,7 +143,7 @@ public class Controlador {
         userMng.updateProdCompany(conn);
     }
     
-    public DefaultComboBoxModel makeProdCompanyList() {
+    public ComboBoxModel<String> makeProdCompanyList() {
         return userMng.makeProdCompanyList();
     }
     
@@ -168,7 +167,7 @@ public class Controlador {
         userMng.updatePlatforms(conn);
     }
     
-    public DefaultComboBoxModel makePlatformsList() {
+    public ComboBoxModel<String> makePlatformsList() {
         return userMng.makePlatformsList();
     }
     
@@ -217,13 +216,11 @@ public class Controlador {
     }
     
     // Métodos de Producción ---------------------------------------------------------------------------------------------------
-    public void ActualizeProductions()
+    public void ActualizeProductions() throws SQLException
     {
-        try {
+
             prodMng.ActualizeProductions(conn);
-        } catch (SQLException ex) {
-            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
     
     public Production getProduction(int id) throws Exception
