@@ -53,10 +53,10 @@ public class Interface extends javax.swing.JFrame {
             control.updateUsers();
             control.updatePeople();
             control.updateCountries();
-//            control.updateGenders();
-//            control.updateGenres();
-//            control.updateProdCompany();
-//            control.updatePlatforms();
+            control.updateGenders();
+            control.updateGenres();
+            control.updateProdCompany();
+            control.updatePlatforms();
 //            
 //        } catch (SQLException ex) {
 //            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
@@ -3319,6 +3319,11 @@ public class Interface extends javax.swing.JFrame {
         createPerson_scroll.setViewportBorder(javax.swing.BorderFactory.createMatteBorder(4, 4, 4, 4, new java.awt.Color(0, 0, 0)));
 
         createPerson.setBackground(new java.awt.Color(255, 255, 255));
+        createPerson.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                createPersonMouseClicked(evt);
+            }
+        });
         createPerson.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         returnBtn_admPerson.setBackground(new java.awt.Color(255, 255, 255));
@@ -3497,7 +3502,7 @@ public class Interface extends javax.swing.JFrame {
 
         relationList_admPerson.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         relationList_admPerson.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a relation", "Father", "Mother", "Sibling", "Partner", "Son", "Daughter" }));
-        createPerson.add(relationList_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 480, 130, 20));
+        createPerson.add(relationList_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 480, 170, 20));
 
         famAdd_admPerson.setBackground(new java.awt.Color(255, 255, 255));
         famAdd_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
@@ -4778,7 +4783,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_admDataChooserMouseClicked
 
     private void returnBtn_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnBtn_admProdMouseClicked
-        // TODO add your handling code here:
+        paneles.setSelectedIndex(14);
     }//GEN-LAST:event_returnBtn_admProdMouseClicked
 
     private void saveBtn_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBtn_admProdMouseClicked
@@ -4815,7 +4820,7 @@ public class Interface extends javax.swing.JFrame {
         String trivia = triviaTxt_admPerson.getText();
         String biography = bioTxt_admPerson.getText();
         String height = heightTxt_admPerson.getText();
-        String dob = new SimpleDateFormat("dd-MM-yyyy").format(registerDob_admPerson.getDate());
+        String dob = new SimpleDateFormat("yyyy-MM-dd").format(registerDob_admPerson.getDate());
         // Restricciones
         if (fName.equals("")) {
             infoMsg_admPerson.setText("Please enter a first name");
@@ -4835,14 +4840,14 @@ public class Interface extends javax.swing.JFrame {
             if (trivia.equals("")) {mName = null;}
             if (biography.equals("")) {nName = null;}
             try {
-                control.registerFilmPerson(fName, lName, mName, nName, gender, dob, country, trivia, biography, Integer.parseInt(height));
+                // AQUI HAY QUE VER SI HACE FALTA AGREGAR FILM PERSON O NO
+//                control.registerFilmPerson(fName, lName, mName, nName, gender, dob, country, trivia, biography, Integer.parseInt(height));
+                control.registerPerson(fName, lName, mName, nName, gender, dob);
                 infoMsg_admPerson.setForeground(new Color(0,204,51));
-                infoMsg_admPerson.setText("Registered succesfully!");
+                infoMsg_admPerson.setText("Person registered succesfully!");
             } catch (SQLException ex) {
                 System.out.println(ex);
                 infoMsg_admPerson.setText("Database error: " + ex);
-            } catch (IOException ex) {
-                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_saveBtn_admPersonMouseClicked
@@ -5721,6 +5726,10 @@ public class Interface extends javax.swing.JFrame {
     private void registerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registerMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_registerMouseClicked
+
+    private void createPersonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createPersonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_createPersonMouseClicked
 
     /**
      * @param args the command line arguments
