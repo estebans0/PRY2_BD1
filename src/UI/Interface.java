@@ -2736,7 +2736,7 @@ public class Interface extends javax.swing.JFrame {
         runtime_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         runtime_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         runtime_admProd.setText("Runtime:");
-        createProd.add(runtime_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 160, 50, 20));
+        createProd.add(runtime_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 160, 70, 20));
 
         runtimeTxt_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         createProd.add(runtimeTxt_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 160, 150, -1));
@@ -3302,7 +3302,7 @@ public class Interface extends javax.swing.JFrame {
         prodCompany_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         prodCompany_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         prodCompany_admProd.setText("Production comany:");
-        createProd.add(prodCompany_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 200, 120, 20));
+        createProd.add(prodCompany_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 200, 160, 20));
 
         createProd_scroll.setViewportView(createProd);
 
@@ -3389,7 +3389,7 @@ public class Interface extends javax.swing.JFrame {
 
         countryList_admPerson.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         countryList_admPerson.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        createPerson.add(countryList_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 130, 250, 30));
+        createPerson.add(countryList_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 130, 220, 30));
 
         gender_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         gender_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -3398,13 +3398,13 @@ public class Interface extends javax.swing.JFrame {
 
         genderList_admPerson.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         genderList_admPerson.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        createPerson.add(genderList_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 170, 250, 30));
+        createPerson.add(genderList_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 170, 220, 30));
 
         dob_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         dob_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         dob_admPerson.setText("Date of birth: *");
         createPerson.add(dob_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 210, 120, 20));
-        createPerson.add(registerDob_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 210, 250, 30));
+        createPerson.add(registerDob_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 210, 220, 30));
 
         trivia_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         trivia_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -3416,7 +3416,7 @@ public class Interface extends javax.swing.JFrame {
         triviaTxt_admPerson.setRows(4);
         triviaScroll_admPerson.setViewportView(triviaTxt_admPerson);
 
-        createPerson.add(triviaScroll_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 280, 250, 70));
+        createPerson.add(triviaScroll_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 280, 220, 70));
 
         imageAdd_admPerson.setFont(new java.awt.Font("Cascadia Code", 3, 12)); // NOI18N
         imageAdd_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -3446,7 +3446,7 @@ public class Interface extends javax.swing.JFrame {
         addFamily_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         addFamily_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         addFamily_admPerson.setText("Add family member:");
-        createPerson.add(addFamily_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, 120, 20));
+        createPerson.add(addFamily_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, 140, 20));
 
         famRemove_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
         famRemove_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -3493,11 +3493,11 @@ public class Interface extends javax.swing.JFrame {
         famRelation_admPerson.setFont(new java.awt.Font("Cascadia Code", 2, 12)); // NOI18N
         famRelation_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         famRelation_admPerson.setText("Relation:");
-        createPerson.add(famRelation_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 480, 50, 20));
+        createPerson.add(famRelation_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 480, 70, 20));
 
         relationList_admPerson.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         relationList_admPerson.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a relation", "Father", "Mother", "Sibling", "Partner", "Son", "Daughter" }));
-        createPerson.add(relationList_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 480, 130, 20));
+        createPerson.add(relationList_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 480, 130, 20));
 
         famAdd_admPerson.setBackground(new java.awt.Color(255, 255, 255));
         famAdd_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
@@ -3510,7 +3510,7 @@ public class Interface extends javax.swing.JFrame {
         bio_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         bio_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bio_admPerson.setText("Biography:");
-        createPerson.add(bio_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 290, 60, 20));
+        createPerson.add(bio_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 290, 80, 20));
 
         bioTxt_admPerson.setColumns(20);
         bioTxt_admPerson.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
@@ -3521,11 +3521,11 @@ public class Interface extends javax.swing.JFrame {
 
         height_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         height_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        height_admPerson.setText("Height (cm): *");
-        createPerson.add(height_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 250, 100, 20));
+        height_admPerson.setText("Height(cm): *");
+        createPerson.add(height_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 250, 120, 20));
 
         heightTxt_admPerson.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        createPerson.add(heightTxt_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 250, 250, -1));
+        createPerson.add(heightTxt_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 250, 220, -1));
 
         createPerson_scroll.setViewportView(createPerson);
 
@@ -3599,7 +3599,7 @@ public class Interface extends javax.swing.JFrame {
         countryE_admGeo.setFont(new java.awt.Font("Cascadia Code", 1, 22)); // NOI18N
         countryE_admGeo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         countryE_admGeo.setText("Edit country");
-        admCountryData.add(countryE_admGeo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, 130, 30));
+        admCountryData.add(countryE_admGeo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, 200, 30));
 
         countryECList_admGeo.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         countryECList_admGeo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select country" }));
@@ -3608,7 +3608,7 @@ public class Interface extends javax.swing.JFrame {
                 countryECList_admGeoMouseClicked(evt);
             }
         });
-        admCountryData.add(countryECList_admGeo, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 330, 150, -1));
+        admCountryData.add(countryECList_admGeo, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 330, 150, -1));
 
         countryETxt_admGeo.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         countryETxt_admGeo.setForeground(new java.awt.Color(204, 204, 204));
@@ -5537,8 +5537,8 @@ public class Interface extends javax.swing.JFrame {
     private void login_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_login_btnMouseClicked
         try {
             int loginType = control.verifyUserLogin(enterUser_txtField.getText(), enterPass_txtField.getText());
-            control.printUsers();
-            System.out.println("type: " + loginType);
+//            control.printUsers();
+//            System.out.println("type: " + loginType);
             if (loginType == 0) { // regular user
                 paneles.setSelectedIndex(2);
             } else if (loginType == 1) { // admin

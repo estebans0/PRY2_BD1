@@ -14,6 +14,7 @@ import Modelo.genre;
 import com.sun.jdi.connect.spi.Connection;
 import java.sql.SQLException;
 import java.sql.*;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 /**
@@ -51,19 +52,18 @@ public class UserManager {
     }
 
     public void updateUsers(java.sql.Connection conn) throws SQLException {
-        //java.sql.Connection conn = sysConexion.obtConexion();
         users.clear();
         CallableStatement sql = conn.prepareCall("{call getUsersData()}");
         ResultSet rs = sql.executeQuery();
         while (rs.next()) {
             User user = new User();
-            user.setId(rs.getInt("id"));
-            user.setUserName(rs.getString("username"));
-            user.setPassword(rs.getString("password"));
-            user.setEmail(rs.getString("email"));
-            user.setLegalId(rs.getString("legal_id"));
-            user.setIdType(rs.getInt("id_type"));
-            user.setIsAdmin(rs.getInt("user_type"));
+            user.setId(rs.getInt(1));
+            user.setUserName(rs.getString(2));
+            user.setPassword(rs.getString(3));
+            user.setEmail(rs.getString(4));
+            user.setLegalId(rs.getString(5));
+            user.setIdType(rs.getInt(6));
+            user.setIsAdmin(rs.getInt(7));
             users.add(user);
         }
     }
@@ -160,18 +160,17 @@ public class UserManager {
         return false;
     }
     
-    public DefaultComboBoxModel makeCountriesList() {
+    public ComboBoxModel<String> makeCountriesList() {
         ArrayList<String> countryNames = new ArrayList<>();
         countryNames.add("Select country");
         for (Country country : countries) {
             countryNames.add(country.getName());
         }
-        DefaultComboBoxModel<String> countriesList = new DefaultComboBoxModel<>(countryNames.toArray(String[]::new));
+        ComboBoxModel<String> countriesList = new DefaultComboBoxModel<>(countryNames.toArray(String[]::new));
         return countriesList;
     }
     
     public void updateCountries(java.sql.Connection conn) throws SQLException {
-        //java.sql.Connection conn = sysConexion.obtConexion();
         countries.clear();
         CallableStatement sql = conn.prepareCall("{call getCountriesData()}");
         ResultSet rs = sql.executeQuery();
@@ -215,23 +214,20 @@ public class UserManager {
         return false;
     }
     
-    public DefaultComboBoxModel makeGendersList() {
+    public ComboBoxModel<String> makeGendersList() {
         ArrayList<String> genderNames = new ArrayList<>();
         genderNames.add("Select gender");
         for (Gender gender : genders) {
             genderNames.add(gender.getName());
         }
-        DefaultComboBoxModel<String> gendersList = new DefaultComboBoxModel<>(genderNames.toArray(String[]::new));
+        ComboBoxModel<String> gendersList = new DefaultComboBoxModel<>(genderNames.toArray(String[]::new));
         return gendersList;
     }
-    
+
     public void updateGenders(java.sql.Connection conn) throws SQLException {
-        //java.sql.Connection conn = sysConexion.obtConexion();
         genders.clear();
-        CallableStatement sql = conn.prepareCall("{call getGendersData(?)}");
-        sql.registerOutParameter(1, Types.REF_CURSOR);
-        sql.execute();
-        ResultSet rs = (ResultSet) sql.getObject(1);
+        CallableStatement sql = conn.prepareCall("{call getGendersData()}");
+        ResultSet rs = sql.executeQuery();
         while (rs.next()) {
             Gender gender = new Gender();
             gender.setId(rs.getInt("id"));
@@ -272,23 +268,20 @@ public class UserManager {
         return false;
     }
     
-    public DefaultComboBoxModel makeGenresList() {
+    public ComboBoxModel<String> makeGenresList() {
         ArrayList<String> genreNames = new ArrayList<>();
         genreNames.add("Select genre");
         for (genre gen : genres) {
             genreNames.add(gen.getName());
         }
-        DefaultComboBoxModel<String> genresList = new DefaultComboBoxModel<>(genreNames.toArray(String[]::new));
+        ComboBoxModel<String> genresList = new DefaultComboBoxModel<>(genreNames.toArray(String[]::new));
         return genresList;
     }
     
     public void updateGenres(java.sql.Connection conn) throws SQLException {
-        //java.sql.Connection conn = sysConexion.obtConexion();
         genres.clear();
-        CallableStatement sql = conn.prepareCall("{call getGenresData(?)}");
-        sql.registerOutParameter(1, Types.REF_CURSOR);
-        sql.execute();
-        ResultSet rs = (ResultSet) sql.getObject(1);
+        CallableStatement sql = conn.prepareCall("{call getGenresData()}");
+        ResultSet rs = sql.executeQuery();
         while (rs.next()) {
             genre gen = new genre();
             gen.setId(rs.getInt("id"));
@@ -332,23 +325,20 @@ public class UserManager {
         return false;
     }
     
-    public DefaultComboBoxModel makeProdCompanyList() {
+    public ComboBoxModel<String> makeProdCompanyList() {
         ArrayList<String> pCompanyNames = new ArrayList<>();
         pCompanyNames.add("Select company");
         for (ProdCompany pComp : prodCompanies) {
             pCompanyNames.add(pComp.getName());
         }
-        DefaultComboBoxModel<String> pCompaniesList = new DefaultComboBoxModel<>(pCompanyNames.toArray(String[]::new));
+        ComboBoxModel<String> pCompaniesList = new DefaultComboBoxModel<>(pCompanyNames.toArray(String[]::new));
         return pCompaniesList;
     }
     
     public void updateProdCompany(java.sql.Connection conn) throws SQLException {
-        //java.sql.Connection conn = sysConexion.obtConexion();
         prodCompanies.clear();
-        CallableStatement sql = conn.prepareCall("{call getProdCompanyData(?)}");
-        sql.registerOutParameter(1, Types.REF_CURSOR);
-        sql.execute();
-        ResultSet rs = (ResultSet) sql.getObject(1);
+        CallableStatement sql = conn.prepareCall("{call getProdCompanyData()}");
+        ResultSet rs = sql.executeQuery();
         while (rs.next()) {
             ProdCompany pComp = new ProdCompany();
             pComp.setId(rs.getInt("id"));
@@ -389,23 +379,20 @@ public class UserManager {
         return false;
     }
     
-    public DefaultComboBoxModel makePlatformsList() {
+    public ComboBoxModel<String> makePlatformsList() {
         ArrayList<String> platformNames = new ArrayList<>();
         platformNames.add("Select platform");
         for (Platform platform : platforms) {
             platformNames.add(platform.getName());
         }
-        DefaultComboBoxModel<String> platformsList = new DefaultComboBoxModel<>(platformNames.toArray(String[]::new));
+        ComboBoxModel<String> platformsList = new DefaultComboBoxModel<>(platformNames.toArray(String[]::new));
         return platformsList;
     }
     
     public void updatePlatforms(java.sql.Connection conn) throws SQLException {
-        //java.sql.Connection conn = sysConexion.obtConexion();
         platforms.clear();
-        CallableStatement sql = conn.prepareCall("{call getPlatformsData(?)}");
-        sql.registerOutParameter(1, Types.REF_CURSOR);
-        sql.execute();
-        ResultSet rs = (ResultSet) sql.getObject(1);
+        CallableStatement sql = conn.prepareCall("{call getPlatformsData()}");
+        ResultSet rs = sql.executeQuery();
         while (rs.next()) {
             Platform platform = new Platform();
             platform.setId(rs.getInt("id"));

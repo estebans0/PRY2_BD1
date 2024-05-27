@@ -17,8 +17,9 @@ public class pruebas {
     public static void main(String[] args) throws IOException {
         try {
             Controlador control = new Controlador();
+            control.updateUsers();
 //            control.insertCountry("Alemania");
-            control.registerPerson("prueba2", "Java", null, null, 1, "2024-05-19");
+//            control.registerPerson("prueba2", "Java", null, null, 1, "2024-05-19");
 //            control.updatePeople();
 //            control.printPeople();
         } catch (SQLException ex) {

@@ -9,7 +9,7 @@ CREATE PROCEDURE insertUser (
 )
 BEGIN
     DECLARE pLastPersonId INT;
-    
+
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -21,14 +21,14 @@ BEGIN
         ROLLBACK;
         SELECT 'User already exists' AS message;
     END;
-	
+
     START TRANSACTION;
     -- Obtener el ID de la última persona insertada
     SELECT LAST_INSERT_ID() INTO pLastPersonId;
 
     -- Insertar un nuevo usuario con el ID de la última persona insertada
     INSERT INTO userr (id, username, password, email, legal_id, id_type, user_type)
-    VALUES (pLastPersonId, pUsername, pPassword, pEmail, pLegalId, pIdType, 0);
+    VALUES (pLastPersonId, pUsername, HEX(AES_ENCRYPT(pPassword, 'key1234')), pEmail, pLegalId, pIdType, 0);
     COMMIT;
 END //
 DELIMITER ;
@@ -37,7 +37,7 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE getUsersData ()
 BEGIN
-    SELECT id, username, password, email, legal_id, id_type, user_type FROM userr;
+    SELECT id, username, CAST(AES_DECRYPT(UNHEX(password), 'key1234') AS CHAR), email, legal_id, id_type, user_type FROM userr;
 END //
 DELIMITER ;
 
