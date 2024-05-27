@@ -6,7 +6,7 @@ package Controlador;
 
 import Modelo.Movie;
 import Modelo.Production;
-import Modelo.genre;
+import Modelo.Serie;
 //import Modelo.Serie;
 
 import java.util.ArrayList;
@@ -21,41 +21,59 @@ public class productionManager {
     //Primero una lista con todas las producciones, despues  metodos para getiar los 3 tipos y un esqueleto para los inserts.
     //Por ultimo, unos metodos para insertar que deberian de hacerse por Esteban.
     private ArrayList<Production> productions;
-    private ArrayList<genre> genres;
 
-
-    
-private void GetMovies(java.sql.Connection conn) throws SQLException{
-        CallableStatement sql = conn.prepareCall("{call getMovies(?)}");
-        sql.execute();
-        ResultSet rs = (ResultSet) sql.getObject(1);
-        
-        while (rs.next()) {
-            int id = rs.getInt("id_movie");
+private void GetMovies(java.sql.Connection conn) throws SQLException
+    {
+        String sql = "{CALL getMovies()}";
+        CallableStatement cs = conn.prepareCall(sql);
+        ResultSet rs = cs.executeQuery();
+        while (rs.next()) 
+        {
+            int id = rs.getInt("id");
             Movie movie = new Movie(id,conn);
             productions.add(movie);
         }
     }
 
-private void GetSeries(java.sql.Connection conn) throws SQLException{
-        CallableStatement sql = conn.prepareCall("{call getSeries(?)}");
-        sql.execute();
-        ResultSet rs = (ResultSet) sql.getObject(1);
-        
-        while (rs.next()) {
+private void GetSeries(java.sql.Connection conn) throws SQLException
+    {
+        String sql = "{CALL getSeries()}";
+        CallableStatement cs = conn.prepareCall(sql);
+        ResultSet rs = cs.executeQuery();
+        while (rs.next()) 
+        {
             int id = rs.getInt("id");
-            //Serie serie = new Serie(id,conn);
-            //productions.add(serie);
+            Serie serie = new Serie(id, conn);
+            productions.add(serie);
         }
     }
 
 
-public void ActualizeProductions(java.sql.Connection conn) throws SQLException{
-    productions = new ArrayList<>();
-    genres = new ArrayList<>();
-       
-    GetMovies(conn);
-    GetSeries(conn);
+public void ActualizeProductions(java.sql.Connection conn) throws SQLException
+    {
+        productions = new ArrayList<>();
+        GetMovies(conn);
+        GetSeries(conn);
     }
+
+public Production getProduction(int id, java.sql.Connection conn) throws Exception
+    {
+        for(Production production:productions)
+        {
+            if(production.getId() == id)
+            {
+                production.setProductionReviews(conn);
+                production.setSales(conn);
+                production.setImages(conn);
+                production.setPlatforms(conn);
+                production.setFilmP(conn);
+                return production;
+            }
+        }
+        throw new Exception("Production Not found");
+    }
+
+
+
     //Tres metodos para querries.
 }

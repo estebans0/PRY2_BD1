@@ -3,8 +3,8 @@ SELECT CONCAT('DROP TABLE IF EXISTS `', table_name, '`;')
 FROM information_schema.tables
 WHERE table_schema = 'BD1';
 */
+SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS `administrator`;
 DROP TABLE IF EXISTS `cart`;
 DROP TABLE IF EXISTS `cast_of_production`;
 DROP TABLE IF EXISTS `city`;
@@ -39,3 +39,5 @@ DROP TABLE IF EXISTS `rol`;
 DROP TABLE IF EXISTS `series`;
 DROP TABLE IF EXISTS `userr`;
 DROP TABLE IF EXISTS `wish_list`;
+
+SET FOREIGN_KEY_CHECKS = 1;

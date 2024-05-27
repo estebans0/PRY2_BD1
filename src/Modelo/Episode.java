@@ -14,8 +14,10 @@ public class Episode extends Production{
     private int seasonNumber;
     private int number;
     
+    
     public Episode(int id, java.sql.Connection conn) throws SQLException {
         super(id, conn);
+        //Y despues una parte para agregar esos datos exclusivos de episodio.
     }
     
     public int getSeasonNumber() {        

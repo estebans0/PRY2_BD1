@@ -4,10 +4,12 @@ DELIMITER $$
 DROP PROCEDURE IF EXISTS getserieEpisodes$$
 CREATE PROCEDURE getSerieEpisodes (IN Serie INT)
 BEGIN
-        SELECT episode.id_episode id_episode, episode.episode_number episode_number, episode.season season
+        SELECT episode.id_episode, episode.episode_number, episode.season
         FROM episode
-        where episode.id_serie = Serie
-        ORDER BY season ASC;
+        where series = Serie
+        order by season;
 END$$
 -- ----------------------------------------------------------------------------------------
 DELIMITER ;
+
+-- call getSeries();

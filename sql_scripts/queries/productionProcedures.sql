@@ -1,28 +1,30 @@
 DELIMITER $$
--- Get data from productions by id.
+-- ------------------------------------------------------------------------------------
+-- Get data from productions by id.													 --
+-- ------------------------------------------------------------------------------------
 DROP PROCEDURE IF EXISTS getProductionData$$
 CREATE PROCEDURE getProductionData (IN ProdId INT)
 BEGIN
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
-    BEGIN
-        -- Handle error, e.g., set error flag, log error, etc.
-    END;
-
-    SELECT id, airdate, title, run_time, synopsis, trailer
+    SELECT DATE_FORMAT(production.airdate, '%d/%m/%Y') AS airdate, 
+		   production.title, production.run_time, production.synopsis, production.trailer
     FROM production
-    WHERE id = ProdId;
+    WHERE production.id = ProdId;
 END$$
+
+DROP PROCEDURE IF EXISTS getRaitings$$ -- Esto podia ser parte de getProductionData si lo anidaba, nimodo. 
+CREATE PROCEDURE getRaitings (IN ProdId INT)
+BEGIN
+	SELECT COUNT(*) amount, ifnull(AVG(review.raiting),0) average
+    FROM review
+    where review.id = ProdId;
+END$$
+
 -- ------------------------------------------------------------------------------------
 -- Get the series.																	 --
 -- ------------------------------------------------------------------------------------
 DROP PROCEDURE IF EXISTS getSeries$$
 CREATE PROCEDURE getSeries ()
 BEGIN
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
-		BEGIN
-			-- Handle error
-		END;
-
     SELECT id
     FROM series;
 END$$
@@ -33,12 +35,7 @@ END$$
 DROP PROCEDURE IF EXISTS getMovies$$
 CREATE PROCEDURE getMovies ()
 BEGIN
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
-    BEGIN
-        -- Handle error
-    END;
-
-    SELECT id_movie
+    SELECT movie.id_movie id_movie
     FROM movie;
 END$$
 
@@ -183,10 +180,13 @@ BEGIN
         -- Handle error
     END;
 
-    SELECT person.first_name, person.id
+    SELECT concat(person.first_name,' ',person.last_name) name, person.id
     FROM person
     INNER JOIN production_crew ON production_crew.id_crew_member = person.id
     WHERE production_crew.id_production = Production;
 END$$
 -- ------------------------------------------------------------------------------------
 DELIMITER ;
+
+
+CALL getMovies();
