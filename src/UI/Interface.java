@@ -5683,7 +5683,7 @@ public class Interface extends javax.swing.JFrame {
         String mName = registerMiddleName_txtField.getText();
         String nName = registerNickname_txtField.getText();
         int gender = registerGender_cBox.getSelectedIndex();
-        String dob = new SimpleDateFormat("dd-MM-yyyy").format(registerDob_chooser.getDate());
+        String dob = new SimpleDateFormat("yyyy-MM-dd").format(registerDob_chooser.getDate());
         if (user.equals("")) {
             registerInfo_txt.setText("Please enter a valid username");
         } else if (pass.equals("")) {
