@@ -1,5 +1,7 @@
 -- INSERT USER
 DELIMITER //
+
+DROP PROCEDURE IF EXISTS insertUser //
 CREATE PROCEDURE insertUser (
     IN pUsername VARCHAR(230),
     IN pPassword VARCHAR(220),
@@ -35,6 +37,7 @@ DELIMITER ;
 
 -- GET ALL USERS DATA
 DELIMITER //
+DROP PROCEDURE IF EXISTS getUsersData//
 CREATE PROCEDURE getUsersData ()
 BEGIN
     SELECT id, username, password, email, legal_id, id_type, user_type FROM userr;
@@ -43,6 +46,7 @@ DELIMITER ;
 
 -- MAKE OR REMOVE ADMIN
 DELIMITER //
+DROP PROCEDURE IF EXISTS makeOrRemoveAdmin//
 CREATE PROCEDURE makeOrRemoveAdmin (
     IN pId INT,
     IN pType INT

@@ -926,7 +926,7 @@ public class Interface extends javax.swing.JFrame {
         });
         sideMenu_panel.add(wishList_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 150, 50));
 
-        main_menu.add(sideMenu_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 270, 530));
+        main_menu.add(sideMenu_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 530));
 
         menu_btn.setBackground(new java.awt.Color(255, 255, 255));
         menu_btn.setFont(new java.awt.Font("Cascadia Code", 1, 16)); // NOI18N

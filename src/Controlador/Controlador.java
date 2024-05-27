@@ -5,12 +5,15 @@
 package Controlador;
 
 import Modelo.Person;
+import Modelo.Production;
 import Modelo.User;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -214,5 +217,19 @@ public class Controlador {
     }
     
     // Métodos de Producción ---------------------------------------------------------------------------------------------------
+    public void ActualizeProductions()
+    {
+        try {
+            prodMng.ActualizeProductions(conn);
+        } catch (SQLException ex) {
+            Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public Production getProduction(int id) throws Exception
+    {
+            return prodMng.getProduction(id, conn);
+    }
+    
     
 }
