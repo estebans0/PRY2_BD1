@@ -509,9 +509,10 @@ DROP TABLE IF EXISTS `price_log`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `price_log` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `price` decimal(8,2) NOT NULL,
-  `log_date` date NOT NULL,
-  `id_production` int NOT NULL,
+  `id_production` int,
+  `old_price` decimal(8,2),
+  `new_price` decimal(8,2),
+  `owner` int,
   PRIMARY KEY (`id`),
   KEY `fk_id_production_pricelog` (`id_production`),
   CONSTRAINT `fk_id_production_pricelog` FOREIGN KEY (`id_production`) REFERENCES `production` (`id`)

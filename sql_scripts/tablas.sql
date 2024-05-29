@@ -36,9 +36,10 @@ CREATE TABLE IF NOT EXISTS genre_by_prod (
 
 CREATE TABLE IF NOT EXISTS price_log (
     id INT NOT NULL AUTO_INCREMENT,
-    price DECIMAL(8, 2) NOT NULL,
-    log_date DATE NOT NULL,
     id_production INT NOT NULL,
+    old_price DECIMAL(8, 2),
+    new_price DECIMAL(8, 2),
+    owner int,
     PRIMARY KEY (id)
 );
 

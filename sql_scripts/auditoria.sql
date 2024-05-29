@@ -1,4 +1,68 @@
 -- Campos de auditoría -------------------------------------------------------------------------------------------------------
+ALTER TABLE production
+ADD COLUMN created_by1 VARCHAR(50),
+ADD COLUMN creation_date DATETIME,
+ADD COLUMN updated_by VARCHAR(50),
+ADD COLUMN update_date DATETIME;
+-- Trigger de insert
+DELIMITER //
+CREATE TRIGGER before_production_insert
+BEFORE INSERT ON production
+FOR EACH ROW
+BEGIN
+    SET NEW.creation_date = NOW();
+    SET NEW.created_by1 = CURRENT_USER();
+    SET NEW.update_date = NOW();
+    SET NEW.updated_by = CURRENT_USER();
+END //
+DELIMITER ;
+-- Trigger de update
+DELIMITER //
+CREATE TRIGGER before_production_update
+BEFORE UPDATE ON production
+FOR EACH ROW
+BEGIN
+    SET NEW.update_date = NOW();
+    SET NEW.updated_by = CURRENT_USER();
+    
+    -- Insert into price_log if the price has changed
+    IF NEW.price != OLD.price THEN
+        INSERT INTO price_log (id_production, old_price, new_price)
+        VALUES (OLD.id, OLD.price, NEW.price);
+    END IF;
+END //
+DELIMITER ;
+
+-- Campos de auditoría -------------------------------------------------------------------------------------------------------
+ALTER TABLE price_log
+ADD COLUMN created_by VARCHAR(50),
+ADD COLUMN creation_date DATETIME,
+ADD COLUMN updated_by VARCHAR(50),
+ADD COLUMN update_date DATETIME;
+-- Trigger de insert
+DELIMITER //
+CREATE TRIGGER before_price_log_insert
+BEFORE INSERT ON price_log
+FOR EACH ROW
+BEGIN
+    SET NEW.creation_date = NOW();
+    SET NEW.created_by = CURRENT_USER();
+    SET NEW.update_date = NOW();
+    SET NEW.updated_by = CURRENT_USER();
+END //
+DELIMITER ;
+-- Trigger de update
+DELIMITER //
+CREATE TRIGGER before_price_log_update
+BEFORE UPDATE ON price_log
+FOR EACH ROW
+BEGIN
+    SET NEW.update_date = NOW();
+    SET NEW.updated_by = CURRENT_USER();
+END //
+DELIMITER ;
+
+-- Campos de auditoría -------------------------------------------------------------------------------------------------------
 ALTER TABLE cart
 ADD COLUMN created_by VARCHAR(50),
 ADD COLUMN creation_date DATETIME,
@@ -405,35 +469,6 @@ END //
 DELIMITER ;
 
 -- Campos de auditoría -------------------------------------------------------------------------------------------------------
-ALTER TABLE price_log
-ADD COLUMN created_by VARCHAR(50),
-ADD COLUMN creation_date DATETIME,
-ADD COLUMN updated_by VARCHAR(50),
-ADD COLUMN update_date DATETIME;
--- Trigger de insert
-DELIMITER //
-CREATE TRIGGER before_price_log_insert
-BEFORE INSERT ON price_log
-FOR EACH ROW
-BEGIN
-    SET NEW.creation_date = NOW();
-    SET NEW.created_by = CURRENT_USER();
-    SET NEW.update_date = NOW();
-    SET NEW.updated_by = CURRENT_USER();
-END //
-DELIMITER ;
--- Trigger de update
-DELIMITER //
-CREATE TRIGGER before_price_log_update
-BEFORE UPDATE ON price_log
-FOR EACH ROW
-BEGIN
-    SET NEW.update_date = NOW();
-    SET NEW.updated_by = CURRENT_USER();
-END //
-DELIMITER ;
-
--- Campos de auditoría -------------------------------------------------------------------------------------------------------
 ALTER TABLE prod_by_company
 ADD COLUMN created_by VARCHAR(50),
 ADD COLUMN creation_date DATETIME,
@@ -542,35 +577,6 @@ DELIMITER ;
 DELIMITER //
 CREATE TRIGGER before_prod_in_platform_update
 BEFORE UPDATE ON prod_in_platform
-FOR EACH ROW
-BEGIN
-    SET NEW.update_date = NOW();
-    SET NEW.updated_by = CURRENT_USER();
-END //
-DELIMITER ;
-
--- Campos de auditoría -------------------------------------------------------------------------------------------------------
-ALTER TABLE production
-ADD COLUMN created_by1 VARCHAR(50),
-ADD COLUMN creation_date DATETIME,
-ADD COLUMN updated_by VARCHAR(50),
-ADD COLUMN update_date DATETIME;
--- Trigger de insert
-DELIMITER //
-CREATE TRIGGER before_production_insert
-BEFORE INSERT ON production
-FOR EACH ROW
-BEGIN
-    SET NEW.creation_date = NOW();
-    SET NEW.created_by1 = CURRENT_USER();
-    SET NEW.update_date = NOW();
-    SET NEW.updated_by = CURRENT_USER();
-END //
-DELIMITER ;
--- Trigger de update
-DELIMITER //
-CREATE TRIGGER before_production_update
-BEFORE UPDATE ON production
 FOR EACH ROW
 BEGIN
     SET NEW.update_date = NOW();
