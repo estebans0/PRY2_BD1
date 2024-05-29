@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS production (
     synopsis VARCHAR(340) NOT NULL,
     trailer VARCHAR(700),
     created_by INT NOT NULL,
+    price DECIMAL(8,2),
     PRIMARY KEY (id)
 );
 

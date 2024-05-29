@@ -1,3 +1,6 @@
+ALTER TABLE production
+ADD COLUMN price DECIMAL(8,2);
+
 ALTER TABLE genre_by_prod
 ADD(
 CONSTRAINT fk_id_production FOREIGN KEY (id_production) REFERENCES production(id)

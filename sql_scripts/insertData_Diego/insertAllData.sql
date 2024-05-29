@@ -655,6 +655,7 @@ CREATE TABLE `production` (
   `synopsis` varchar(2000) NOT NULL,
   `trailer` varchar(700) DEFAULT NULL,
   `created_by` int NOT NULL,
+  `price` DECIMAL(8,2),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
