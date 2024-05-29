@@ -1,3 +1,12 @@
+-- Creación de tabla para alamcenar resultados del job ------------------------------------------------
+CREATE TABLE top_rated_productions (
+    id INT,
+    title VARCHAR(260),
+    average_rating DECIMAL(3, 2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tablas
 CREATE TABLE IF NOT EXISTS production (
     id INT NOT NULL AUTO_INCREMENT,
     airdate DATE NOT NULL,
