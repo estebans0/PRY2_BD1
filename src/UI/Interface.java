@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.JTableHeader;
@@ -28,6 +29,9 @@ import javax.swing.table.TableColumnModel;
 public class Interface extends javax.swing.JFrame {
     private final Controlador control = new Controlador();
     private int accionAdm = 0; // 0=agregar  1=eliminar
+    // Cola que almacena las ventanas visitadas y sirve para devolverse a la última ventana en la interfaz
+    Stack<Integer> panelStack = new Stack<>();
+    
     // Métodos auxiliares
     private static boolean strIsNumeric(String str){
         return str.matches("-?\\d+(\\.\\d+)?"); // regex para verificar que str sea numerica
@@ -61,7 +65,7 @@ public class Interface extends javax.swing.JFrame {
 //        } catch (SQLException ex) {
 //            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        
+
         // LOGIN: Setear texto subrayado del link de nuevo usuario
         newUser_link.setText("<html><u> Are you a new user? Register here</u></html>");
         
@@ -128,6 +132,13 @@ public class Interface extends javax.swing.JFrame {
         register_btn = new javax.swing.JLabel();
         registerInfo_txt = new javax.swing.JLabel();
         main_menu = new javax.swing.JPanel();
+        sideMenu_panel = new javax.swing.JPanel();
+        sideMenu_txt = new javax.swing.JLabel();
+        exitSideMenu_btn = new javax.swing.JLabel();
+        logOut_btn = new javax.swing.JLabel();
+        purchases_btn = new javax.swing.JLabel();
+        cart_btn = new javax.swing.JLabel();
+        wishList_btn = new javax.swing.JLabel();
         menu_btn = new javax.swing.JLabel();
         titulo_txt = new javax.swing.JLabel();
         logo_lbl = new javax.swing.JLabel();
@@ -139,13 +150,6 @@ public class Interface extends javax.swing.JFrame {
         topMedia_selector = new javax.swing.JScrollPane();
         topMedia_list = new javax.swing.JList<>();
         goToItem_btn_TopMedia = new javax.swing.JLabel();
-        sideMenu_panel = new javax.swing.JPanel();
-        sideMenu_txt = new javax.swing.JLabel();
-        exitSideMenu_btn = new javax.swing.JLabel();
-        logOut_btn = new javax.swing.JLabel();
-        purchases_btn = new javax.swing.JLabel();
-        cart_btn = new javax.swing.JLabel();
-        wishList_btn = new javax.swing.JLabel();
         search_results = new javax.swing.JPanel();
         return_btn_SearchRes = new javax.swing.JLabel();
         titulo_txt1 = new javax.swing.JLabel();
@@ -362,7 +366,6 @@ public class Interface extends javax.swing.JFrame {
         image_admProd = new javax.swing.JLabel();
         imageAdd_admProd = new javax.swing.JLabel();
         trailer_admProd = new javax.swing.JLabel();
-        trailerAdd_admProd = new javax.swing.JLabel();
         bar2_admProd = new javax.swing.JLabel();
         release_admProd = new javax.swing.JLabel();
         releaseDate_admProd = new com.toedter.calendar.JYearChooser();
@@ -416,6 +419,7 @@ public class Interface extends javax.swing.JFrame {
         returnBtn_admProd1 = new javax.swing.JLabel();
         prodCompanyTxt_admProd = new javax.swing.JTextField();
         prodCompany_admProd = new javax.swing.JLabel();
+        trailerLink_admProd = new javax.swing.JTextField();
         admCreatePerson = new javax.swing.JPanel();
         createPerson_scroll = new javax.swing.JScrollPane();
         createPerson = new javax.swing.JPanel();
@@ -850,6 +854,83 @@ public class Interface extends javax.swing.JFrame {
         main_menu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
         main_menu.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        sideMenu_panel.setBackground(new java.awt.Color(255, 255, 255));
+        sideMenu_panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
+        sideMenu_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        sideMenu_txt.setFont(new java.awt.Font("Cascadia Code", 1, 26)); // NOI18N
+        sideMenu_txt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        sideMenu_txt.setText("Side menu");
+        sideMenu_txt.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 4, 0, new java.awt.Color(0, 0, 0)));
+        sideMenu_panel.add(sideMenu_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 190, 40));
+
+        exitSideMenu_btn.setBackground(new java.awt.Color(255, 255, 255));
+        exitSideMenu_btn.setFont(new java.awt.Font("Cascadia Code", 1, 16)); // NOI18N
+        exitSideMenu_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exitSideMenu_btn.setText("X");
+        exitSideMenu_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
+        exitSideMenu_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        exitSideMenu_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exitSideMenu_btnMouseClicked(evt);
+            }
+        });
+        sideMenu_panel.add(exitSideMenu_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 30, 30));
+
+        logOut_btn.setBackground(new java.awt.Color(255, 255, 255));
+        logOut_btn.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
+        logOut_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logOut_btn.setText("Log out");
+        logOut_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
+        logOut_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        logOut_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logOut_btnMouseClicked(evt);
+            }
+        });
+        sideMenu_panel.add(logOut_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 430, 150, 50));
+
+        purchases_btn.setBackground(new java.awt.Color(255, 255, 255));
+        purchases_btn.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
+        purchases_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        purchases_btn.setText("Purchases");
+        purchases_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
+        purchases_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        purchases_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                purchases_btnMouseClicked(evt);
+            }
+        });
+        sideMenu_panel.add(purchases_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, 150, 50));
+
+        cart_btn.setBackground(new java.awt.Color(255, 255, 255));
+        cart_btn.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
+        cart_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        cart_btn.setText("Cart");
+        cart_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
+        cart_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        cart_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cart_btnMouseClicked(evt);
+            }
+        });
+        sideMenu_panel.add(cart_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, 150, 50));
+
+        wishList_btn.setBackground(new java.awt.Color(255, 255, 255));
+        wishList_btn.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
+        wishList_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        wishList_btn.setText("Wish list");
+        wishList_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
+        wishList_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        wishList_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                wishList_btnMouseClicked(evt);
+            }
+        });
+        sideMenu_panel.add(wishList_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 150, 50));
+
+        main_menu.add(sideMenu_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 530));
+
         menu_btn.setBackground(new java.awt.Color(255, 255, 255));
         menu_btn.setFont(new java.awt.Font("Cascadia Code", 1, 16)); // NOI18N
         menu_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -952,83 +1033,6 @@ public class Interface extends javax.swing.JFrame {
             }
         });
         main_menu.add(goToItem_btn_TopMedia, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 380, 120, 30));
-
-        sideMenu_panel.setBackground(new java.awt.Color(255, 255, 255));
-        sideMenu_panel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
-        sideMenu_panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        sideMenu_txt.setFont(new java.awt.Font("Cascadia Code", 1, 26)); // NOI18N
-        sideMenu_txt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        sideMenu_txt.setText("Side menu");
-        sideMenu_txt.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 4, 0, new java.awt.Color(0, 0, 0)));
-        sideMenu_panel.add(sideMenu_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 190, 40));
-
-        exitSideMenu_btn.setBackground(new java.awt.Color(255, 255, 255));
-        exitSideMenu_btn.setFont(new java.awt.Font("Cascadia Code", 1, 16)); // NOI18N
-        exitSideMenu_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        exitSideMenu_btn.setText("X");
-        exitSideMenu_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
-        exitSideMenu_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        exitSideMenu_btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                exitSideMenu_btnMouseClicked(evt);
-            }
-        });
-        sideMenu_panel.add(exitSideMenu_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, 30, 30));
-
-        logOut_btn.setBackground(new java.awt.Color(255, 255, 255));
-        logOut_btn.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
-        logOut_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logOut_btn.setText("Log out");
-        logOut_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
-        logOut_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        logOut_btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                logOut_btnMouseClicked(evt);
-            }
-        });
-        sideMenu_panel.add(logOut_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 430, 150, 50));
-
-        purchases_btn.setBackground(new java.awt.Color(255, 255, 255));
-        purchases_btn.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
-        purchases_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        purchases_btn.setText("Purchases");
-        purchases_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
-        purchases_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        purchases_btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                purchases_btnMouseClicked(evt);
-            }
-        });
-        sideMenu_panel.add(purchases_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, 150, 50));
-
-        cart_btn.setBackground(new java.awt.Color(255, 255, 255));
-        cart_btn.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
-        cart_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        cart_btn.setText("Cart");
-        cart_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
-        cart_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        cart_btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cart_btnMouseClicked(evt);
-            }
-        });
-        sideMenu_panel.add(cart_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 170, 150, 50));
-
-        wishList_btn.setBackground(new java.awt.Color(255, 255, 255));
-        wishList_btn.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
-        wishList_btn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        wishList_btn.setText("Wish list");
-        wishList_btn.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
-        wishList_btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        wishList_btn.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                wishList_btnMouseClicked(evt);
-            }
-        });
-        sideMenu_panel.add(wishList_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 150, 50));
-
-        main_menu.add(sideMenu_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 530));
 
         paneles.addTab("tab2", main_menu);
 
@@ -2868,13 +2872,6 @@ public class Interface extends javax.swing.JFrame {
         trailer_admProd.setText("Trailer:");
         createProd.add(trailer_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 450, 70, 20));
 
-        trailerAdd_admProd.setFont(new java.awt.Font("Cascadia Code", 3, 12)); // NOI18N
-        trailerAdd_admProd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        trailerAdd_admProd.setText("Add Trailer");
-        trailerAdd_admProd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
-        trailerAdd_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        createProd.add(trailerAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 450, 180, 110));
-
         bar2_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         bar2_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         bar2_admProd.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 4, 0, 0, new java.awt.Color(0, 0, 0)));
@@ -3333,6 +3330,9 @@ public class Interface extends javax.swing.JFrame {
         prodCompany_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         prodCompany_admProd.setText("Production comany:");
         createProd.add(prodCompany_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 200, 160, 20));
+
+        trailerLink_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        createProd.add(trailerLink_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, 290, -1));
 
         createProd_scroll.setViewportView(createProd);
 
@@ -4225,6 +4225,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_logo_lblMouseClicked
 
     private void advSearch_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_advSearch_btnMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(4);
     }//GEN-LAST:event_advSearch_btnMouseClicked
 
@@ -4233,27 +4234,30 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_exitSideMenu_btnMouseClicked
 
     private void logOut_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOut_btnMouseClicked
-        enterUser_txtField.setText("");
-        enterPass_txtField.setText("");
+        enterUser_txtField.setText("enter your username");
+        enterPass_txtField.setText("enter your password");
+        enterUser_txtField.setForeground(new Color(204,204,204));
+        enterPass_txtField.setForeground(new Color(204,204,204));
         loginError_txt.setText("");
         sideMenu_panel.setVisible(false);
-        paneles.setSelectedIndex(0);
-        // falta agregarle la parte lógica del log out
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_logOut_btnMouseClicked
 
     private void return_btn_SearchResMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_return_btn_SearchResMouseClicked
-        paneles.setSelectedIndex(2);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_return_btn_SearchResMouseClicked
 
     private void search_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_search_btnMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(3);
     }//GEN-LAST:event_search_btnMouseClicked
 
     private void return_btn_AdvSearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_return_btn_AdvSearchMouseClicked
-        paneles.setSelectedIndex(2);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_return_btn_AdvSearchMouseClicked
 
     private void search_btn_AdvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_search_btn_AdvMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         // falta la logica de buscar resultados de acuerdo a los filtros seleccionados
         JRadioButton[] botonesFiltro = {highRated_radioB, lowRated_radioB, popular_radioB, newest_radioB, oldest_radioB};
         String seleccionado = "";
@@ -4302,11 +4306,11 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_oldest_radioBMouseClicked
 
     private void return_btn_PrevPurcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_return_btn_PrevPurcMouseClicked
-        paneles.setSelectedIndex(2);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_return_btn_PrevPurcMouseClicked
 
     private void return_btn_CartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_return_btn_CartMouseClicked
-        paneles.setSelectedIndex(2);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_return_btn_CartMouseClicked
 
     private void payment_btn_CartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_payment_btn_CartMouseClicked
@@ -4320,11 +4324,12 @@ public class Interface extends javax.swing.JFrame {
         expYear_Payments.setEndYear(2035);
         savedMethods_Payment.setSelectedIndex(0);
         // Ir a la ventana de payments
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(7);
     }//GEN-LAST:event_payment_btn_CartMouseClicked
 
     private void cancel_btn_PaymentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancel_btn_PaymentMouseClicked
-        paneles.setSelectedIndex(2);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_cancel_btn_PaymentMouseClicked
 
     private void pay_btn_PaymentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pay_btn_PaymentMouseClicked
@@ -4420,10 +4425,11 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_name_txtField_PaymentActionPerformed
 
     private void return_btn_WishListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_return_btn_WishListMouseClicked
-        paneles.setSelectedIndex(2);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_return_btn_WishListMouseClicked
 
     private void purchases_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_purchases_btnMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(5);
     }//GEN-LAST:event_purchases_btnMouseClicked
 
@@ -4432,10 +4438,12 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_previous_purchasesMouseClicked
 
     private void cart_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cart_btnMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(6);
     }//GEN-LAST:event_cart_btnMouseClicked
 
     private void wishList_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wishList_btnMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(8);
     }//GEN-LAST:event_wishList_btnMouseClicked
 
@@ -4444,6 +4452,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_wish_listMouseClicked
 
     private void goToItem_btn_CartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goToItem_btn_CartMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(9);
     }//GEN-LAST:event_goToItem_btn_CartMouseClicked
 
@@ -4460,10 +4469,12 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_removeItem_btn_WishListMouseClicked
 
     private void goToItem_btn_PrevPurchasesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goToItem_btn_PrevPurchasesMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(9);
     }//GEN-LAST:event_goToItem_btn_PrevPurchasesMouseClicked
 
     private void goToItem_btn_SearchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goToItem_btn_SearchMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(9);
     }//GEN-LAST:event_goToItem_btn_SearchMouseClicked
 
@@ -4472,6 +4483,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_savedMethods_PaymentMouseClicked
 
     private void goToItem_btn_TopMediaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goToItem_btn_TopMediaMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(9);
     }//GEN-LAST:event_goToItem_btn_TopMediaMouseClicked
 
@@ -4480,12 +4492,13 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void returnBtn_EpisodesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnBtn_EpisodesMouseClicked
-        paneles.setSelectedIndex(9);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_returnBtn_EpisodesMouseClicked
 
     private void goToEpBtn_EpisodesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goToEpBtn_EpisodesMouseClicked
         // Antes de ir al siguiente panel, poblar la ventana de producciones 
         //con la info del episodio seleccionado
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(9);
     }//GEN-LAST:event_goToEpBtn_EpisodesMouseClicked
 
@@ -4494,14 +4507,16 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_episodesMouseClicked
 
     private void goToProd_btn_WishListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goToProd_btn_WishListMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(9);
     }//GEN-LAST:event_goToProd_btn_WishListMouseClicked
 
     private void returnBtn_crewMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnBtn_crewMMouseClicked
-        paneles.setSelectedIndex(9);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_returnBtn_crewMMouseClicked
 
     private void goToProdBtn_crewMMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_goToProdBtn_crewMMouseClicked
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(9);
     }//GEN-LAST:event_goToProdBtn_crewMMouseClicked
 
@@ -4544,7 +4559,12 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_removeAdmBtn_admMouseClicked
 
     private void logOutBtn_admMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOutBtn_admMouseClicked
-        paneles.setSelectedIndex(0);
+        enterUser_txtField.setText("enter your username");
+        enterPass_txtField.setText("enter your password");
+        enterUser_txtField.setForeground(new Color(204,204,204));
+        enterPass_txtField.setForeground(new Color(204,204,204));
+        loginError_txt.setText("");
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_logOutBtn_admMouseClicked
 
     private void createBtn_admMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createBtn_admMouseClicked
@@ -4554,7 +4574,8 @@ public class Interface extends javax.swing.JFrame {
         searchProdBtn_admData.setVisible(false);
         chooserScroll_admData.setVisible(false);
         goTo_admData.setVisible(false);
-        paneles.setSelectedIndex(14);
+        panelStack.add(paneles.getSelectedIndex());
+        paneles.setSelectedIndex(13);
     }//GEN-LAST:event_createBtn_admMouseClicked
 
     private void editBtn_admMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editBtn_admMouseClicked
@@ -4564,11 +4585,14 @@ public class Interface extends javax.swing.JFrame {
         searchProdBtn_admData.setVisible(false);
         chooserScroll_admData.setVisible(false);
         goTo_admData.setVisible(false);
-        paneles.setSelectedIndex(14);
+        panelStack.add(paneles.getSelectedIndex());
+        paneles.setSelectedIndex(13);
     }//GEN-LAST:event_editBtn_admMouseClicked
 
     private void statsBtn_admMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_statsBtn_admMouseClicked
-        // TODO add your handling code here:
+        //panelQueue.add(paneles.getSelectedIndex());
+        // desactivar commentario de arriba y cambiar 13 por el numero de panel de la ventana de stats
+        paneles.setSelectedIndex(13);
     }//GEN-LAST:event_statsBtn_admMouseClicked
 
     private void confirmBtn_admMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confirmBtn_admMouseClicked
@@ -4609,7 +4633,7 @@ public class Interface extends javax.swing.JFrame {
         exitChooser_adm.setVisible(false);
         confirmBtn_adm.setVisible(false);
         infoMsg_adm.setVisible(false);
-        paneles.setSelectedIndex(12);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_returnBtn_admDataMouseClicked
 
     private void peopleBtn_admDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_peopleBtn_admDataMouseClicked
@@ -4657,7 +4681,8 @@ public class Interface extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
-            paneles.setSelectedIndex(16);
+            panelStack.add(paneles.getSelectedIndex());
+            paneles.setSelectedIndex(15);
         }
     }//GEN-LAST:event_peopleBtn_admDataMouseClicked
 
@@ -4669,7 +4694,8 @@ public class Interface extends javax.swing.JFrame {
             chooserSelector_admData.setVisible(true);
             searchProdBtn_admData.setVisible(true);
         } else { // CREATE
-            paneles.setSelectedIndex(15);
+            panelStack.add(paneles.getSelectedIndex());
+            paneles.setSelectedIndex(14);
         }
     }//GEN-LAST:event_prodsBtn_admDataMouseClicked
 
@@ -4687,7 +4713,8 @@ public class Interface extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
-        paneles.setSelectedIndex(17);
+        panelStack.add(paneles.getSelectedIndex());
+        paneles.setSelectedIndex(16);
     }//GEN-LAST:event_countryBtn_admDataMouseClicked
 
     private void othereBtn_admDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_othereBtn_admDataMouseClicked
@@ -4733,7 +4760,8 @@ public class Interface extends javax.swing.JFrame {
         prodETxt_admOther.setForeground(new Color(204,204,204));
         streamEUrl_admOther.setForeground(new Color(204,204,204));
         streamETxt_admOther.setForeground(new Color(204,204,204));
-        paneles.setSelectedIndex(18);
+        panelStack.add(paneles.getSelectedIndex());
+        paneles.setSelectedIndex(17);
     }//GEN-LAST:event_othereBtn_admDataMouseClicked
 
     private void chooserSelector_admDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_chooserSelector_admDataMouseClicked
@@ -4780,7 +4808,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_admDataChooserMouseClicked
 
     private void returnBtn_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnBtn_admProdMouseClicked
-        paneles.setSelectedIndex(13);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_returnBtn_admProdMouseClicked
 
     private void saveBtn_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBtn_admProdMouseClicked
@@ -4801,7 +4829,7 @@ public class Interface extends javax.swing.JFrame {
         searchProdBtn_admData.setVisible(false);
         goTo_admData.setVisible(false);
         chooserScroll_admData.setVisible(false);
-        paneles.setSelectedIndex(13);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_returnBtn_admPersonMouseClicked
 
     private void saveBtn_admPersonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBtn_admPersonMouseClicked
@@ -4855,7 +4883,7 @@ public class Interface extends javax.swing.JFrame {
         searchProdBtn_admData.setVisible(false);
         goTo_admData.setVisible(false);
         chooserScroll_admData.setVisible(false);
-        paneles.setSelectedIndex(13);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_returnBtn_admGeoMouseClicked
 
     private void countryCTxt_admGeoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_countryCTxt_admGeoMouseClicked
@@ -4950,6 +4978,7 @@ public class Interface extends javax.swing.JFrame {
                 control.editCountryName(currName, newName);
                 infoMsg_admGeo1.setForeground(new Color(0,204,51));
                 infoMsg_admGeo1.setText("Country renamed successfully");
+                countryECList_admGeo.setModel(control.makeCountriesList());
             } catch (SQLException ex) {
                 Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -4974,7 +5003,7 @@ public class Interface extends javax.swing.JFrame {
         searchProdBtn_admData.setVisible(false);
         goTo_admData.setVisible(false);
         chooserScroll_admData.setVisible(false);
-        paneles.setSelectedIndex(13);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_returnBtn_admOtherMouseClicked
 
     private void genderCTxt_admOtherMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genderCTxt_admOtherMouseClicked
@@ -5234,6 +5263,7 @@ public class Interface extends javax.swing.JFrame {
                 control.editGenderName(currName, newName);
                 infoMsg_admOther.setForeground(new Color(0,204,51));
                 infoMsg_admOther.setText("Gender renamed successfully");
+                genderEList_admOther.setModel(control.makeGendersList());
             } catch (SQLException ex) {
                 Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -5321,6 +5351,7 @@ public class Interface extends javax.swing.JFrame {
                 control.editGenre(currName, newName, description);
                 infoMsg_admOther.setForeground(new Color(0,204,51));
                 infoMsg_admOther.setText("Genre renamed successfully");
+                genreEList_admOther.setModel(control.makeGenresList());
             } catch (SQLException ex) {
                 Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -5378,6 +5409,7 @@ public class Interface extends javax.swing.JFrame {
                 control.editProdCompany(currName, newName);
                 infoMsg_admOther.setForeground(new Color(0,204,51));
                 infoMsg_admOther.setText("Production company renamed successfully");
+                prodEList_admOther.setModel(control.makeProdCompanyList());
             } catch (SQLException ex) {
                 Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -5461,6 +5493,7 @@ public class Interface extends javax.swing.JFrame {
                 control.editPlatform(currName, newName, url);
                 infoMsg_admOther.setForeground(new Color(0,204,51));
                 infoMsg_admOther.setText("Streaming platform renamed successfully");
+                streamEList_admOther.setModel(control.makePlatformsList());
             } catch (SQLException ex) {
                 Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -5497,6 +5530,7 @@ public class Interface extends javax.swing.JFrame {
             Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Entrar al panel
+        panelStack.add(paneles.getSelectedIndex());
         paneles.setSelectedIndex(1);
     }//GEN-LAST:event_newUser_linkMouseClicked
 
@@ -5542,12 +5576,14 @@ public class Interface extends javax.swing.JFrame {
 //            control.printUsers();
 //            System.out.println("type: " + loginType);
             if (loginType == 0) { // regular user
+                panelStack.add(paneles.getSelectedIndex());
                 paneles.setSelectedIndex(2);
             } else if (loginType == 1) { // admin
                 chooser_adm.setVisible(false);
                 exitChooser_adm.setVisible(false);
                 confirmBtn_adm.setVisible(false);
                 infoMsg_adm.setVisible(false);
+                panelStack.add(paneles.getSelectedIndex());
                 paneles.setSelectedIndex(12);
             } else { // not a registered user
                 loginError_txt.setText("Error de autentificación. Intente de nuevo.");
@@ -5581,7 +5617,7 @@ public class Interface extends javax.swing.JFrame {
         enterUser_txtField.setForeground(new Color(204,204,204));
         enterPass_txtField.setForeground(new Color(204,204,204));
         loginError_txt.setText("");
-        paneles.setSelectedIndex(0);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_back_btnMouseClicked
 
     private void registerUser_txtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerUser_txtFieldActionPerformed
@@ -5729,15 +5765,17 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_createPersonMouseClicked
 
     private void return_btn_ProductionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_return_btn_ProductionMouseClicked
-        paneles.setSelectedIndex(2);
+        paneles.setSelectedIndex(panelStack.pop());
     }//GEN-LAST:event_return_btn_ProductionMouseClicked
 
     private void buy_btn_ProductionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buy_btn_ProductionMouseClicked
-
+        panelStack.add(paneles.getSelectedIndex());
+        paneles.setSelectedIndex(7);
     }//GEN-LAST:event_buy_btn_ProductionMouseClicked
 
     private void episodes_btn_ProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_episodes_btn_ProdMouseClicked
-
+        panelStack.add(paneles.getSelectedIndex());
+        paneles.setSelectedIndex(10);
     }//GEN-LAST:event_episodes_btn_ProdMouseClicked
 
     private void reviewTitle_txtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reviewTitle_txtActionPerformed
@@ -6175,7 +6213,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JScrollPane topMedia_selector;
     private javax.swing.JLabel topMedia_txt;
     private javax.swing.JPanel top_panel;
-    private javax.swing.JLabel trailerAdd_admProd;
+    private javax.swing.JTextField trailerLink_admProd;
     private javax.swing.JLabel trailer_Production;
     private javax.swing.JLabel trailer_admProd;
     private javax.swing.JLabel trailer_link_Production;
