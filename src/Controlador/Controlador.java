@@ -215,6 +215,15 @@ public class Controlador {
         return personMng.showPeopleTable();
     }
     
+    // Métodos de Top Productions ----------------------------------------------------------------------------------------------
+    public void updateTopProds() throws SQLException {
+        prodMng.updateTopProds(conn);
+    }
+    
+    public DefaultTableModel showTopProdsTable() throws SQLException {
+        return prodMng.showTopProdsTable();
+    }
+    
     // Métodos de Producción ---------------------------------------------------------------------------------------------------
     public void ActualizeProductions() throws SQLException
     {

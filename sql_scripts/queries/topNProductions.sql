@@ -3,7 +3,7 @@ CREATE PROCEDURE getTopRatedProductions(IN pTopN INT)
 BEGIN
     TRUNCATE TABLE top_rated_productions;
 
-    INSERT INTO top_rated_productions (id, title, average_rating)
+    INSERT INTO top_rated_productions (id, title, avg_rating)
     SELECT 
         p.id,
         p.title,

@@ -2,7 +2,7 @@
 CREATE TABLE top_rated_productions (
     id INT,
     title VARCHAR(260),
-    average_rating DECIMAL(3, 2),
+    avg_rating DECIMAL(3, 2),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
