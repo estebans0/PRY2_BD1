@@ -987,3 +987,12 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2024-05-19 23:12:37
+
+
+-- Creación de tabla para alamcenar resultados del job ------------------------------------------------
+CREATE TABLE top_rated_productions (
+    id INT,
+    title VARCHAR(260),
+    avg_rating DECIMAL(3, 2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
