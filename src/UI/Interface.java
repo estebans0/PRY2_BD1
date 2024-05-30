@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
@@ -445,7 +446,6 @@ public class Interface extends javax.swing.JFrame {
         trivia_admPerson = new javax.swing.JLabel();
         triviaScroll_admPerson = new javax.swing.JScrollPane();
         triviaTxt_admPerson = new javax.swing.JTextArea();
-        imageAdd_admPerson = new javax.swing.JLabel();
         saveBtn_admPerson = new javax.swing.JLabel();
         endBar_admOther = new javax.swing.JLabel();
         addFamily_admPerson = new javax.swing.JLabel();
@@ -461,6 +461,8 @@ public class Interface extends javax.swing.JFrame {
         height_admPerson = new javax.swing.JLabel();
         heightTxt_admPerson = new javax.swing.JTextField();
         filmPerson_check_Person = new javax.swing.JCheckBox();
+        imageFondo_admPerson = new javax.swing.JPanel();
+        image_admPerson = new javax.swing.JLabel();
         admCountryData = new javax.swing.JPanel();
         returnBtn_admGeo = new javax.swing.JLabel();
         tituloTxt_admGeo = new javax.swing.JLabel();
@@ -3483,13 +3485,6 @@ public class Interface extends javax.swing.JFrame {
 
         createPerson.add(triviaScroll_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 280, 220, 70));
 
-        imageAdd_admPerson.setFont(new java.awt.Font("Cascadia Code", 3, 12)); // NOI18N
-        imageAdd_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        imageAdd_admPerson.setText("Add Image");
-        imageAdd_admPerson.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
-        imageAdd_admPerson.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        createPerson.add(imageAdd_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 370, 150, 130));
-
         saveBtn_admPerson.setBackground(new java.awt.Color(255, 255, 255));
         saveBtn_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 16)); // NOI18N
         saveBtn_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -3501,7 +3496,7 @@ public class Interface extends javax.swing.JFrame {
                 saveBtn_admPersonMouseClicked(evt);
             }
         });
-        createPerson.add(saveBtn_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 450, 140, 50));
+        createPerson.add(saveBtn_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 440, 160, 60));
 
         endBar_admOther.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         endBar_admOther.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -3594,6 +3589,26 @@ public class Interface extends javax.swing.JFrame {
 
         filmPerson_check_Person.setText("isFilmPerson");
         createPerson.add(filmPerson_check_Person, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 330, -1, -1));
+
+        imageFondo_admPerson.setBackground(new java.awt.Color(255, 255, 255));
+        imageFondo_admPerson.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
+        imageFondo_admPerson.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        image_admPerson.setFont(new java.awt.Font("Cascadia Code", 3, 12)); // NOI18N
+        image_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        image_admPerson.setText("Add image");
+        image_admPerson.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        image_admPerson.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                image_admPersonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                image_admPersonMouseEntered(evt);
+            }
+        });
+        imageFondo_admPerson.add(image_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 130));
+
+        createPerson.add(imageFondo_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 370, 150, 130));
 
         createPerson_scroll.setViewportView(createPerson);
 
@@ -4880,6 +4895,8 @@ public class Interface extends javax.swing.JFrame {
         String biography = bioTxt_admPerson.getText();
         String height = heightTxt_admPerson.getText();
         String dob = new SimpleDateFormat("yyyy-MM-dd").format(registerDob_admPerson.getDate());
+        String imagePath = image_admPerson.getText();
+        System.out.println("ruta: " + imagePath);
         // Restricciones
         if (fName.equals("")) {
             infoMsg_admPerson.setText("Please enter a first name");
@@ -4901,12 +4918,12 @@ public class Interface extends javax.swing.JFrame {
             try {
                 // AQUI HAY QUE VER SI HACE FALTA AGREGAR FILM PERSON O NO
 //                control.registerFilmPerson(fName, lName, mName, nName, gender, dob, country, trivia, biography, Integer.parseInt(height));
-                control.registerPerson(fName, lName, mName, nName, gender, dob);
+                control.registerPerson(fName, lName, mName, nName, gender, dob, imagePath);
                 infoMsg_admPerson.setForeground(new Color(0,204,51));
                 infoMsg_admPerson.setText("Person registered succesfully!");
-            } catch (SQLException ex) {
+            } catch (SQLException | IOException ex) {
                 System.out.println(ex);
-                infoMsg_admPerson.setText("Database error: " + ex);
+                infoMsg_admPerson.setText("Error: " + ex);
             }
         }
     }//GEN-LAST:event_saveBtn_admPersonMouseClicked
@@ -5787,7 +5804,7 @@ public class Interface extends javax.swing.JFrame {
             if (mName.equals("middle name")) {mName = null;}
             if (nName.equals("nickname")) {nName = null;}
             try {
-                control.registerUser(user, pass, emailAd, idType, legalId, fName, lName, mName, nName, gender, dob);
+                control.registerUser(user, pass, emailAd, idType, legalId, fName, lName, mName, nName, gender, dob, null);
                 registerInfo_txt.setForeground(new Color(0,204,51));
                 registerInfo_txt.setText("Registered succesfully!");
             } catch (SQLException ex) {
@@ -5828,6 +5845,30 @@ public class Interface extends javax.swing.JFrame {
     private void genresList_ProductionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genresList_ProductionMouseClicked
 
     }//GEN-LAST:event_genresList_ProductionMouseClicked
+
+    private void image_admPersonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_image_admPersonMouseClicked
+        // Funcionalidad de: https://www.youtube.com/watch?v=oKDPhacXlB8&t=331s
+        String ruta  = "";
+        JFileChooser jFileChooser = new JFileChooser();
+        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG & PNG", "jpg", "png");
+        jFileChooser.setFileFilter(filtrado);
+
+        int seleccionado = jFileChooser.showOpenDialog(this);
+        if (seleccionado == JFileChooser.APPROVE_OPTION) {
+            ruta = jFileChooser.getSelectedFile().getPath(); // Obtener ruta de imagen
+            Image mImagen = new ImageIcon(ruta).getImage(); // Buscar la imagen por su ruta
+
+            ImageIcon mIcono = new ImageIcon(mImagen.getScaledInstance(image_admPerson.getWidth(), image_admPerson.getHeight(), Image.SCALE_SMOOTH));
+            image_admPerson.setIcon(mIcono);
+            imageFondo_admPerson.setBackground(Color.white);
+            image_admPerson.setForeground(Color.white);
+            image_admPerson.setText(ruta);
+        }
+    }//GEN-LAST:event_image_admPersonMouseClicked
+
+    private void image_admPersonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_image_admPersonMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_image_admPersonMouseEntered
 
     /**
      * @param args the command line arguments
@@ -6036,9 +6077,10 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel heightTxt_crewM;
     private javax.swing.JLabel height_admPerson;
     private javax.swing.JRadioButton highRated_radioB;
-    private javax.swing.JLabel imageAdd_admPerson;
     private javax.swing.JLabel imageAdd_admProd;
+    private javax.swing.JPanel imageFondo_admPerson;
     private javax.swing.JLabel image_Production;
+    private javax.swing.JLabel image_admPerson;
     private javax.swing.JLabel image_admProd;
     private javax.swing.JLabel image_crewM;
     private javax.swing.JLabel infoMsg1_admProd;

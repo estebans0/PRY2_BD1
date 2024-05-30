@@ -21,9 +21,9 @@ public class pruebas {
     {
         try {
         Controlador control = new Controlador();
-        control.ActualizeProductions();
-        Production production = control.getProduction(1);
-        
+//        control.ActualizeProductions();
+//        Production production = control.getProduction(1);
+        control.registerPerson("pruebaImg", "1", null, null, 1, "2024-05-30", "C:\\Users\\esteb\\Downloads\\pedro.jpg");
         
         } catch (Exception ex) {
             Logger.getLogger(pruebas.class.getName()).log(Level.SEVERE, null, ex);

@@ -7,7 +7,8 @@ CREATE PROCEDURE insertPerson (
     IN pMiddleName VARCHAR(220),
     IN pNickName VARCHAR(220),
     IN pGender INT,
-    IN pDob DATE
+    IN pDob DATE,
+    IN pImage BLOB
 )
 BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -18,8 +19,8 @@ BEGIN
 
     START TRANSACTION;
     
-    INSERT INTO person (first_name, last_name, middle_name, nickname, gender, birthdate)
-    VALUES (pFirstName, pLastName, pMiddleName, pNickName, pGender, pDob);
+    INSERT INTO person (first_name, last_name, middle_name, nickname, gender, birthdate, image)
+    VALUES (pFirstName, pLastName, pMiddleName, pNickName, pGender, pDob, pImage);
     
     COMMIT;
 END //

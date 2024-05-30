@@ -16,8 +16,13 @@ import java.sql.SQLException;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 /**
  *
  * @author Esteban
@@ -49,15 +54,7 @@ public class PersonManager {
                     person.setMiddleName(rs.getString("middle_name"));
                     person.setLastName(rs.getString("last_name"));
                     person.setNickname(rs.getString("nickname"));
-//                    // Retrieve the image as Blob
-//                    Blob blob = rs.getBlob("image");
-//                    if (blob != null) {
-//                        // Convert Blob to BufferedImage
-//                        byte[] imageBytes = blob.getBytes(1, (int) blob.length());
-//                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageBytes));
-//                        person.setImage(image);
-//                    }
-                    person.setImage(null);
+                    person.setImage(rs.getBytes("image"));
                     person.setGender(rs.getInt("gender"));
                     people.add(person);
                 }
@@ -66,15 +63,36 @@ public class PersonManager {
     }
     
     public void registerPerson(java.sql.Connection conn, String fName, String lName, String mName, String nName, 
-            int gender, String dob) throws SQLException {
-        PreparedStatement sql = conn.prepareStatement("{call insertPerson(?,?,?,?,?,?)}");
-        sql.setString(1, fName);
-        sql.setString(2, lName);
-        sql.setString(3, mName);
-        sql.setString(4, nName);
-        sql.setInt(5, gender);
-        sql.setString(6, dob);
-        sql.execute();
+            int gender, String dob, String imagePath) throws SQLException, IOException {
+        PreparedStatement sql = null;
+        FileInputStream fis = null;
+        try {
+            sql = conn.prepareCall("{call insertPerson(?,?,?,?,?,?,?)}");
+            sql.setString(1, fName);
+            sql.setString(2, lName);
+            sql.setString(3, mName);
+            sql.setString(4, nName);
+            sql.setInt(5, gender);
+            sql.setString(6, dob);
+            // Agregar imagen
+            if (imagePath != null && !imagePath.isEmpty()) {
+                File file = new File(imagePath);
+                fis = new FileInputStream(file);
+                sql.setBinaryStream(7, fis, (int) file.length());
+            } else {
+                sql.setNull(7, java.sql.Types.BLOB);
+            }
+            sql.execute();
+        } catch (SQLException | IOException e) {
+            throw e;
+        } finally {
+            if (sql != null) {
+                sql.close();
+            }
+            if (fis != null) {
+                fis.close();
+            }
+        }
     }
     
     public void registerFilmPerson(java.sql.Connection conn, int height, String trivia, 
@@ -99,6 +117,17 @@ public class PersonManager {
             table.setValueAt(person.getLastName(), i, 2);
         }
         return table;
+    }
+
+    public void updateProfilePicture(java.sql.Connection conn, int userId, String imagePath) throws SQLException, IOException {
+        String sql = "UPDATE userr SET profile_picture = ? WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+            FileInputStream fis = new FileInputStream(imagePath)) {
+
+            stmt.setBinaryStream(1, fis, (int) new File(imagePath).length());
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+        }
     }
 
     // Método para obtener una persona por su id

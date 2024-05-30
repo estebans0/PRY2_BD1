@@ -39,8 +39,8 @@ public class Controlador {
     
     public void registerUser(String user, String pass, String email, int idType, 
             String legalId, String fName, String lName, String mName, String nName, 
-            int gender, String dob) throws SQLException, IOException {
-        registerPerson(fName, lName, mName, nName, gender, dob);
+            int gender, String dob, String imagePath) throws SQLException, IOException {
+        registerPerson(fName, lName, mName, nName, gender, dob, imagePath);
         userMng.registerUser(conn, user, pass, email, idType, legalId);
         updateUsers();
     }
@@ -191,16 +191,16 @@ public class Controlador {
     }
     
     public void registerFilmPerson(String fName, String lName, String mName, String nName, 
-            int gender, String dob, String country, String trivia, String biography, int height) throws SQLException, IOException {
-        registerPerson(fName, lName, mName, nName, gender, dob);
+            int gender, String dob, String country, String trivia, String biography, int height, String imagePath) throws SQLException, IOException {
+        registerPerson(fName, lName, mName, nName, gender, dob, imagePath);
         personMng.registerFilmPerson(conn, height, trivia, biography, userMng.getCountryId(country));
         updateUsers();
     }
     
     public void registerPerson(String fName, String lName, String mName, String nName, 
-            int gender, String dob) throws SQLException {
-        personMng.registerPerson(conn, fName, lName, mName, nName, gender, dob);
-        updatePeople();
+            int gender, String dob, String imagePath) throws SQLException, IOException {
+        personMng.registerPerson(conn, fName, lName, mName, nName, gender, dob, imagePath);
+//        updatePeople();
     }
     
     public ArrayList<Person> getPeople() {

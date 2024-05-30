@@ -20,7 +20,7 @@ public class Person {
     protected String lastName;
     protected String middleName;
     protected String nickname;
-    protected BufferedImage image;
+    protected byte[] image;
     protected int gender;
     protected int partnerId;
     protected ArrayList<FamilyMember> familyMembers;
@@ -64,7 +64,7 @@ public class Person {
         return nickname;
     }
 
-    public BufferedImage getImage() {
+    public byte[] getImage() {
         return image;
     }
 
@@ -104,7 +104,7 @@ public class Person {
         this.nickname = Nickname;
     }
 
-    public void setImage(BufferedImage image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 
