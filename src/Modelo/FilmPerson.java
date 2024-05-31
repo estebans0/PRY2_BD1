@@ -11,15 +11,46 @@ import java.util.ArrayList;
  * @author wess
  */
 public class FilmPerson extends Person{
+    private int id; 
     private ArrayList<Production> workedIn;
     private Adress adress;
     private String trivia;
     private int heigth;
-    private String nationality;
+    private int nationality;
     private String biography;
+    private int role;
 
+    public FilmPerson() {
+        this.id = 0;
+        this.workedIn = new ArrayList<>();
+        this.adress = null;
+        this.trivia = "";
+        this.heigth = 0;
+        this.nationality = 0;
+        this.biography = "";
+        this.role = 0;
+    }
+    
     public FilmPerson(int id) {}
 
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
+    
     public ArrayList<Production> getWorkedIn() {
         return workedIn;
     }
@@ -36,7 +67,7 @@ public class FilmPerson extends Person{
         return heigth;
     }
 
-    public String getNationality() {
+    public int getNationality() {
         return nationality;
     }
 
@@ -60,7 +91,7 @@ public class FilmPerson extends Person{
         this.heigth = heigth;
     }
 
-    public void setNationality(String nationality) {
+    public void setNationality(int nationality) {
         this.nationality = nationality;
     }
 

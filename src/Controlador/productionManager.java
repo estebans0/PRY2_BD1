@@ -6,7 +6,9 @@ package Controlador;
 
 import Modelo.Movie;
 import Modelo.Person;
+import Modelo.ProdCompany;
 import Modelo.Production;
+import Modelo.Rol;
 import Modelo.Serie;
 import Modelo.User;
 //import Modelo.Serie;
@@ -14,6 +16,8 @@ import Modelo.User;
 import java.util.ArrayList;
 import java.sql.SQLException;
 import java.sql.*;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,10 +29,12 @@ public class productionManager {
     //Por ultimo, unos metodos para insertar que deberian de hacerse por Esteban.
     private ArrayList<Production> productions;
     private ArrayList<Production> topProds;
+    private ArrayList<Rol> roles;
 
     public productionManager() {
         this.productions = new ArrayList<>();
         this.topProds = new ArrayList<>();
+        this.roles = new ArrayList<>();
     }
     
     // --------------- Métodos TOP N Productions --------------------------------------------------------------------
@@ -55,6 +61,39 @@ public class productionManager {
             prod.setCurrentRaiting(rs.getFloat(3));
             topProds.add(prod);
         }
+    }
+    
+    // Metodos de rol --------------------------------------------------------------------------------
+    public void updateRoles(java.sql.Connection conn) throws SQLException {
+        roles.clear();
+        CallableStatement sql = conn.prepareCall("{call getRolesData()}");
+        ResultSet rs = sql.executeQuery();
+        while (rs.next()) {
+            Rol rol = new Rol();
+            rol.setType(rs.getInt(1));
+            rol.setName(rs.getString(2));
+            rol.setCharacterName(rs.getString(3));
+            roles.add(rol);
+        }
+    }
+    
+    public ComboBoxModel<String> makeRolesList() {
+        ArrayList<String> pRoles = new ArrayList<>();
+        pRoles.add("Select a role");
+        for (Rol pRole : roles) {
+            pRoles.add(pRole.getName());
+        }
+        ComboBoxModel<String> pRolesList = new DefaultComboBoxModel<>(pRoles.toArray(String[]::new));
+        return pRolesList;
+    }
+    
+    public int getRoleId(String name){
+        for (Rol rol : roles) {
+            if (rol.getName().equals(name)) {
+                return rol.getType();
+            }
+        }
+        return -1;
     }
     // ---------------------------------------------------------------------------------------------------------------
 

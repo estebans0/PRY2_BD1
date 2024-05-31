@@ -652,7 +652,7 @@ public class tests extends javax.swing.JFrame {
         endBar_Prod.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         endBar_Prod.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         endBar_Prod.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 0, new java.awt.Color(255, 255, 255)));
-        production_content.add(endBar_Prod, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1390, 1060, 10));
+        production_content.add(endBar_Prod, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1200, 1060, 10));
 
         separatingBar_Prod1.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         separatingBar_Prod1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);

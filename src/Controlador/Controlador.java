@@ -7,6 +7,8 @@ package Controlador;
 import Modelo.Person;
 import Modelo.Production;
 import Modelo.User;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.sql.*;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -28,6 +31,27 @@ public class Controlador {
     private final productionManager prodMng = new productionManager();
     private final Connection conn = sysConexion.obtConexion();
     
+    // Método conversor de byte[] a ImageIcon ---------------------------------------------------------------------------------
+    public ImageIcon byteArrayToImageIcon(byte[] imageBytes) {
+    if (imageBytes == null || imageBytes.length == 0) {
+        System.err.println("Image byte array is null or empty.");
+        return null;
+    }
+
+    ByteArrayInputStream bais = new ByteArrayInputStream(imageBytes);
+    try {
+        BufferedImage image = javax.imageio.ImageIO.read(bais);
+        if (image == null) {
+            System.err.println("ImageIO.read returned null - unable to read image from byte array.");
+            return null;
+        }
+        return new ImageIcon(image);
+    } catch (IOException e) {
+        System.err.println("Error: " + e.getMessage());
+        return null;
+    }
+}
+    
     // Métodos de usuario -----------------------------------------------------------------------------------------------------
     public int verifyUserLogin(String username, String password) throws SQLException {
         return userMng.verifyUserLogin(username, password);
@@ -40,7 +64,8 @@ public class Controlador {
     public void registerUser(String user, String pass, String email, int idType, 
             String legalId, String fName, String lName, String mName, String nName, 
             int gender, String dob, String imagePath) throws SQLException, IOException {
-        registerPerson(fName, lName, mName, nName, gender, dob, imagePath);
+        personMng.registerPerson(conn, fName, lName, mName, nName, gender, dob, imagePath);
+        updatePeople();
         userMng.registerUser(conn, user, pass, email, idType, legalId);
         updateUsers();
     }
@@ -66,6 +91,10 @@ public class Controlador {
     
     public int getCurrentUserId() {
         return userMng.getCurrentUserId();
+    }
+    
+    public User getCurrentUser() {
+        return userMng.getCurrentUser();
     }
     
     // Métodos de ADMIN  ---------------------------------------------------------------------------------------------------------
@@ -191,16 +220,18 @@ public class Controlador {
     }
     
     public void registerFilmPerson(String fName, String lName, String mName, String nName, 
-            int gender, String dob, String country, String trivia, String biography, int height, String imagePath) throws SQLException, IOException {
-        registerPerson(fName, lName, mName, nName, gender, dob, imagePath);
-        personMng.registerFilmPerson(conn, height, trivia, biography, userMng.getCountryId(country));
+            int gender, String dob, String imagePath, String country, String trivia, String biography,
+            int height, String role, ArrayList<Integer> parents, ArrayList<Integer> children, int partner) throws SQLException, IOException {
+        registerPerson(fName, lName, mName, nName, gender, dob, imagePath, parents, children, partner);
+        personMng.registerFilmPerson(conn, height, trivia, biography, userMng.getCountryId(country), prodMng.getRoleId(role));
         updateUsers();
     }
     
     public void registerPerson(String fName, String lName, String mName, String nName, 
-            int gender, String dob, String imagePath) throws SQLException, IOException {
+            int gender, String dob, String imagePath, ArrayList<Integer> parents, ArrayList<Integer> children, int partner) throws SQLException, IOException {
+        personMng.insertFamily(conn, userMng.getCurrentUserId(), parents, children, partner);
         personMng.registerPerson(conn, fName, lName, mName, nName, gender, dob, imagePath);
-//        updatePeople();
+        updatePeople();
     }
     
     public ArrayList<Person> getPeople() {
@@ -215,6 +246,10 @@ public class Controlador {
         return personMng.showPeopleTable();
     }
     
+    public Person getPerson (int id) {
+        return personMng.getPerson(id);
+    }
+    
     // Métodos de Top Productions ----------------------------------------------------------------------------------------------
     public void updateTopProds() throws SQLException {
         prodMng.updateTopProds(conn);
@@ -225,6 +260,14 @@ public class Controlador {
     }
     
     // Métodos de Producción ---------------------------------------------------------------------------------------------------
+    public void updateRoles() throws SQLException {
+        prodMng.updateRoles(conn);
+    }
+    
+    public ComboBoxModel<String> makeRolesList() {
+        return prodMng.makeRolesList();
+    }
+    
     public void ActualizeProductions() throws SQLException
     {
 

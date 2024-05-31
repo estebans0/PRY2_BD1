@@ -5,6 +5,7 @@
 package UI;
 
 import Controlador.Controlador;
+import Modelo.Person;
 import java.awt.Color;
 import java.awt.Image;
 import javax.swing.BorderFactory;
@@ -30,8 +31,11 @@ import javax.swing.table.TableColumnModel;
 public class Interface extends javax.swing.JFrame {
     private final Controlador control = new Controlador();
     private int accionAdm = 0; // 0=agregar  1=eliminar
+    private ArrayList<Integer> parents = new ArrayList<>();
+    private ArrayList<Integer> children = new ArrayList<>();
+    private int partner = 0;
     // Cola que almacena las ventanas visitadas y sirve para devolverse a la última ventana en la interfaz
-    Stack<Integer> panelStack = new Stack<>();
+    private Stack<Integer> panelStack = new Stack<>();
     
     // Métodos auxiliares
     private static boolean strIsNumeric(String str){
@@ -273,12 +277,12 @@ public class Interface extends javax.swing.JFrame {
         reviewTitle_Prod = new javax.swing.JLabel();
         reviewTitle_txt = new javax.swing.JTextField();
         postReviewBtn_Prod = new javax.swing.JLabel();
-        endBar_Prod = new javax.swing.JLabel();
         separatingBar_Prod1 = new javax.swing.JLabel();
         prodCompany_Prod = new javax.swing.JLabel();
         prodCompany_txt_Prod = new javax.swing.JLabel();
         trailer_link_Production = new javax.swing.JLabel();
         genresList_Production = new javax.swing.JComboBox<>();
+        endBar_Prod = new javax.swing.JLabel();
         episodes = new javax.swing.JPanel();
         returnBtn_Episodes = new javax.swing.JLabel();
         titulo_txt_Episodes = new javax.swing.JLabel();
@@ -449,7 +453,6 @@ public class Interface extends javax.swing.JFrame {
         saveBtn_admPerson = new javax.swing.JLabel();
         endBar_admOther = new javax.swing.JLabel();
         addFamily_admPerson = new javax.swing.JLabel();
-        famRemove_admPerson = new javax.swing.JLabel();
         peopleScroll_admPerson = new javax.swing.JScrollPane();
         peopleTable_admPerson = new javax.swing.JTable();
         famRelation_admPerson = new javax.swing.JLabel();
@@ -463,6 +466,9 @@ public class Interface extends javax.swing.JFrame {
         filmPerson_check_Person = new javax.swing.JCheckBox();
         imageFondo_admPerson = new javax.swing.JPanel();
         image_admPerson = new javax.swing.JLabel();
+        infoMsg2_admPerson = new javax.swing.JLabel();
+        role_admPerson = new javax.swing.JLabel();
+        roleList_admPerson = new javax.swing.JComboBox<>();
         admCountryData = new javax.swing.JPanel();
         returnBtn_admGeo = new javax.swing.JLabel();
         tituloTxt_admGeo = new javax.swing.JLabel();
@@ -932,7 +938,7 @@ public class Interface extends javax.swing.JFrame {
         });
         sideMenu_panel.add(wishList_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 250, 150, 50));
 
-        main_menu.add(sideMenu_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 530));
+        main_menu.add(sideMenu_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 540));
 
         menu_btn.setBackground(new java.awt.Color(255, 255, 255));
         menu_btn.setFont(new java.awt.Font("Cascadia Code", 1, 16)); // NOI18N
@@ -2110,11 +2116,6 @@ public class Interface extends javax.swing.JFrame {
         postReviewBtn_Prod.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         production_content.add(postReviewBtn_Prod, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 1140, 120, 30));
 
-        endBar_Prod.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        endBar_Prod.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        endBar_Prod.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 0, new java.awt.Color(255, 255, 255)));
-        production_content.add(endBar_Prod, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1390, 1060, 10));
-
         separatingBar_Prod1.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         separatingBar_Prod1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         separatingBar_Prod1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 0, new java.awt.Color(0, 0, 0)));
@@ -2142,6 +2143,11 @@ public class Interface extends javax.swing.JFrame {
             }
         });
         production_content.add(genresList_Production, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 330, 160, -1));
+
+        endBar_Prod.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        endBar_Prod.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        endBar_Prod.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 3, 0, new java.awt.Color(255, 255, 255)));
+        production_content.add(endBar_Prod, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 1200, 1060, 10));
 
         production_scroll.setViewportView(production_content);
 
@@ -3410,7 +3416,7 @@ public class Interface extends javax.swing.JFrame {
         dataEntry_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         dataEntry_admPerson.setText("Data entry");
         dataEntry_admPerson.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 4, 0, new java.awt.Color(0, 0, 0)));
-        createPerson.add(dataEntry_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 990, 40));
+        createPerson.add(dataEntry_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 1000, 40));
 
         infoMsg_admPerson.setFont(new java.awt.Font("Cascadia Code", 2, 12)); // NOI18N
         infoMsg_admPerson.setForeground(new java.awt.Color(170, 170, 170));
@@ -3506,14 +3512,7 @@ public class Interface extends javax.swing.JFrame {
         addFamily_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         addFamily_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         addFamily_admPerson.setText("Add family member:");
-        createPerson.add(addFamily_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, 140, 20));
-
-        famRemove_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
-        famRemove_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        famRemove_admPerson.setText("x");
-        famRemove_admPerson.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
-        famRemove_admPerson.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        createPerson.add(famRemove_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 370, 20, 20));
+        createPerson.add(addFamily_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 360, 140, 20));
 
         peopleScroll_admPerson.setBackground(new java.awt.Color(255, 255, 255));
         peopleScroll_admPerson.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
@@ -3556,7 +3555,7 @@ public class Interface extends javax.swing.JFrame {
         createPerson.add(famRelation_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 480, 70, 20));
 
         relationList_admPerson.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        relationList_admPerson.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a relation", "Father", "Mother", "Sibling", "Partner", "Son", "Daughter" }));
+        relationList_admPerson.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a relation", "Parent", "Child", "Partner" }));
         createPerson.add(relationList_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 480, 170, 20));
 
         famAdd_admPerson.setBackground(new java.awt.Color(255, 255, 255));
@@ -3565,6 +3564,11 @@ public class Interface extends javax.swing.JFrame {
         famAdd_admPerson.setText("Add");
         famAdd_admPerson.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
         famAdd_admPerson.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        famAdd_admPerson.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                famAdd_admPersonMouseClicked(evt);
+            }
+        });
         createPerson.add(famAdd_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 480, 60, 20));
 
         bio_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
@@ -3587,8 +3591,14 @@ public class Interface extends javax.swing.JFrame {
         heightTxt_admPerson.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         createPerson.add(heightTxt_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 250, 220, -1));
 
-        filmPerson_check_Person.setText("isFilmPerson");
-        createPerson.add(filmPerson_check_Person, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 330, -1, -1));
+        filmPerson_check_Person.setFont(new java.awt.Font("Cascadia Code", 2, 12)); // NOI18N
+        filmPerson_check_Person.setText("Add Film Person");
+        filmPerson_check_Person.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                filmPerson_check_PersonMouseClicked(evt);
+            }
+        });
+        createPerson.add(filmPerson_check_Person, new org.netbeans.lib.awtextra.AbsoluteConstraints(910, 30, -1, -1));
 
         imageFondo_admPerson.setBackground(new java.awt.Color(255, 255, 255));
         imageFondo_admPerson.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
@@ -3609,6 +3619,20 @@ public class Interface extends javax.swing.JFrame {
         imageFondo_admPerson.add(image_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 130));
 
         createPerson.add(imageFondo_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 370, 150, 130));
+
+        infoMsg2_admPerson.setFont(new java.awt.Font("Cascadia Code", 2, 12)); // NOI18N
+        infoMsg2_admPerson.setForeground(new java.awt.Color(0, 204, 51));
+        infoMsg2_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        createPerson.add(infoMsg2_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 500, 210, 20));
+
+        role_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
+        role_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        role_admPerson.setText("Role:");
+        createPerson.add(role_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 370, 40, 20));
+
+        roleList_admPerson.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        roleList_admPerson.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select a role" }));
+        createPerson.add(roleList_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 370, 170, 20));
 
         createPerson_scroll.setViewportView(createPerson);
 
@@ -4694,6 +4718,9 @@ public class Interface extends javax.swing.JFrame {
         heightTxt_admPerson.setText("");
         triviaTxt_admPerson.setText("");
         registerDob_admPerson.setDate(null);
+        parents.clear();
+        children.clear();
+        partner = 0;
 
         // Cargar EDIT PEOPLE
         if (titulo_txt_admData.getText().equals("Choose the type of data to edit")) { // EDIT
@@ -4712,16 +4739,19 @@ public class Interface extends javax.swing.JFrame {
         } else { // Cargar CREATE PEOPLE
             try { // Cargar los datos de las tablas
                 addFamily_admPerson.setVisible(false);
-                famRemove_admPerson.setVisible(false);
                 peopleScroll_admPerson.setVisible(false);
                 famRelation_admPerson.setVisible(false);
                 relationList_admPerson.setVisible(false);
                 famAdd_admPerson.setVisible(false);
+                role_admPerson.setVisible(false);
+                roleList_admPerson.setVisible(false);
 
                 control.updateGenders();
                 genderList_admPerson.setModel(control.makeGendersList());
                 control.updateCountries();
                 countryList_admPerson.setModel(control.makeCountriesList());
+                control.updateRoles();
+                roleList_admPerson.setModel(control.makeRolesList());
 
                 control.updatePeople();
                 peopleTable_admPerson.setModel(control.showPeopleTable());
@@ -4896,6 +4926,7 @@ public class Interface extends javax.swing.JFrame {
         String height = heightTxt_admPerson.getText();
         String dob = new SimpleDateFormat("yyyy-MM-dd").format(registerDob_admPerson.getDate());
         String imagePath = image_admPerson.getText();
+        String role = (String)roleList_admPerson.getSelectedItem();
         System.out.println("ruta: " + imagePath);
         // Restricciones
         if (fName.equals("")) {
@@ -4913,12 +4944,16 @@ public class Interface extends javax.swing.JFrame {
         } else { // Inserción
             if (mName.equals("")) {mName = null;}
             if (nName.equals("")) {nName = null;}
-            if (trivia.equals("")) {mName = null;}
-            if (biography.equals("")) {nName = null;}
+            if (trivia.equals("")) {trivia = null;}
+            if (biography.equals("")) {biography = null;}
+            if (imagePath.equals("Add image")) {imagePath = null;}
             try {
                 // AQUI HAY QUE VER SI HACE FALTA AGREGAR FILM PERSON O NO
-//                control.registerFilmPerson(fName, lName, mName, nName, gender, dob, country, trivia, biography, Integer.parseInt(height));
-                control.registerPerson(fName, lName, mName, nName, gender, dob, imagePath);
+                if (filmPerson_check_Person.isSelected()) {
+                    control.registerFilmPerson(fName, lName, mName, nName, gender, dob, imagePath, country, trivia, biography, Integer.parseInt(height), role, parents, children, partner);
+                } else {
+                    control.registerPerson(fName, lName, mName, nName, gender, dob, imagePath, parents, children, partner);
+                }
                 infoMsg_admPerson.setForeground(new Color(0,204,51));
                 infoMsg_admPerson.setText("Person registered succesfully!");
             } catch (SQLException | IOException ex) {
@@ -5821,7 +5856,7 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_registerMouseClicked
 
     private void createPersonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createPersonMouseClicked
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_createPersonMouseClicked
 
     private void return_btn_ProductionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_return_btn_ProductionMouseClicked
@@ -5869,6 +5904,48 @@ public class Interface extends javax.swing.JFrame {
     private void image_admPersonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_image_admPersonMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_image_admPersonMouseEntered
+
+    private void filmPerson_check_PersonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_filmPerson_check_PersonMouseClicked
+        if (filmPerson_check_Person.isSelected()) {
+            addFamily_admPerson.setVisible(true);
+            peopleScroll_admPerson.setVisible(true);
+            famRelation_admPerson.setVisible(true);
+            relationList_admPerson.setVisible(true);
+            famAdd_admPerson.setVisible(true);
+            role_admPerson.setVisible(true);
+            roleList_admPerson.setVisible(true);
+        } else {
+            addFamily_admPerson.setVisible(false);
+            peopleScroll_admPerson.setVisible(false);
+            famRelation_admPerson.setVisible(false);
+            relationList_admPerson.setVisible(false);
+            famAdd_admPerson.setVisible(false);
+            role_admPerson.setVisible(false);
+            roleList_admPerson.setVisible(false);
+        }
+        
+    }//GEN-LAST:event_filmPerson_check_PersonMouseClicked
+
+    private void famAdd_admPersonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_famAdd_admPersonMouseClicked
+        infoMsg2_admPerson.setForeground(Color.red);
+        if (getTableSelection(peopleTable_admPerson) == null) {
+            infoMsg2_admPerson.setText("Error. Select a person");
+        }
+        else if (relationList_admPerson.getSelectedIndex() == 0) {
+            infoMsg2_admPerson.setText("Error. Select a valid option");
+        } else {
+            Object id = getTableSelection(peopleTable_admPerson);
+            if (relationList_admPerson.getSelectedIndex() == 1) { // Parent
+                parents.add((int) id);
+            } else if (relationList_admPerson.getSelectedIndex() == 2) { // Child
+                children.add((int) id);
+            } else { // Partner
+                partner = (int) id;
+            }
+            infoMsg2_admPerson.setForeground(new Color(0,204,51));
+            infoMsg2_admPerson.setText("Added");
+        }
+    }//GEN-LAST:event_famAdd_admPersonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -6030,7 +6107,6 @@ public class Interface extends javax.swing.JFrame {
     private com.toedter.calendar.JYearChooser expYear_Payments;
     private javax.swing.JLabel famAdd_admPerson;
     private javax.swing.JLabel famRelation_admPerson;
-    private javax.swing.JLabel famRemove_admPerson;
     private javax.swing.JCheckBox filmPerson_check_Person;
     private javax.swing.JLabel genderCAdd_admOther;
     private javax.swing.JTextField genderCTxt_admOther;
@@ -6084,6 +6160,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel image_admProd;
     private javax.swing.JLabel image_crewM;
     private javax.swing.JLabel infoMsg1_admProd;
+    private javax.swing.JLabel infoMsg2_admPerson;
     private javax.swing.JLabel infoMsg2_admProd;
     private javax.swing.JLabel infoMsg_adm;
     private javax.swing.JLabel infoMsg_admGeo1;
@@ -6227,6 +6304,8 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel return_btn_WishList;
     private javax.swing.JLabel reviewTitle_Prod;
     private javax.swing.JTextField reviewTitle_txt;
+    private javax.swing.JComboBox<String> roleList_admPerson;
+    private javax.swing.JLabel role_admPerson;
     private javax.swing.JTextField runtimeTxt_admProd;
     private javax.swing.JLabel runtime_admProd;
     private javax.swing.JLabel runtime_data_Production;

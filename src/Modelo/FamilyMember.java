@@ -9,11 +9,27 @@ package Modelo;
  * @author wess
  */
 public class FamilyMember {
+    private int id;
     private String name;
     private String relationshipType;
+
+    public FamilyMember() {
+        this.id = 0;
+        this.name = "";
+        this.relationshipType = "";
+    }
+    
     public FamilyMember(int idOfThePersonTheyAreRelatedTo)
     {
         
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

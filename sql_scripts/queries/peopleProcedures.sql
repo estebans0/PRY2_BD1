@@ -1,3 +1,66 @@
+-- *********************************************** RELATIONSHIPS PROCEDURES ***********************************************
+-- INSERT PARTNER
+DELIMITER //
+CREATE PROCEDURE insertPartner (
+    IN pId1 INT,
+    IN pId2 INT
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error' AS message;
+    END;
+
+    START TRANSACTION;
+    
+    INSERT INTO partner_of (id_partner1, id_partner2)
+    VALUES (pId1, pId2);
+    COMMIT;
+END //
+DELIMITER;
+
+-- GET PARTNER ID
+DELIMITER //
+CREATE PROCEDURE getPartnerId (IN pId1 INT)
+BEGIN
+	SELECT id_partner2
+    FROM partner_of
+    WHERE id_partner1 = pId1;
+END //
+DELIMITER ;
+
+-- INSERT PARENT
+DELIMITER //
+CREATE PROCEDURE insertParent (
+    IN pIdParent INT,
+    IN pIdChild INT
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error' AS message;
+    END;
+
+    START TRANSACTION;
+    
+    INSERT INTO parent_of (id_parent, id_child)
+    VALUES (pIdParent, pIdChild);
+    COMMIT;
+END //
+DELIMITER;
+
+-- GET PARTNER ID
+DELIMITER //
+CREATE PROCEDURE getParentId (IN pIdChild INT)
+BEGIN
+	SELECT id_parent
+    FROM parent_of
+    WHERE id_child = pIdChild;
+END //
+DELIMITER ;
+
 -- *********************************************** PERSON PROCEDURES ***********************************************
 -- INSERT
 DELIMITER //

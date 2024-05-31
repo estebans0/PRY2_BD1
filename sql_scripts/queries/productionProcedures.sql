@@ -1,3 +1,11 @@
+-- GET ROLES DATA
+DELIMITER //
+CREATE PROCEDURE getRolesData()
+BEGIN
+    SELECT type, name, character_name FROM rol;
+END //
+DELIMITER ;
+
 -- TOP N PRODUCTIONS ------------------------------------------------------------------------------------------------------------------------
 -- INSERT 
 DELIMITER //
