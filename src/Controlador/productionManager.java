@@ -27,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 public class productionManager {
     //Primero una lista con todas las producciones, despues  metodos para getiar los 3 tipos y un esqueleto para los inserts.
     //Por ultimo, unos metodos para insertar que deberian de hacerse por Esteban.
+    private ArrayList<Production> prods; // Hice un ArrayList distinto para no caerle encima a lo que ya hay
     private ArrayList<Production> productions;
     private ArrayList<Production> topProds;
     private ArrayList<Rol> roles;
@@ -35,6 +36,37 @@ public class productionManager {
         this.productions = new ArrayList<>();
         this.topProds = new ArrayList<>();
         this.roles = new ArrayList<>();
+        this.prods = new ArrayList<>();
+    }
+    
+    public void updateProdsData(java.sql.Connection conn) throws SQLException {
+        prods.clear();
+        CallableStatement sql = conn.prepareCall("{call getAllProdsData()}");
+        ResultSet rs = sql.executeQuery();
+        while (rs.next()) {
+            Production prod = new Production();
+            prod.setId(rs.getInt(1));
+            prod.setAirdate(rs.getString(2));
+            prod.setTitle(rs.getString(3));
+            prod.setRuntime(rs.getInt(4));
+            prod.setSynopsis(rs.getString(5));
+            prod.setTrailer(rs.getString(6));
+            prod.setCurrentPrice(rs.getLong(7));
+            prods.add(prod);
+        }
+    }
+    
+    // Método para crear una tabla con los datos de producciones existentes
+    public DefaultTableModel showProdsTable() {
+        Object [] header = {"ID", "Title", "Runtime"};
+        DefaultTableModel table = new DefaultTableModel(header, prods.size());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            Production prod = prods.get(i);
+            table.setValueAt(prod.getId(), i, 0);
+            table.setValueAt(prod.getTitle(), i, 1);
+            table.setValueAt(prod.getRuntime() + " min", i, 2);
+        }
+        return table;
     }
     
     // --------------- Métodos TOP N Productions --------------------------------------------------------------------

@@ -1,3 +1,12 @@
+-- GET ALL PRODUCTIONS DATA
+DELIMITER //
+CREATE PROCEDURE getAllProdsData ()
+BEGIN
+    SELECT id, airdate, title, run_time, synopsis, trailer, price
+    FROM production;
+END //
+DELIMITER ;
+
 -- GET ROLES DATA
 DELIMITER //
 CREATE PROCEDURE getRolesData()

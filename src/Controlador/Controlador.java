@@ -4,6 +4,7 @@
  */
 package Controlador;
 
+import Modelo.FilmPerson;
 import Modelo.Person;
 import Modelo.Production;
 import Modelo.User;
@@ -219,6 +220,11 @@ public class Controlador {
         personMng.updatePeople(conn);
     }
     
+    public void updateFilmPeople() throws SQLException {
+        updatePeople();
+        personMng.updateFilmPeople(conn);
+    }
+    
     public void registerFilmPerson(String fName, String lName, String mName, String nName, 
             int gender, String dob, String imagePath, String country, String trivia, String biography,
             int height, String role, ArrayList<Integer> parents, ArrayList<Integer> children, int partner) throws SQLException, IOException {
@@ -238,8 +244,16 @@ public class Controlador {
         return personMng.getPeople();
     }
     
+    public ArrayList<FilmPerson> getFilmPeople() {
+        return personMng.getFilmPeople();
+    }
+    
     public void printPeople() {
         personMng.printPeople();
+    }
+    
+    public void printFilmPeople() {
+        personMng.printFilmPeople();
     }
     
     public DefaultTableModel showPeopleTable() throws SQLException {
@@ -248,6 +262,42 @@ public class Controlador {
     
     public Person getPerson (int id) {
         return personMng.getPerson(id);
+    }
+    
+    public Person getFilmPerson (int id) {
+        return personMng.getFilmPerson(id);
+    }
+    
+    public ArrayList<FilmPerson> getDirectors() {
+        return personMng.getDirectors();
+    }
+    
+    public DefaultTableModel showDirectorsTable() throws SQLException {
+        return personMng.showDirectorsTable();
+    }
+    
+    public ArrayList<FilmPerson> getWriters() {
+        return personMng.getWriters();
+    }
+    
+    public DefaultTableModel showWritersTable() throws SQLException {
+        return personMng.showWritersTable();
+    }
+    
+    public ArrayList<FilmPerson> getActors() {
+        return personMng.getActors();
+    }
+    
+    public DefaultTableModel showActorsTable() throws SQLException {
+        return personMng.showActorsTable();
+    }
+    
+    public ArrayList<FilmPerson> getCrew() {
+        return personMng.getCrew();
+    }
+    
+    public DefaultTableModel showCrewTable() throws SQLException {
+        return personMng.showCrewTable();
     }
     
     // Métodos de Top Productions ----------------------------------------------------------------------------------------------
@@ -260,6 +310,23 @@ public class Controlador {
     }
     
     // Métodos de Producción ---------------------------------------------------------------------------------------------------
+    public ComboBoxModel<String> makeGenericList(ArrayList<String> list) {
+        ArrayList<String> listOptions = new ArrayList<>();
+        for (String option : list) {
+            listOptions.add(option);
+        }
+        ComboBoxModel<String> optionsList = new DefaultComboBoxModel<>(listOptions.toArray(String[]::new));
+        return optionsList;
+    }
+    
+    public void updateProds() throws SQLException {
+        prodMng.updateProdsData(conn);
+    }
+    
+    public DefaultTableModel showProdsTable() throws SQLException {
+        return prodMng.showProdsTable();
+    }
+    
     public void updateRoles() throws SQLException {
         prodMng.updateRoles(conn);
     }

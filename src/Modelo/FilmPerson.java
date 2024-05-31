@@ -98,4 +98,9 @@ public class FilmPerson extends Person{
     public void setBiography(String biography) {
         this.biography = biography;
     }
+
+    @Override
+    public String toString() {
+        return "FilmPerson{" + "id=" + id + ", dob=" + dob + ", firstName=" + firstName + ", lastName=" + lastName + ", middleName=" + middleName + ", nickname=" + nickname + ", image=" + image + ", gender=" + gender + ", partnerId=" + partnerId + ", familyMembers=" + familyMembers + ", workedIn=" + workedIn + ", adress=" + adress + ", trivia=" + trivia + ", heigth=" + heigth + ", nationality=" + nationality + ", biography=" + biography + ", role=" + role + '}';
+    }
 }

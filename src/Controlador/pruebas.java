@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Controlador;
+import Modelo.FilmPerson;
 import Modelo.Person;
 import Modelo.Production;
 import java.io.IOException;
@@ -24,6 +25,12 @@ public class pruebas {
     {
         try {
         Controlador control = new Controlador();
+        control.updateFilmPeople();
+        ArrayList<FilmPerson> fPeople = control.getCrew();
+        System.out.println(fPeople.size());
+        for (FilmPerson fPerson : fPeople) {
+            System.out.println(fPerson.toString());
+        }
 //        control.ActualizeProductions();
 //        Production production = control.getProduction(1);
 //        control.registerPerson("pruebaImg", "1", null, null, 1, "2024-05-30", "C:\\Users\\esteb\\Downloads\\pedro.jpg");
@@ -32,18 +39,18 @@ public class pruebas {
 
         // Prueba para insertar y mostrar imagen ------------------------------------------------------------------------------------
 //        control.registerPerson("pruebaImg", "1", null, null, 1, "2024-05-30", "C:/Users/esteb/Downloads/pedro.jpg");
-        control.updatePeople();
-        Person person = control.getPerson(51);
-        ImageIcon imageIcon = control.byteArrayToImageIcon(person.getImage());
-
-        // Display the image in a JLabel to confirm it works
-        if (imageIcon != null) {
-            JFrame frame = new JFrame();
-            JLabel label = new JLabel(imageIcon);
-            frame.add(label);
-            frame.pack();
-            frame.setVisible(true);
-        }
+//        control.updatePeople();
+//        Person person = control.getPerson(51);
+//        ImageIcon imageIcon = control.byteArrayToImageIcon(person.getImage());
+//
+//        // Display the image in a JLabel to confirm it works
+//        if (imageIcon != null) {
+//            JFrame frame = new JFrame();
+//            JLabel label = new JLabel(imageIcon);
+//            frame.add(label);
+//            frame.pack();
+//            frame.setVisible(true);
+//        }
 
         } catch (Exception ex) {
             Logger.getLogger(pruebas.class.getName()).log(Level.SEVERE, null, ex);

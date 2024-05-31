@@ -31,9 +31,17 @@ import javax.swing.table.TableColumnModel;
 public class Interface extends javax.swing.JFrame {
     private final Controlador control = new Controlador();
     private int accionAdm = 0; // 0=agregar  1=eliminar
+    // Variables para insert de person
     private ArrayList<Integer> parents = new ArrayList<>();
     private ArrayList<Integer> children = new ArrayList<>();
     private int partner = 0;
+    // Variables para insert de production
+    private ArrayList<String> genres = new ArrayList<>();
+    private ArrayList<String> countries = new ArrayList<>();
+    private ArrayList<String> platforms = new ArrayList<>();
+    private ArrayList<String> writers = new ArrayList<>();
+    private ArrayList<String> actors = new ArrayList<>();
+    private ArrayList<String> crew = new ArrayList<>();
     // Cola que almacena las ventanas visitadas y sirve para devolverse a la última ventana en la interfaz
     private Stack<Integer> panelStack = new Stack<>();
     
@@ -61,12 +69,15 @@ public class Interface extends javax.swing.JFrame {
 //        try {
             control.updateUsers();
             control.updatePeople();
+            control.updateFilmPeople();
             control.updateCountries();
             control.updateGenders();
             control.updateGenres();
             control.updateProdCompany();
             control.updatePlatforms();
             control.updateTopProds();
+            control.updateProds();
+            control.updateRoles();
 //            
 //        } catch (SQLException ex) {
 //            Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
@@ -346,7 +357,7 @@ public class Interface extends javax.swing.JFrame {
         returnBtn_admProd = new javax.swing.JLabel();
         titulo_admProd = new javax.swing.JLabel();
         dataEntry_admProd = new javax.swing.JLabel();
-        name_admProd = new javax.swing.JLabel();
+        title_admProd = new javax.swing.JLabel();
         nameTxt_admProd = new javax.swing.JTextField();
         synopsis_admProd = new javax.swing.JLabel();
         synopsisEntryScroll_admProd = new javax.swing.JScrollPane();
@@ -370,11 +381,9 @@ public class Interface extends javax.swing.JFrame {
         platformsA_admProd = new javax.swing.JLabel();
         platformsAList_admProd = new javax.swing.JComboBox<>();
         image_admProd = new javax.swing.JLabel();
-        imageAdd_admProd = new javax.swing.JLabel();
         trailer_admProd = new javax.swing.JLabel();
         bar2_admProd = new javax.swing.JLabel();
         release_admProd = new javax.swing.JLabel();
-        releaseDate_admProd = new com.toedter.calendar.JYearChooser();
         price_admProd = new javax.swing.JLabel();
         priceTxt_admProd = new javax.swing.JTextField();
         type_admProd = new javax.swing.JLabel();
@@ -422,10 +431,13 @@ public class Interface extends javax.swing.JFrame {
         endBar_admProd = new javax.swing.JLabel();
         endBar2_admProd = new javax.swing.JLabel();
         numSeasonsCheck_admProd = new javax.swing.JCheckBox();
-        returnBtn_admProd1 = new javax.swing.JLabel();
-        prodCompanyTxt_admProd = new javax.swing.JTextField();
+        editEpBtn_admProd = new javax.swing.JLabel();
         prodCompany_admProd = new javax.swing.JLabel();
         trailerLink_admProd = new javax.swing.JTextField();
+        imageFondo_admProd = new javax.swing.JPanel();
+        imagen_admProd = new javax.swing.JLabel();
+        prodCompanyList_admProd = new javax.swing.JComboBox<>();
+        releaseDate_admProd = new com.toedter.calendar.JDateChooser();
         admCreatePerson = new javax.swing.JPanel();
         createPerson_scroll = new javax.swing.JScrollPane();
         createPerson = new javax.swing.JPanel();
@@ -955,7 +967,7 @@ public class Interface extends javax.swing.JFrame {
 
         titulo_txt.setFont(new java.awt.Font("Cascadia Code", 1, 48)); // NOI18N
         titulo_txt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titulo_txt.setText("[Titulo de la app]");
+        titulo_txt.setText("Sketch Reviews");
         main_menu.add(titulo_txt, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, 780, 60));
 
         logo_lbl.setBackground(new java.awt.Color(255, 255, 255));
@@ -2785,10 +2797,10 @@ public class Interface extends javax.swing.JFrame {
         dataEntry_admProd.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 4, 0, new java.awt.Color(0, 0, 0)));
         createProd.add(dataEntry_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 1050, 40));
 
-        name_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
-        name_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        name_admProd.setText("Name:");
-        createProd.add(name_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 40, 20));
+        title_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
+        title_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        title_admProd.setText("Title:");
+        createProd.add(title_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 50, 20));
 
         nameTxt_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         createProd.add(nameTxt_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 160, 250, -1));
@@ -2820,6 +2832,11 @@ public class Interface extends javax.swing.JFrame {
 
         genresList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         genresList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        genresList_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                genresList_admProdMouseClicked(evt);
+            }
+        });
         createProd.add(genresList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 300, 140, 20));
 
         genresAdd_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
@@ -2827,6 +2844,11 @@ public class Interface extends javax.swing.JFrame {
         genresAdd_admProd.setText("+");
         genresAdd_admProd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         genresAdd_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        genresAdd_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                genresAdd_admProdMouseClicked(evt);
+            }
+        });
         createProd.add(genresAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 300, 20, 20));
 
         countries_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
@@ -2843,6 +2865,11 @@ public class Interface extends javax.swing.JFrame {
         countriesAdd_admProd.setText("+");
         countriesAdd_admProd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         countriesAdd_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        countriesAdd_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                countriesAdd_admProdMouseClicked(evt);
+            }
+        });
         createProd.add(countriesAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 350, 20, 20));
 
         platforms_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
@@ -2859,6 +2886,11 @@ public class Interface extends javax.swing.JFrame {
         platformsAdd_admProd.setText("+");
         platformsAdd_admProd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         platformsAdd_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        platformsAdd_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                platformsAdd_admProdMouseClicked(evt);
+            }
+        });
         createProd.add(platformsAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 400, 20, 20));
 
         bar1_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
@@ -2898,13 +2930,6 @@ public class Interface extends javax.swing.JFrame {
         image_admProd.setText("Image:");
         createProd.add(image_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 450, 50, 20));
 
-        imageAdd_admProd.setFont(new java.awt.Font("Cascadia Code", 3, 12)); // NOI18N
-        imageAdd_admProd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        imageAdd_admProd.setText("Add Image");
-        imageAdd_admProd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
-        imageAdd_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        createProd.add(imageAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 450, 120, 110));
-
         trailer_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         trailer_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         trailer_admProd.setText("Trailer:");
@@ -2919,60 +2944,59 @@ public class Interface extends javax.swing.JFrame {
         release_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         release_admProd.setText("Release date:");
         createProd.add(release_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 160, 100, 20));
-        createProd.add(releaseDate_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 160, 160, -1));
 
         price_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         price_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         price_admProd.setText("Streaming price:");
-        createProd.add(price_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 200, 130, 20));
+        createProd.add(price_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 210, 130, 20));
 
         priceTxt_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        createProd.add(priceTxt_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 200, 160, -1));
+        createProd.add(priceTxt_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 210, 160, -1));
 
         type_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         type_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         type_admProd.setText("Type:");
-        createProd.add(type_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 240, 70, 20));
+        createProd.add(type_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 250, 70, 20));
 
         typeList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         typeList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Movie", "Series", "Other" }));
-        createProd.add(typeList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 240, 160, 20));
-        createProd.add(typeCheck_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 240, -1, -1));
+        createProd.add(typeList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 250, 160, 20));
+        createProd.add(typeCheck_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 250, -1, -1));
 
         typeExtra_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         typeExtra_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         typeExtra_admProd.setText("Num of seasons:");
-        createProd.add(typeExtra_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 280, 120, 20));
+        createProd.add(typeExtra_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 290, 120, 20));
 
         typeExtraTxt_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        createProd.add(typeExtraTxt_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 280, 160, -1));
+        createProd.add(typeExtraTxt_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 290, 160, -1));
 
         infoMsg1_admProd.setFont(new java.awt.Font("Cascadia Code", 2, 12)); // NOI18N
         infoMsg1_admProd.setForeground(new java.awt.Color(170, 170, 170));
         infoMsg1_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        createProd.add(infoMsg1_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 320, 420, 20));
+        createProd.add(infoMsg1_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 100, 750, 30));
 
         AddEpTxt_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
         AddEpTxt_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         AddEpTxt_admProd.setText("Add ep to season");
         AddEpTxt_admProd.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 0, 0)));
-        createProd.add(AddEpTxt_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 350, 160, 20));
+        createProd.add(AddEpTxt_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 360, 160, 20));
 
         seasonSelect_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         seasonSelect_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         seasonSelect_admProd.setText("Select a season to add an ep:");
-        createProd.add(seasonSelect_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 380, 220, 20));
+        createProd.add(seasonSelect_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 390, 220, 20));
 
         seasonSelectList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         seasonSelectList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
-        createProd.add(seasonSelectList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 380, 80, 20));
+        createProd.add(seasonSelectList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 390, 80, 20));
 
         epAdd_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
         epAdd_admProd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         epAdd_admProd.setText("+");
         epAdd_admProd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         epAdd_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        createProd.add(epAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 380, 20, 20));
+        createProd.add(epAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 390, 20, 20));
 
         seasonEps_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         seasonEps_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -3346,31 +3370,53 @@ public class Interface extends javax.swing.JFrame {
                 numSeasonsCheck_admProdMouseClicked(evt);
             }
         });
-        createProd.add(numSeasonsCheck_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 280, -1, -1));
+        createProd.add(numSeasonsCheck_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 290, -1, -1));
 
-        returnBtn_admProd1.setBackground(new java.awt.Color(255, 255, 255));
-        returnBtn_admProd1.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
-        returnBtn_admProd1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        returnBtn_admProd1.setText("edit episode");
-        returnBtn_admProd1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
-        returnBtn_admProd1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        returnBtn_admProd1.addMouseListener(new java.awt.event.MouseAdapter() {
+        editEpBtn_admProd.setBackground(new java.awt.Color(255, 255, 255));
+        editEpBtn_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
+        editEpBtn_admProd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        editEpBtn_admProd.setText("edit episode");
+        editEpBtn_admProd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 4, true));
+        editEpBtn_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editEpBtn_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                returnBtn_admProd1MouseClicked(evt);
+                editEpBtn_admProdMouseClicked(evt);
             }
         });
-        createProd.add(returnBtn_admProd1, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 520, 90, 30));
-
-        prodCompanyTxt_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        createProd.add(prodCompanyTxt_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 230, 190, -1));
+        createProd.add(editEpBtn_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 520, 120, 30));
 
         prodCompany_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         prodCompany_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        prodCompany_admProd.setText("Production comany:");
+        prodCompany_admProd.setText("Production company:");
         createProd.add(prodCompany_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 200, 160, 20));
 
         trailerLink_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         createProd.add(trailerLink_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 450, 290, -1));
+
+        imageFondo_admProd.setBackground(new java.awt.Color(255, 255, 255));
+        imageFondo_admProd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
+        imageFondo_admProd.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        imagen_admProd.setFont(new java.awt.Font("Cascadia Code", 3, 12)); // NOI18N
+        imagen_admProd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imagen_admProd.setText("Add image");
+        imagen_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        imagen_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                imagen_admProdMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                imagen_admProdMouseEntered(evt);
+            }
+        });
+        imageFondo_admProd.add(imagen_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 110, 100));
+
+        createProd.add(imageFondo_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 450, 110, 100));
+
+        prodCompanyList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        prodCompanyList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        createProd.add(prodCompanyList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 230, 150, 20));
+        createProd.add(releaseDate_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 160, 160, 30));
 
         createProd_scroll.setViewportView(createProd);
 
@@ -3623,7 +3669,7 @@ public class Interface extends javax.swing.JFrame {
         infoMsg2_admPerson.setFont(new java.awt.Font("Cascadia Code", 2, 12)); // NOI18N
         infoMsg2_admPerson.setForeground(new java.awt.Color(0, 204, 51));
         infoMsg2_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        createPerson.add(infoMsg2_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 500, 210, 20));
+        createPerson.add(infoMsg2_admPerson, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 500, 320, 20));
 
         role_admPerson.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         role_admPerson.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -4710,6 +4756,9 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_returnBtn_admDataMouseClicked
 
     private void peopleBtn_admDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_peopleBtn_admDataMouseClicked
+        chooserTxt_admData.setVisible(false);
+        chooserSelector_admData.setVisible(false);
+        searchProdBtn_admData.setVisible(false);
         nameTxt_admPerson.setText("");
         midNameTxt_admPerson.setText("");
         lastNameTxt_admPerson.setText("");
@@ -4766,13 +4815,66 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_peopleBtn_admDataMouseClicked
 
     private void prodsBtn_admDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prodsBtn_admDataMouseClicked
-        // EDIT
-        if (titulo_txt_admData.getText().equals("Choose the type of data to edit")) {
+        AddEpTxt_admProd.setVisible(false);
+        seasonSelect_admProd.setVisible(false);
+        seasonSelectList_admProd.setVisible(false);
+        epAdd_admProd.setVisible(false);
+        seasonEps_admProd.setVisible(false);
+        seasonEpsScroll_admProd.setVisible(false);
+        editEpBtn_admProd.setVisible(false);
+        genres.clear();
+        countries.clear();
+        platforms.clear();
+        writers.clear();
+        actors.clear();
+        writers.clear();
+
+        // Cargar EDIT PRODUCTIONS
+        if (titulo_txt_admData.getText().equals("Choose the type of data to edit")) { // EDIT
             // Cargar tabla
             chooserTxt_admData.setVisible(true);
             chooserSelector_admData.setVisible(true);
             searchProdBtn_admData.setVisible(true);
-        } else { // CREATE
+            goTo_admData.setVisible(true);
+            chooserScroll_admData.setVisible(true);
+            goTo_admData.setText("Edit");
+
+            // Mostrar datos tabla
+            try {
+                chooserTable_admData.setModel(control.showProdsTable()); // Muestra las personas existentes
+                TableColumnModel tblModelCol = chooserTable_admData.getColumnModel();
+                tblModelCol.removeColumn(tblModelCol.getColumn(0));
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        } else { // Cargar CREATE PRODUCTION
+            try {
+                // Load lists
+                control.updateGenres();
+                genresList_admProd.setModel(control.makeGenresList());
+                control.updateCountries();
+                countriesList_admProd.setModel(control.makeCountriesList());
+                control.updatePlatforms();
+                platformsList_admProd.setModel(control.makePlatformsList());
+                control.updateProdCompany();
+                prodCompanyList_admProd.setModel(control.makeProdCompanyList());
+                // Load film people tables
+                control.updateFilmPeople();
+                directorList_admProd.setModel(control.showDirectorsTable()); // Directors
+                TableColumnModel tblModelCol = directorList_admProd.getColumnModel();
+                tblModelCol.removeColumn(tblModelCol.getColumn(0));
+                writersList_admProd.setModel(control.showWritersTable()); // Writers
+                TableColumnModel tblModelCol2 = writersList_admProd.getColumnModel();
+                tblModelCol2.removeColumn(tblModelCol2.getColumn(0));
+                actorsList_admProd.setModel(control.showActorsTable()); // Actors
+                TableColumnModel tblModelCol3 = actorsList_admProd.getColumnModel();
+                tblModelCol3.removeColumn(tblModelCol3.getColumn(0));
+                crewList_admProd.setModel(control.showCrewTable()); // Other crew
+                TableColumnModel tblModelCol4 = crewList_admProd.getColumnModel();
+                tblModelCol4.removeColumn(tblModelCol4.getColumn(0));
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
             panelStack.add(paneles.getSelectedIndex());
             paneles.setSelectedIndex(14);
         }
@@ -4891,16 +4993,61 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_returnBtn_admProdMouseClicked
 
     private void saveBtn_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveBtn_admProdMouseClicked
-        // TODO add your handling code here:
+        // Recolección de datos
+        infoMsg1_admProd.setForeground(Color.red);
+        infoMsg1_admProd.setText("");
+        String title = nameTxt_admPerson.getText();
+        int runtime = Integer.parseInt(runtime_admProd.getText());
+        String synopsis = synopsisTxt_admProd.getText();
+        String releaseDate = new SimpleDateFormat("yyyy-MM-dd").format(releaseDate_admProd.getDate());
+        Float price = Float.parseFloat(priceTxt_admProd.getText());
+        String trailer = trailerLink_admProd.getText();
+        String imagePath = imagen_admProd.getText();
+        String prodCompany = (String)prodCompanyList_admProd.getSelectedItem();
+        
+        
+        // Restricciones
+//        if (fName.equals("")) {
+//            infoMsg_admPerson.setText("Please enter a first name");
+//        } else if (lName.equals("")) {
+//            infoMsg_admPerson.setText("Please enter a last name");
+//        } else if (countryList_admPerson.getSelectedIndex() == 0) {
+//            infoMsg_admPerson.setText("Please select a country of residence");
+//        } else if (genderList_admPerson.getSelectedIndex() == 0) {
+//            infoMsg_admPerson.setText("Please select a gender");
+//        }  else if (!strIsNumeric(height)) {
+//            infoMsg_admPerson.setText("Please enter a valid height");
+//        } else if (dob == null) {
+//            infoMsg_admPerson.setText("Please select a date of birth");
+//        } else { // Inserción
+//            if (mName.equals("")) {mName = null;}
+//            if (nName.equals("")) {nName = null;}
+//            if (trivia.equals("")) {trivia = null;}
+//            if (biography.equals("")) {biography = null;}
+//            if (imagePath.equals("Add image")) {imagePath = null;}
+//            try {
+//                // AQUI HAY QUE VER SI HACE FALTA AGREGAR FILM PERSON O NO
+//                if (filmPerson_check_Person.isSelected()) {
+//                    control.registerFilmPerson(fName, lName, mName, nName, gender, dob, imagePath, country, trivia, biography, Integer.parseInt(height), role, parents, children, partner);
+//                } else {
+//                    control.registerPerson(fName, lName, mName, nName, gender, dob, imagePath, parents, children, partner);
+//                }
+//                infoMsg_admPerson.setForeground(new Color(0,204,51));
+//                infoMsg_admPerson.setText("Person registered succesfully!");
+//            } catch (SQLException | IOException ex) {
+//                System.out.println(ex);
+//                infoMsg_admPerson.setText("Error: " + ex);
+//            }
+//        }
     }//GEN-LAST:event_saveBtn_admProdMouseClicked
 
     private void numSeasonsCheck_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_numSeasonsCheck_admProdMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_numSeasonsCheck_admProdMouseClicked
 
-    private void returnBtn_admProd1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnBtn_admProd1MouseClicked
+    private void editEpBtn_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editEpBtn_admProdMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_returnBtn_admProd1MouseClicked
+    }//GEN-LAST:event_editEpBtn_admProdMouseClicked
 
     private void returnBtn_admPersonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnBtn_admPersonMouseClicked
         chooserTxt_admData.setVisible(false);
@@ -5934,18 +6081,84 @@ public class Interface extends javax.swing.JFrame {
         else if (relationList_admPerson.getSelectedIndex() == 0) {
             infoMsg2_admPerson.setText("Error. Select a valid option");
         } else {
+            infoMsg2_admPerson.setForeground(new Color(0,204,51));
             Object id = getTableSelection(peopleTable_admPerson);
             if (relationList_admPerson.getSelectedIndex() == 1) { // Parent
                 parents.add((int) id);
+                infoMsg2_admPerson.setText("Parent-child relationship added");
             } else if (relationList_admPerson.getSelectedIndex() == 2) { // Child
                 children.add((int) id);
+                infoMsg2_admPerson.setText("Child-parent relationship added");
             } else { // Partner
                 partner = (int) id;
+                infoMsg2_admPerson.setText("Partner relationship added");
             }
-            infoMsg2_admPerson.setForeground(new Color(0,204,51));
-            infoMsg2_admPerson.setText("Added");
         }
     }//GEN-LAST:event_famAdd_admPersonMouseClicked
+
+    private void imagen_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagen_admProdMouseClicked
+        // Funcionalidad de: https://www.youtube.com/watch?v=oKDPhacXlB8&t=331s
+        String ruta  = "";
+        JFileChooser jFileChooser = new JFileChooser();
+        FileNameExtensionFilter filtrado = new FileNameExtensionFilter("JPG & PNG", "jpg", "png");
+        jFileChooser.setFileFilter(filtrado);
+
+        int seleccionado = jFileChooser.showOpenDialog(this);
+        if (seleccionado == JFileChooser.APPROVE_OPTION) {
+            ruta = jFileChooser.getSelectedFile().getPath(); // Obtener ruta de imagen
+            Image mImagen = new ImageIcon(ruta).getImage(); // Buscar la imagen por su ruta
+
+            ImageIcon mIcono = new ImageIcon(mImagen.getScaledInstance(imagen_admProd.getWidth(), imagen_admProd.getHeight(), Image.SCALE_SMOOTH));
+            imagen_admProd.setIcon(mIcono);
+            imageFondo_admProd.setBackground(Color.white);
+            imagen_admProd.setForeground(Color.white);
+            imagen_admProd.setText(ruta);
+        }
+    }//GEN-LAST:event_imagen_admProdMouseClicked
+
+    private void imagen_admProdMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imagen_admProdMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_imagen_admProdMouseEntered
+
+    private void genresAdd_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genresAdd_admProdMouseClicked
+        if (genresList_admProd.getSelectedIndex() != 0) {
+            genres.add((String)genresList_admProd.getSelectedItem());
+            genresAList_admProd.setModel(control.makeGenericList(genres));
+            infoMsg1_admProd.setForeground(new Color(0,204,51));
+            infoMsg1_admProd.setText("Genre added");
+        } else {
+            infoMsg1_admProd.setForeground(Color.red);
+            infoMsg1_admProd.setText("Select a valid option");
+        }
+    }//GEN-LAST:event_genresAdd_admProdMouseClicked
+
+    private void genresList_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_genresList_admProdMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_genresList_admProdMouseClicked
+
+    private void countriesAdd_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_countriesAdd_admProdMouseClicked
+        if (countriesList_admProd.getSelectedIndex() != 0) {
+            countries.add((String)countriesList_admProd.getSelectedItem());
+            countriesAList_admProd.setModel(control.makeGenericList(countries));
+            infoMsg1_admProd.setForeground(new Color(0,204,51));
+            infoMsg1_admProd.setText("Country added");
+        } else {
+            infoMsg1_admProd.setForeground(Color.red);
+            infoMsg1_admProd.setText("Select a valid option");
+        }
+    }//GEN-LAST:event_countriesAdd_admProdMouseClicked
+
+    private void platformsAdd_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_platformsAdd_admProdMouseClicked
+        if (platformsList_admProd.getSelectedIndex() != 0) {
+            platforms.add((String)platformsList_admProd.getSelectedItem());
+            platformsAList_admProd.setModel(control.makeGenericList(platforms));
+            infoMsg1_admProd.setForeground(new Color(0,204,51));
+            infoMsg1_admProd.setText("Platform added");
+        } else {
+            infoMsg1_admProd.setForeground(Color.red);
+            infoMsg1_admProd.setText("Select a valid option");
+        }
+    }//GEN-LAST:event_platformsAdd_admProdMouseClicked
 
     /**
      * @param args the command line arguments
@@ -6088,6 +6301,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel director_txt_Production;
     private javax.swing.JLabel dob_admPerson;
     private javax.swing.JLabel editBtn_adm;
+    private javax.swing.JLabel editEpBtn_admProd;
     private javax.swing.JLabel endBar2_admProd;
     private javax.swing.JLabel endBar_Prod;
     private javax.swing.JLabel endBar_admOther;
@@ -6153,12 +6367,13 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel heightTxt_crewM;
     private javax.swing.JLabel height_admPerson;
     private javax.swing.JRadioButton highRated_radioB;
-    private javax.swing.JLabel imageAdd_admProd;
     private javax.swing.JPanel imageFondo_admPerson;
+    private javax.swing.JPanel imageFondo_admProd;
     private javax.swing.JLabel image_Production;
     private javax.swing.JLabel image_admPerson;
     private javax.swing.JLabel image_admProd;
     private javax.swing.JLabel image_crewM;
+    private javax.swing.JLabel imagen_admProd;
     private javax.swing.JLabel infoMsg1_admProd;
     private javax.swing.JLabel infoMsg2_admPerson;
     private javax.swing.JLabel infoMsg2_admProd;
@@ -6192,7 +6407,6 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JTextField nameTxt_admProd;
     private javax.swing.JLabel nameTxt_crewM;
     private javax.swing.JLabel name_admPerson;
-    private javax.swing.JLabel name_admProd;
     private javax.swing.JTextField name_txtField_Payment;
     private javax.swing.JLabel name_txt_Payment;
     private javax.swing.JLabel newUser_link;
@@ -6237,7 +6451,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel prodCAdd_admOther;
     private javax.swing.JTextField prodCTxt_admOther;
     private javax.swing.JLabel prodC_admOther;
-    private javax.swing.JTextField prodCompanyTxt_admProd;
+    private javax.swing.JComboBox<String> prodCompanyList_admProd;
     private javax.swing.JLabel prodCompany_Prod;
     private javax.swing.JLabel prodCompany_admProd;
     private javax.swing.JLabel prodCompany_txt_Prod;
@@ -6282,7 +6496,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> relationList_admPerson;
     private javax.swing.JLabel relativesData_crewM;
     private javax.swing.JLabel relativesTxt_crewM;
-    private com.toedter.calendar.JYearChooser releaseDate_admProd;
+    private com.toedter.calendar.JDateChooser releaseDate_admProd;
     private javax.swing.JLabel releaseDate_txt_Prod;
     private javax.swing.JLabel release_admProd;
     private javax.swing.JLabel removeAdmBtn_adm;
@@ -6294,7 +6508,6 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JLabel returnBtn_admOther;
     private javax.swing.JLabel returnBtn_admPerson;
     private javax.swing.JLabel returnBtn_admProd;
-    private javax.swing.JLabel returnBtn_admProd1;
     private javax.swing.JLabel returnBtn_crewM;
     private javax.swing.JLabel return_btn_AdvSearch;
     private javax.swing.JLabel return_btn_Cart;
@@ -6357,6 +6570,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JScrollPane synopsis_scroll;
     private javax.swing.JTextArea synopsis_txt;
     private javax.swing.JLabel synopsis_txt_Production;
+    private javax.swing.JLabel title_admProd;
     private javax.swing.JLabel tituloTxt_admGeo;
     private javax.swing.JLabel tituloTxt_admOther;
     private javax.swing.JLabel titulo_admPerson;

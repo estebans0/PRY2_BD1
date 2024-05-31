@@ -45,7 +45,51 @@ public class PersonManager {
     public ArrayList<Person> getPeople() {
         return people;
     }
-
+    
+    public ArrayList<FilmPerson> getFilmPeople() {
+        return filmPeople;
+    }
+    
+    public ArrayList<FilmPerson> getDirectors() {
+        ArrayList<FilmPerson> directors = new ArrayList<>();
+        for (FilmPerson fPerson : filmPeople) {
+            if (fPerson.getRole() == 99) {
+                directors.add(fPerson);
+            }
+        }
+        return directors;
+    }
+    
+    public ArrayList<FilmPerson> getWriters() {
+        ArrayList<FilmPerson> writers = new ArrayList<>();
+        for (FilmPerson fPerson : filmPeople) {
+            if (fPerson.getRole() == 147) {
+                writers.add(fPerson);
+            }
+        }
+        return writers;
+    }
+    
+    public ArrayList<FilmPerson> getActors() {
+        ArrayList<FilmPerson> actors = new ArrayList<>();
+        for (FilmPerson fPerson : filmPeople) {
+            if (fPerson.getRole() == 102) {
+                actors.add(fPerson);
+            }
+        }
+        return actors;
+    }
+    
+    public ArrayList<FilmPerson> getCrew() {
+        ArrayList<FilmPerson> crew = new ArrayList<>();
+        for (FilmPerson fPerson : filmPeople) {
+            if (fPerson.getRole() != 102 || fPerson.getRole() != 147 || fPerson.getRole() != 99) {
+                crew.add(fPerson);
+            }
+        }
+        return crew;
+    }
+    
     // Obtener a todas las personas en la BD
     public void updatePeople(java.sql.Connection conn) throws SQLException {
         people.clear();
@@ -117,22 +161,30 @@ public class PersonManager {
         }
     }
     
-    public ArrayList<FilmPerson> getFilmPeople() {
-        return filmPeople;
-    }
-    
     public void updateFilmPeople(java.sql.Connection conn) throws SQLException {
         filmPeople.clear();
         try (CallableStatement stmt = conn.prepareCall("{call getFilmPeopleData()}")) {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     FilmPerson fPerson = new FilmPerson();
-                    fPerson.setId(rs.getInt("id"));
-                    fPerson.setHeigth(rs.getInt("height_cm"));
+                    int id = rs.getInt("id");
+                    fPerson.setId(id);
+                    fPerson.setHeigth(rs.getInt("heigth_cm"));
                     fPerson.setTrivia(rs.getString("trivia"));
                     fPerson.setBiography(rs.getString("biography"));
                     fPerson.setNationality(rs.getInt("nacionality"));
                     fPerson.setRole(rs.getInt("rol"));
+                    // Agregar datos de persona regular
+                    Person person = getPerson(id);
+                    fPerson.setFirstName(person.getFirstName());
+                    fPerson.setLastName(person.getLastName());
+                    fPerson.setMiddleName(person.getMiddleName());
+                    fPerson.setNickname(person.getNickname());
+                    fPerson.setImage(person.getImage());
+                    fPerson.setDob(person.getDob());
+                    fPerson.setGender(person.getGender());
+                    fPerson.setPartnerId(person.getPartnerId());
+                    fPerson.setFamilyMembers(person.getFamilyMembers());
                     filmPeople.add(fPerson);
                 }
             }
@@ -153,7 +205,7 @@ public class PersonManager {
     
     // Método para crear una tabla con los datos de personas existentes
     public DefaultTableModel showPeopleTable() {
-        Object [] header = {"ID", "FirstName", "Last name"};
+        Object [] header = {"ID", "First name", "Last name"};
         DefaultTableModel table = new DefaultTableModel(header, people.size());
         for (int i = 0; i < table.getRowCount(); i++) {
             Person person = people.get(i);
@@ -163,27 +215,87 @@ public class PersonManager {
         }
         return table;
     }
-
-    public void updateProfilePicture(java.sql.Connection conn, int userId, String imagePath) throws SQLException, IOException {
-        String sql = "UPDATE userr SET profile_picture = ? WHERE id = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql);
-            FileInputStream fis = new FileInputStream(imagePath)) {
-
-            stmt.setBinaryStream(1, fis, (int) new File(imagePath).length());
-            stmt.setInt(2, userId);
-            stmt.executeUpdate();
+    
+    public DefaultTableModel showDirectorsTable() {
+        ArrayList<FilmPerson> directors = getDirectors();
+        Object [] header = {"ID", "First name", "Last name"};
+        DefaultTableModel table = new DefaultTableModel(header, directors.size());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            FilmPerson person = directors.get(i);
+            table.setValueAt(person.getId(), i, 0);
+            table.setValueAt(person.getFirstName(), i, 1);
+            table.setValueAt(person.getLastName(), i, 2);
         }
+        return table;
+    }
+    
+    public DefaultTableModel showWritersTable() {
+        ArrayList<FilmPerson> writers = getWriters();
+        Object [] header = {"ID", "First name", "Last name"};
+        DefaultTableModel table = new DefaultTableModel(header, writers.size());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            FilmPerson person = writers.get(i);
+            table.setValueAt(person.getId(), i, 0);
+            table.setValueAt(person.getFirstName(), i, 1);
+            table.setValueAt(person.getLastName(), i, 2);
+        }
+        return table;
+    }
+    
+     public DefaultTableModel showActorsTable() {
+        ArrayList<FilmPerson> actors = getActors();
+        Object [] header = {"ID", "First name", "Last name"};
+        DefaultTableModel table = new DefaultTableModel(header, actors.size());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            FilmPerson person = actors.get(i);
+            table.setValueAt(person.getId(), i, 0);
+            table.setValueAt(person.getFirstName(), i, 1);
+            table.setValueAt(person.getLastName(), i, 2);
+        }
+        return table;
+    }
+     
+     public DefaultTableModel showCrewTable() {
+        ArrayList<FilmPerson> crew = getCrew();
+        Object [] header = {"ID", "Name", "Role"};
+        DefaultTableModel table = new DefaultTableModel(header, crew.size());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            FilmPerson person = crew.get(i);
+            table.setValueAt(person.getId(), i, 0);
+            table.setValueAt(person.getFirstName() + " " + person.getLastName(), i, 1);
+            table.setValueAt(person.getRole(), i, 2);
+        }
+        return table;
     }
 
     // Método para obtener una persona por su id
     public Person getPerson (int id) {
-        id = id-1;
-        return people.get(id);
+        for (Person person : people) {
+            if (id == person.getId()) {
+                return person;
+            }
+        }
+        return null;
     }
     
     public void printPeople(){
         for (Person person : people) {
             System.out.println(person.toString());
+        }
+    }
+    
+    public Person getFilmPerson (int id) {
+        for (FilmPerson fPerson : filmPeople) {
+            if (id == fPerson.getId()) {
+                return fPerson;
+            }
+        }
+        return null;
+    }
+    
+    public void printFilmPeople(){
+        for (FilmPerson fPerson : filmPeople) {
+            System.out.println(fPerson.toString());
         }
     }
 }
