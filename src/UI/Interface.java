@@ -5,7 +5,9 @@
 package UI;
 
 import Controlador.Controlador;
+import Modelo.FilmPerson;
 import Modelo.Person;
+import Modelo.Rol;
 import java.awt.Color;
 import java.awt.Image;
 import javax.swing.BorderFactory;
@@ -39,9 +41,9 @@ public class Interface extends javax.swing.JFrame {
     private ArrayList<String> genres = new ArrayList<>();
     private ArrayList<String> countries = new ArrayList<>();
     private ArrayList<String> platforms = new ArrayList<>();
-    private ArrayList<String> writers = new ArrayList<>();
-    private ArrayList<String> actors = new ArrayList<>();
-    private ArrayList<String> crew = new ArrayList<>();
+    private ArrayList<FilmPerson> writers = new ArrayList<>();
+    private ArrayList<Rol> actors = new ArrayList<>();
+    private ArrayList<FilmPerson> crew = new ArrayList<>();
     // Cola que almacena las ventanas visitadas y sirve para devolverse a la última ventana en la interfaz
     private Stack<Integer> panelStack = new Stack<>();
     
@@ -397,8 +399,6 @@ public class Interface extends javax.swing.JFrame {
         seasonSelectList_admProd = new javax.swing.JComboBox<>();
         epAdd_admProd = new javax.swing.JLabel();
         seasonEps_admProd = new javax.swing.JLabel();
-        seasonEpsScroll_admProd = new javax.swing.JScrollPane();
-        seasonEpsList_admProd = new javax.swing.JList<>();
         bar3_admProd = new javax.swing.JLabel();
         director_admProd = new javax.swing.JLabel();
         directorEntryScroll_admProd = new javax.swing.JScrollPane();
@@ -420,7 +420,6 @@ public class Interface extends javax.swing.JFrame {
         crewAdd_admProd = new javax.swing.JLabel();
         endBar_admProd4 = new javax.swing.JLabel();
         writersA_admProd = new javax.swing.JLabel();
-        writersAList_admProd = new javax.swing.JComboBox<>();
         actorsA_admProd = new javax.swing.JLabel();
         actorsScroll_admProd = new javax.swing.JScrollPane();
         actorsAList_admProd = new javax.swing.JTable();
@@ -438,6 +437,9 @@ public class Interface extends javax.swing.JFrame {
         imagen_admProd = new javax.swing.JLabel();
         prodCompanyList_admProd = new javax.swing.JComboBox<>();
         releaseDate_admProd = new com.toedter.calendar.JDateChooser();
+        writersScroll_admProd = new javax.swing.JScrollPane();
+        writersAList_admProd = new javax.swing.JTable();
+        seasonEpsList_admProd = new javax.swing.JComboBox<>();
         admCreatePerson = new javax.swing.JPanel();
         createPerson_scroll = new javax.swing.JScrollPane();
         createPerson = new javax.swing.JPanel();
@@ -2932,8 +2934,8 @@ public class Interface extends javax.swing.JFrame {
 
         trailer_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         trailer_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        trailer_admProd.setText("Trailer:");
-        createProd.add(trailer_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 450, 70, 20));
+        trailer_admProd.setText("Trailer link:");
+        createProd.add(trailer_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 450, 100, 20));
 
         bar2_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         bar2_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -2961,6 +2963,12 @@ public class Interface extends javax.swing.JFrame {
         typeList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         typeList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Movie", "Series", "Other" }));
         createProd.add(typeList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 250, 160, 20));
+
+        typeCheck_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                typeCheck_admProdMouseClicked(evt);
+            }
+        });
         createProd.add(typeCheck_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 250, -1, -1));
 
         typeExtra_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
@@ -2988,7 +2996,7 @@ public class Interface extends javax.swing.JFrame {
         createProd.add(seasonSelect_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 390, 220, 20));
 
         seasonSelectList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        seasonSelectList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5" }));
+        seasonSelectList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0" }));
         createProd.add(seasonSelectList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 390, 80, 20));
 
         epAdd_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 14)); // NOI18N
@@ -3001,18 +3009,7 @@ public class Interface extends javax.swing.JFrame {
         seasonEps_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         seasonEps_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         seasonEps_admProd.setText("Existing episodes:");
-        createProd.add(seasonEps_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 420, 140, 20));
-
-        seasonEpsList_admProd.setBorder(null);
-        seasonEpsList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        seasonEpsList_admProd.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        seasonEpsScroll_admProd.setViewportView(seasonEpsList_admProd);
-
-        createProd.add(seasonEpsScroll_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 420, 200, 90));
+        createProd.add(seasonEps_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 440, 140, 20));
 
         bar3_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         bar3_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -3107,6 +3104,11 @@ public class Interface extends javax.swing.JFrame {
         writersAdd_admProd.setText("+");
         writersAdd_admProd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         writersAdd_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        writersAdd_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                writersAdd_admProdMouseClicked(evt);
+            }
+        });
         createProd.add(writersAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 660, 20, 20));
 
         actors_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
@@ -3118,6 +3120,11 @@ public class Interface extends javax.swing.JFrame {
         actorsEntryScroll_admProd.setBorder(null);
         actorsEntryScroll_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         actorsEntryScroll_admProd.setOpaque(false);
+        actorsEntryScroll_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                actorsEntryScroll_admProdMouseClicked(evt);
+            }
+        });
 
         actorsList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         actorsList_admProd.setModel(new javax.swing.table.DefaultTableModel(
@@ -3153,6 +3160,11 @@ public class Interface extends javax.swing.JFrame {
         actorsList_admProd.setSelectionBackground(new java.awt.Color(229, 229, 229));
         actorsList_admProd.getTableHeader().setResizingAllowed(false);
         actorsList_admProd.getTableHeader().setReorderingAllowed(false);
+        actorsList_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                actorsList_admProdMouseClicked(evt);
+            }
+        });
         actorsEntryScroll_admProd.setViewportView(actorsList_admProd);
 
         createProd.add(actorsEntryScroll_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 730, 420, 50));
@@ -3162,6 +3174,11 @@ public class Interface extends javax.swing.JFrame {
         actorsAdd_admProd.setText("+");
         actorsAdd_admProd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         actorsAdd_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        actorsAdd_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                actorsAdd_admProdMouseClicked(evt);
+            }
+        });
         createProd.add(actorsAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 730, 20, 20));
 
         actorCharacter_admProd.setFont(new java.awt.Font("Cascadia Code", 2, 12)); // NOI18N
@@ -3230,6 +3247,11 @@ public class Interface extends javax.swing.JFrame {
         crewAdd_admProd.setText("+");
         crewAdd_admProd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         crewAdd_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        crewAdd_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                crewAdd_admProdMouseClicked(evt);
+            }
+        });
         createProd.add(crewAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 850, 20, 20));
 
         endBar_admProd4.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
@@ -3241,10 +3263,6 @@ public class Interface extends javax.swing.JFrame {
         writersA_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         writersA_admProd.setText("Writers added:");
         createProd.add(writersA_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 660, 110, 20));
-
-        writersAList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        writersAList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        createProd.add(writersAList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 660, 220, 20));
 
         actorsA_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         actorsA_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -3314,7 +3332,7 @@ public class Interface extends javax.swing.JFrame {
                 {null, null}
             },
             new String [] {
-                "Name", "Character"
+                "Name", "Role"
             }
         ) {
             Class[] types = new Class [] {
@@ -3383,7 +3401,7 @@ public class Interface extends javax.swing.JFrame {
                 editEpBtn_admProdMouseClicked(evt);
             }
         });
-        createProd.add(editEpBtn_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 520, 120, 30));
+        createProd.add(editEpBtn_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 480, 120, 40));
 
         prodCompany_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         prodCompany_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -3417,6 +3435,53 @@ public class Interface extends javax.swing.JFrame {
         prodCompanyList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         createProd.add(prodCompanyList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 230, 150, 20));
         createProd.add(releaseDate_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 160, 160, 30));
+
+        writersScroll_admProd.setBackground(new java.awt.Color(255, 255, 255));
+        writersScroll_admProd.setBorder(null);
+        writersScroll_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        writersScroll_admProd.setOpaque(false);
+
+        writersAList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        writersAList_admProd.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "First name", "Last name"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        writersAList_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        writersAList_admProd.setGridColor(new java.awt.Color(255, 255, 255));
+        writersAList_admProd.setOpaque(false);
+        writersAList_admProd.setSelectionBackground(new java.awt.Color(229, 229, 229));
+        writersAList_admProd.getTableHeader().setResizingAllowed(false);
+        writersAList_admProd.getTableHeader().setReorderingAllowed(false);
+        writersScroll_admProd.setViewportView(writersAList_admProd);
+
+        createProd.add(writersScroll_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 660, 320, 50));
+
+        seasonEpsList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        seasonEpsList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "0" }));
+        createProd.add(seasonEpsList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 440, 160, 20));
 
         createProd_scroll.setViewportView(createProd);
 
@@ -4815,12 +4880,15 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_peopleBtn_admDataMouseClicked
 
     private void prodsBtn_admDataMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prodsBtn_admDataMouseClicked
+        typeExtra_admProd.setVisible(false);
+        typeExtraTxt_admProd.setVisible(false);
+        numSeasonsCheck_admProd.setVisible(false);
         AddEpTxt_admProd.setVisible(false);
         seasonSelect_admProd.setVisible(false);
         seasonSelectList_admProd.setVisible(false);
         epAdd_admProd.setVisible(false);
         seasonEps_admProd.setVisible(false);
-        seasonEpsScroll_admProd.setVisible(false);
+        seasonEpsList_admProd.setVisible(false);
         editEpBtn_admProd.setVisible(false);
         genres.clear();
         countries.clear();
@@ -4997,52 +5065,50 @@ public class Interface extends javax.swing.JFrame {
         infoMsg1_admProd.setForeground(Color.red);
         infoMsg1_admProd.setText("");
         String title = nameTxt_admPerson.getText();
-        int runtime = Integer.parseInt(runtime_admProd.getText());
+        String runtime = runtime_admProd.getText();
         String synopsis = synopsisTxt_admProd.getText();
+        String prodCompany = (String)prodCompanyList_admProd.getSelectedItem();
         String releaseDate = new SimpleDateFormat("yyyy-MM-dd").format(releaseDate_admProd.getDate());
-        Float price = Float.parseFloat(priceTxt_admProd.getText());
+        String price = priceTxt_admProd.getText();
         String trailer = trailerLink_admProd.getText();
         String imagePath = imagen_admProd.getText();
-        String prodCompany = (String)prodCompanyList_admProd.getSelectedItem();
-        
+        String type = (String)typeList_admProd.getSelectedItem();
         
         // Restricciones
-//        if (fName.equals("")) {
-//            infoMsg_admPerson.setText("Please enter a first name");
-//        } else if (lName.equals("")) {
-//            infoMsg_admPerson.setText("Please enter a last name");
-//        } else if (countryList_admPerson.getSelectedIndex() == 0) {
-//            infoMsg_admPerson.setText("Please select a country of residence");
-//        } else if (genderList_admPerson.getSelectedIndex() == 0) {
-//            infoMsg_admPerson.setText("Please select a gender");
-//        }  else if (!strIsNumeric(height)) {
-//            infoMsg_admPerson.setText("Please enter a valid height");
-//        } else if (dob == null) {
-//            infoMsg_admPerson.setText("Please select a date of birth");
-//        } else { // Inserción
-//            if (mName.equals("")) {mName = null;}
-//            if (nName.equals("")) {nName = null;}
-//            if (trivia.equals("")) {trivia = null;}
-//            if (biography.equals("")) {biography = null;}
-//            if (imagePath.equals("Add image")) {imagePath = null;}
+        if (title.equals("")) {
+            infoMsg1_admProd.setText("Please enter a title");
+        } else if (synopsis.equals("")) {
+            infoMsg1_admProd.setText("Please enter a synopsis");
+        } else if (prodCompanyList_admProd.getSelectedIndex() == 0) {
+            infoMsg1_admProd.setText("Please select a production company");
+        } else if (genresList_admProd.getSelectedIndex() == 0) {
+            infoMsg1_admProd.setText("Please select a genre");
+        } else if (typeList_admProd.getSelectedIndex() == 0) {
+            infoMsg1_admProd.setText("Please select type of production");
+        } else if (!strIsNumeric(runtime)) {
+            infoMsg1_admProd.setText("Please enter a valid runtime");
+        } else if (!strIsNumeric(price)) {
+            infoMsg1_admProd.setText("Please enter a valid streaming price");
+        } else if (releaseDate == null) {
+            infoMsg1_admProd.setText("Please select a release date");
+        } else { // Inserción
+            int run_time = Integer.parseInt(runtime);
+            Float price_ = Float.parseFloat(price);
+            if (trailer.equals("")) {trailer = null;}
+            if (imagePath.equals("Add image")) {imagePath = null;}
 //            try {
-//                // AQUI HAY QUE VER SI HACE FALTA AGREGAR FILM PERSON O NO
-//                if (filmPerson_check_Person.isSelected()) {
-//                    control.registerFilmPerson(fName, lName, mName, nName, gender, dob, imagePath, country, trivia, biography, Integer.parseInt(height), role, parents, children, partner);
-//                } else {
-//                    control.registerPerson(fName, lName, mName, nName, gender, dob, imagePath, parents, children, partner);
-//                }
-//                infoMsg_admPerson.setForeground(new Color(0,204,51));
-//                infoMsg_admPerson.setText("Person registered succesfully!");
+////                control.insertProduction();
+//                infoMsg1_admProd.setForeground(new Color(0,204,51));
+//                infoMsg1_admProd.setText("Production registered succesfully!");
 //            } catch (SQLException | IOException ex) {
 //                System.out.println(ex);
-//                infoMsg_admPerson.setText("Error: " + ex);
+//                infoMsg1_admProd.setText("Error: " + ex);
 //            }
-//        }
+        }
     }//GEN-LAST:event_saveBtn_admProdMouseClicked
 
     private void numSeasonsCheck_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_numSeasonsCheck_admProdMouseClicked
-        // TODO add your handling code here:
+        seasonSelectList_admProd.setModel(control.makeEpsList(Integer.parseInt(typeExtraTxt_admProd.getText())));
     }//GEN-LAST:event_numSeasonsCheck_admProdMouseClicked
 
     private void editEpBtn_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editEpBtn_admProdMouseClicked
@@ -6160,6 +6226,93 @@ public class Interface extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_platformsAdd_admProdMouseClicked
 
+    private void writersAdd_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_writersAdd_admProdMouseClicked
+        infoMsg2_admProd.setForeground(Color.red);
+        if (getTableSelection(writersList_admProd) == null) {
+            infoMsg2_admProd.setText("Error. Select a writer");
+        } else {
+            infoMsg2_admProd.setForeground(new Color(0,204,51));
+            Object id = getTableSelection(writersList_admProd);
+            writers.add(control.getFilmPerson((int)id));
+            writersAList_admProd.setModel(control.makeWritersTable(writers));
+            TableColumnModel tblModelCol = writersAList_admProd.getColumnModel();
+            tblModelCol.removeColumn(tblModelCol.getColumn(0));
+            infoMsg2_admProd.setText("Writer added");
+        }
+    }//GEN-LAST:event_writersAdd_admProdMouseClicked
+
+    private void actorsAdd_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actorsAdd_admProdMouseClicked
+        infoMsg2_admProd.setForeground(Color.red);
+        if (getTableSelection(actorsList_admProd) == null) {
+            infoMsg2_admProd.setText("Error. Select an actor");
+        } else if (actorCharacterTxt_admProd.getText().equals("")) {
+            infoMsg2_admProd.setText("Error. Enter a character for the actor");
+        }else {
+            infoMsg2_admProd.setForeground(new Color(0,204,51));
+            Object id = getTableSelection(actorsList_admProd);
+            String character = actorCharacterTxt_admProd.getText();
+            actors.add(control.makeRoleObject((int)id, character));
+            actorsAList_admProd.setModel(control.makeActorsTable(actors));
+            TableColumnModel tblModelCol = actorsAList_admProd.getColumnModel();
+            tblModelCol.removeColumn(tblModelCol.getColumn(0));
+            infoMsg2_admProd.setText("Actor added");
+        }
+    }//GEN-LAST:event_actorsAdd_admProdMouseClicked
+
+    private void crewAdd_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_crewAdd_admProdMouseClicked
+        infoMsg2_admProd.setForeground(Color.red);
+        if (getTableSelection(crewList_admProd) == null) {
+            infoMsg2_admProd.setText("Error. Select a crew member");
+        } else {
+            infoMsg2_admProd.setForeground(new Color(0,204,51));
+            Object id = getTableSelection(crewList_admProd);
+            crew.add(control.getFilmPerson((int)id));
+            try {
+                crewAList_admProd.setModel(control.showCrewTable2(crew));
+            } catch (SQLException ex) {
+                Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            TableColumnModel tblModelCol = crewAList_admProd.getColumnModel();
+            tblModelCol.removeColumn(tblModelCol.getColumn(0));
+            infoMsg2_admProd.setText("Crew member added");
+        }
+    }//GEN-LAST:event_crewAdd_admProdMouseClicked
+
+    private void actorsEntryScroll_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actorsEntryScroll_admProdMouseClicked
+        actorCharacterTxt_admProd.setText("");
+    }//GEN-LAST:event_actorsEntryScroll_admProdMouseClicked
+
+    private void actorsList_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actorsList_admProdMouseClicked
+        actorCharacterTxt_admProd.setText("");
+    }//GEN-LAST:event_actorsList_admProdMouseClicked
+
+    private void typeCheck_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_typeCheck_admProdMouseClicked
+        String typeOfProd = (String)typeList_admProd.getSelectedItem();
+        if (typeCheck_admProd.isSelected() && typeOfProd.equals("Series")) {
+            typeExtra_admProd.setVisible(true);
+            typeExtraTxt_admProd.setVisible(true);
+            numSeasonsCheck_admProd.setVisible(true);
+            AddEpTxt_admProd.setVisible(true);
+            seasonSelect_admProd.setVisible(true);
+            seasonSelectList_admProd.setVisible(true);
+            epAdd_admProd.setVisible(true);
+            seasonEps_admProd.setVisible(true);
+            seasonEpsList_admProd.setVisible(true);
+            editEpBtn_admProd.setVisible(true);
+        } else {
+            typeExtra_admProd.setVisible(false);
+            typeExtraTxt_admProd.setVisible(false);
+            numSeasonsCheck_admProd.setVisible(false);
+            AddEpTxt_admProd.setVisible(false);
+            seasonSelect_admProd.setVisible(false);
+            seasonSelectList_admProd.setVisible(false);
+            epAdd_admProd.setVisible(false);
+            seasonEps_admProd.setVisible(false);
+            seasonEpsList_admProd.setVisible(false);
+            editEpBtn_admProd.setVisible(false);
+        }
+    }//GEN-LAST:event_typeCheck_admProdMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -6536,8 +6689,7 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JScrollPane search_selector;
     private javax.swing.JLabel search_txt;
     private javax.swing.JTextField search_txtField;
-    private javax.swing.JList<String> seasonEpsList_admProd;
-    private javax.swing.JScrollPane seasonEpsScroll_admProd;
+    private javax.swing.JComboBox<String> seasonEpsList_admProd;
     private javax.swing.JLabel seasonEps_admProd;
     private javax.swing.JComboBox<String> seasonSelectList_admProd;
     private javax.swing.JLabel seasonSelect_admProd;
@@ -6620,13 +6772,14 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JScrollPane workedOn_scroll;
     private javax.swing.JTable workedOn_table;
     private javax.swing.JLabel writeReview_txt_Prod;
-    private javax.swing.JComboBox<String> writersAList_admProd;
+    private javax.swing.JTable writersAList_admProd;
     private javax.swing.JLabel writersA_admProd;
     private javax.swing.JLabel writersAdd_admProd;
     private javax.swing.JScrollPane writersEntryScroll_admProd;
     private javax.swing.JTable writersList_Prod;
     private javax.swing.JTable writersList_admProd;
     private javax.swing.JScrollPane writersScroll_Prod;
+    private javax.swing.JScrollPane writersScroll_admProd;
     private javax.swing.JLabel writers_Prod;
     private javax.swing.JLabel writers_admProd;
     // End of variables declaration//GEN-END:variables

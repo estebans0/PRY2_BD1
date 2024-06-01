@@ -25,12 +25,6 @@ public class pruebas {
     {
         try {
         Controlador control = new Controlador();
-        control.updateFilmPeople();
-        ArrayList<FilmPerson> fPeople = control.getCrew();
-        System.out.println(fPeople.size());
-        for (FilmPerson fPerson : fPeople) {
-            System.out.println(fPerson.toString());
-        }
 //        control.ActualizeProductions();
 //        Production production = control.getProduction(1);
 //        control.registerPerson("pruebaImg", "1", null, null, 1, "2024-05-30", "C:\\Users\\esteb\\Downloads\\pedro.jpg");

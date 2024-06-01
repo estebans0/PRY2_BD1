@@ -1,3 +1,74 @@
+-- INSERT
+DELIMITER //
+CREATE PROCEDURE insertProduction (
+    IN pAirdate DATE,
+    IN pTitle VARCHAR(260),
+    IN pRunTime INT,
+    IN pSynopsis VARCHAR(2000),
+    IN pTrailer VARCHAR(700),
+    IN pPrice DECIMAL(8,2)
+)
+BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to add a new production' AS message;
+    END;
+
+    START TRANSACTION;
+    INSERT INTO production (airdate, title, run_time, synopsis, trailer, price)
+    VALUES (pAirdate, pTitle, pRunTime, pSynopsis, pTrailer, pPrice);
+    COMMIT;
+END //
+DELIMITER ;
+
+-- INSERT MOVIE
+DELIMITER //
+CREATE PROCEDURE insertMovie ()
+BEGIN
+    DECLARE pLastProdId INT;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to add a new movie' AS message;
+    END;
+
+    START TRANSACTION;
+    SELECT LAST_INSERT_ID() INTO pLastProdId; 
+    IF pLastProdId IS NULL OR pLastProdId = 0 THEN
+        ROLLBACK;
+        SELECT 'No production ID found' AS message;
+    END IF;
+
+    INSERT INTO movie (id)
+    VALUES (pLastProdId);
+    COMMIT;
+END //
+DELIMITER ;
+-- INSERT SERIES
+DELIMITER //
+CREATE PROCEDURE insertMovie ()
+BEGIN
+    DECLARE pLastProdId INT;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SELECT 'Unexpected error when trying to add a new movie' AS message;
+    END;
+
+    START TRANSACTION;
+    SELECT LAST_INSERT_ID() INTO pLastProdId; 
+    IF pLastProdId IS NULL OR pLastProdId = 0 THEN
+        ROLLBACK;
+        SELECT 'No production ID found' AS message;
+    END IF;
+
+    INSERT INTO series (id)
+    VALUES (pLastProdId);
+    COMMIT;
+END //
+DELIMITER ;
+
 -- GET ALL PRODUCTIONS DATA
 DELIMITER //
 CREATE PROCEDURE getAllProdsData ()

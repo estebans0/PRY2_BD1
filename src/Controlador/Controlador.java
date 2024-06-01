@@ -7,6 +7,7 @@ package Controlador;
 import Modelo.FilmPerson;
 import Modelo.Person;
 import Modelo.Production;
+import Modelo.Rol;
 import Modelo.User;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -264,7 +265,7 @@ public class Controlador {
         return personMng.getPerson(id);
     }
     
-    public Person getFilmPerson (int id) {
+    public FilmPerson getFilmPerson (int id) {
         return personMng.getFilmPerson(id);
     }
     
@@ -297,7 +298,31 @@ public class Controlador {
     }
     
     public DefaultTableModel showCrewTable() throws SQLException {
-        return personMng.showCrewTable();
+        ArrayList<FilmPerson> crew = getCrew();
+        String role = "";
+        Object [] header = {"ID", "Name", "Role"};
+        DefaultTableModel table = new DefaultTableModel(header, crew.size());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            FilmPerson person = crew.get(i);
+            table.setValueAt(person.getId(), i, 0);
+            table.setValueAt(person.getFirstName() + " " + person.getLastName(), i, 1);
+            role = getRoleName(person.getRole());
+            table.setValueAt(role, i, 2);
+        }
+        return table;
+    }
+    public DefaultTableModel showCrewTable2(ArrayList<FilmPerson> crew) throws SQLException {
+        String role = "";
+        Object [] header = {"ID", "Name", "Role"};
+        DefaultTableModel table = new DefaultTableModel(header, crew.size());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            FilmPerson person = crew.get(i);
+            table.setValueAt(person.getId(), i, 0);
+            table.setValueAt(person.getFirstName() + " " + person.getLastName(), i, 1);
+            role = getRoleName(person.getRole());
+            table.setValueAt(role, i, 2);
+        }
+        return table;
     }
     
     // Métodos de Top Productions ----------------------------------------------------------------------------------------------
@@ -310,6 +335,10 @@ public class Controlador {
     }
     
     // Métodos de Producción ---------------------------------------------------------------------------------------------------
+    public Rol makeRoleObject(int id, String characterName) {
+        return prodMng.makeRoleObject(id, characterName);
+    }
+    
     public ComboBoxModel<String> makeGenericList(ArrayList<String> list) {
         ArrayList<String> listOptions = new ArrayList<>();
         for (String option : list) {
@@ -319,12 +348,50 @@ public class Controlador {
         return optionsList;
     }
     
+    public ComboBoxModel<String> makeEpsList(int num) {
+        ArrayList<String> listEps = new ArrayList<>();
+        for (int i = 1; i <= num; i++) {
+            listEps.add(Integer.toString(i));
+        }
+        ComboBoxModel<String> EpsList = new DefaultComboBoxModel<>(listEps.toArray(String[]::new));
+        return EpsList;
+    }
+    
+    public DefaultTableModel makeWritersTable(ArrayList<FilmPerson> list){
+        Object [] header = {"ID", "First name", "Last name"};
+        DefaultTableModel table = new DefaultTableModel(header, list.size());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            FilmPerson fPerson = list.get(i);
+            table.setValueAt(fPerson.getId(), i, 0);
+            table.setValueAt(fPerson.getFirstName(), i, 1);
+            table.setValueAt(fPerson.getLastName(), i, 2);
+        }
+        return table;
+    }
+    
+    public DefaultTableModel makeActorsTable(ArrayList<Rol> list){
+        Object [] header = {"ID", "Name", "Character"};
+        DefaultTableModel table = new DefaultTableModel(header, list.size());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            Rol rol = list.get(i);
+            FilmPerson actor = getFilmPerson(rol.getId());
+            table.setValueAt(actor.getId(), i, 0);
+            table.setValueAt(actor.getFirstName()+" "+actor.getLastName(), i, 1);
+            table.setValueAt(rol.getCharacterName(), i, 2);
+        }
+        return table;
+    }
+    
     public void updateProds() throws SQLException {
         prodMng.updateProdsData(conn);
     }
     
     public DefaultTableModel showProdsTable() throws SQLException {
         return prodMng.showProdsTable();
+    }
+    
+    public String getRoleName(int id) {
+        return prodMng.getRoleName(id);
     }
     
     public void updateRoles() throws SQLException {

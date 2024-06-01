@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import Modelo.Person;
+import Modelo.Rol;
 import Modelo.User;
 import com.sun.jdi.connect.spi.Connection;
 import java.awt.image.BufferedImage;
@@ -32,6 +33,7 @@ import java.sql.SQLException;
  */
 public class PersonManager {
     // Atributos
+    private final productionManager prodMng = new productionManager();
     private ArrayList<Person> people;
     private ArrayList<FilmPerson> filmPeople;
     
@@ -254,19 +256,6 @@ public class PersonManager {
         }
         return table;
     }
-     
-     public DefaultTableModel showCrewTable() {
-        ArrayList<FilmPerson> crew = getCrew();
-        Object [] header = {"ID", "Name", "Role"};
-        DefaultTableModel table = new DefaultTableModel(header, crew.size());
-        for (int i = 0; i < table.getRowCount(); i++) {
-            FilmPerson person = crew.get(i);
-            table.setValueAt(person.getId(), i, 0);
-            table.setValueAt(person.getFirstName() + " " + person.getLastName(), i, 1);
-            table.setValueAt(person.getRole(), i, 2);
-        }
-        return table;
-    }
 
     // Método para obtener una persona por su id
     public Person getPerson (int id) {
@@ -284,7 +273,7 @@ public class PersonManager {
         }
     }
     
-    public Person getFilmPerson (int id) {
+    public FilmPerson getFilmPerson (int id) {
         for (FilmPerson fPerson : filmPeople) {
             if (id == fPerson.getId()) {
                 return fPerson;

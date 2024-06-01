@@ -9,21 +9,31 @@ package Modelo;
  * @author wess
  */
 public class Rol {
+    private int id;
     private int type;
     private String name;
     private String characterName;
     private FilmPerson filmPerson;
 
     public Rol() {
+        this.id = 0;
         this.type = 0;
         this.name = "";
         this.characterName = "";
         this.filmPerson = null;
     }
     
-    public Rol(int id)
-    {
-        
+    public Rol(int id, String characterName) {
+        this.id = id;
+        this.characterName = characterName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getType() {

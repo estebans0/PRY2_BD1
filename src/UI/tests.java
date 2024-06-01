@@ -96,7 +96,6 @@ public class tests extends javax.swing.JFrame {
         crewAdd_admProd = new javax.swing.JLabel();
         endBar_admProd4 = new javax.swing.JLabel();
         writersA_admProd = new javax.swing.JLabel();
-        writersAList_admProd = new javax.swing.JComboBox<>();
         actorsA_admProd = new javax.swing.JLabel();
         actorsScroll_admProd = new javax.swing.JScrollPane();
         actorsAList_admProd = new javax.swing.JTable();
@@ -110,6 +109,8 @@ public class tests extends javax.swing.JFrame {
         returnBtn_admProd1 = new javax.swing.JLabel();
         prodCompany_admProd = new javax.swing.JLabel();
         prodCompanyTxt_admProd = new javax.swing.JTextField();
+        writersScroll_admProd = new javax.swing.JScrollPane();
+        writersAList_admProd = new javax.swing.JTable();
         production_content = new javax.swing.JPanel();
         return_btn_Production = new javax.swing.JLabel();
         titulo_txt_Production = new javax.swing.JLabel();
@@ -643,6 +644,11 @@ public class tests extends javax.swing.JFrame {
         actorsAdd_admProd.setText("+");
         actorsAdd_admProd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
         actorsAdd_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        actorsAdd_admProd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                actorsAdd_admProdMouseClicked(evt);
+            }
+        });
         createProd.add(actorsAdd_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 730, 20, 20));
 
         actorCharacter_admProd.setFont(new java.awt.Font("Cascadia Code", 2, 12)); // NOI18N
@@ -723,14 +729,10 @@ public class tests extends javax.swing.JFrame {
         writersA_admProd.setText("Writers added:");
         createProd.add(writersA_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 660, 110, 20));
 
-        writersAList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
-        writersAList_admProd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        createProd.add(writersAList_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 660, 220, 20));
-
         actorsA_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         actorsA_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         actorsA_admProd.setText("Actors added:");
-        createProd.add(actorsA_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 730, 100, 20));
+        createProd.add(actorsA_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 750, 100, 20));
 
         actorsScroll_admProd.setBackground(new java.awt.Color(255, 255, 255));
         actorsScroll_admProd.setBorder(null);
@@ -773,7 +775,7 @@ public class tests extends javax.swing.JFrame {
         actorsAList_admProd.getTableHeader().setReorderingAllowed(false);
         actorsScroll_admProd.setViewportView(actorsAList_admProd);
 
-        createProd.add(actorsScroll_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 730, 320, 50));
+        createProd.add(actorsScroll_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 750, 320, 50));
 
         crewA_admProd.setFont(new java.awt.Font("Cascadia Code", 1, 12)); // NOI18N
         crewA_admProd.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -873,6 +875,49 @@ public class tests extends javax.swing.JFrame {
 
         prodCompanyTxt_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
         createProd.add(prodCompanyTxt_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 230, 190, -1));
+
+        writersScroll_admProd.setBackground(new java.awt.Color(255, 255, 255));
+        writersScroll_admProd.setBorder(null);
+        writersScroll_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        writersScroll_admProd.setOpaque(false);
+
+        writersAList_admProd.setFont(new java.awt.Font("Cascadia Code", 0, 12)); // NOI18N
+        writersAList_admProd.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Name", "Character"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        writersAList_admProd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        writersAList_admProd.setGridColor(new java.awt.Color(255, 255, 255));
+        writersAList_admProd.setOpaque(false);
+        writersAList_admProd.setSelectionBackground(new java.awt.Color(229, 229, 229));
+        writersAList_admProd.getTableHeader().setResizingAllowed(false);
+        writersAList_admProd.getTableHeader().setReorderingAllowed(false);
+        writersScroll_admProd.setViewportView(writersAList_admProd);
+
+        createProd.add(writersScroll_admProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 660, 320, 50));
 
         getContentPane().add(createProd, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1100, 1040));
 
@@ -2099,6 +2144,10 @@ public class tests extends javax.swing.JFrame {
         
     }//GEN-LAST:event_genresList_ProductionMouseClicked
 
+    private void actorsAdd_admProdMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_actorsAdd_admProdMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_actorsAdd_admProdMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -2352,13 +2401,14 @@ public class tests extends javax.swing.JFrame {
     private javax.swing.JLabel type_txt_Prod;
     private javax.swing.JCheckBox wishlist_checkBox;
     private javax.swing.JLabel writeReview_txt_Prod;
-    private javax.swing.JComboBox<String> writersAList_admProd;
+    private javax.swing.JTable writersAList_admProd;
     private javax.swing.JLabel writersA_admProd;
     private javax.swing.JLabel writersAdd_admProd;
     private javax.swing.JScrollPane writersEntryScroll_admProd;
     private javax.swing.JTable writersList_Prod;
     private javax.swing.JTable writersList_admProd;
     private javax.swing.JScrollPane writersScroll_Prod;
+    private javax.swing.JScrollPane writersScroll_admProd;
     private javax.swing.JLabel writers_Prod;
     private javax.swing.JLabel writers_admProd;
     // End of variables declaration//GEN-END:variables

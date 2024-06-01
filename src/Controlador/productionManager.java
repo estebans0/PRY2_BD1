@@ -39,6 +39,10 @@ public class productionManager {
         this.prods = new ArrayList<>();
     }
     
+    public Rol makeRoleObject(int id, String characterName) {
+        return new Rol(id, characterName);
+    }
+    
     public void updateProdsData(java.sql.Connection conn) throws SQLException {
         prods.clear();
         CallableStatement sql = conn.prepareCall("{call getAllProdsData()}");
@@ -126,6 +130,15 @@ public class productionManager {
             }
         }
         return -1;
+    }
+    
+    public String getRoleName(int type){
+        for (Rol rol : roles) {
+            if (rol.getType() == type) {
+                return rol.getName();
+            }
+        }
+        return null;
     }
     // ---------------------------------------------------------------------------------------------------------------
 
